@@ -1,0 +1,6087 @@
+[
+  {
+    "en": "abandon",
+    "he": "לנטוש"
+  },
+  {
+    "en": "abandoned",
+    "he": "נטוש"
+  },
+  {
+    "en": "ability",
+    "he": "יכולת"
+  },
+  {
+    "en": "absolute",
+    "he": "מוחלט"
+  },
+  {
+    "en": "absolutely",
+    "he": "בהחלט"
+  },
+  {
+    "en": "absorbing",
+    "he": "שואב"
+  },
+  {
+    "en": "accelerating",
+    "he": "מאיץ"
+  },
+  {
+    "en": "access",
+    "he": "גישה"
+  },
+  {
+    "en": "accident",
+    "he": "תאונה"
+  },
+  {
+    "en": "accurate",
+    "he": "מדויק"
+  },
+  {
+    "en": "achieve",
+    "he": "להשיג"
+  },
+  {
+    "en": "act",
+    "he": "לפעול"
+  },
+  {
+    "en": "acting",
+    "he": "משחק / פועל"
+  },
+  {
+    "en": "actor",
+    "he": "שחקן"
+  },
+  {
+    "en": "actual",
+    "he": "אמיתי"
+  },
+  {
+    "en": "actually",
+    "he": "בעצם"
+  },
+  {
+    "en": "adjourned",
+    "he": "נדחה"
+  },
+  {
+    "en": "administer",
+    "he": "לתת"
+  },
+  {
+    "en": "administering",
+    "he": "מתן"
+  },
+  {
+    "en": "adopted",
+    "he": "מאומץ"
+  },
+  {
+    "en": "adrenaline",
+    "he": "אדרנלין"
+  },
+  {
+    "en": "adventure",
+    "he": "הרפתקה"
+  },
+  {
+    "en": "advise",
+    "he": "לייעץ"
+  },
+  {
+    "en": "advised",
+    "he": "ייעץ"
+  },
+  {
+    "en": "afraid",
+    "he": "מפחד"
+  },
+  {
+    "en": "afternoon",
+    "he": "אחר הצהריים"
+  },
+  {
+    "en": "afterward",
+    "he": "אחר כך"
+  },
+  {
+    "en": "agnus",
+    "he": "אגנוס"
+  },
+  {
+    "en": "ago",
+    "he": "לפני"
+  },
+  {
+    "en": "agreement",
+    "he": "הסכם"
+  },
+  {
+    "en": "ahead",
+    "he": "קדימה"
+  },
+  {
+    "en": "ahold",
+    "he": "אחיזה"
+  },
+  {
+    "en": "air",
+    "he": "אוויר"
+  },
+  {
+    "en": "aisle",
+    "he": "מעבר"
+  },
+  {
+    "en": "alarm",
+    "he": "אזעקה"
+  },
+  {
+    "en": "alcoholic",
+    "he": "אלכוהוליסט"
+  },
+  {
+    "en": "alive",
+    "he": "חי"
+  },
+  {
+    "en": "allergic",
+    "he": "אלרגי"
+  },
+  {
+    "en": "allowed",
+    "he": "מותר"
+  },
+  {
+    "en": "alright",
+    "he": "בסדר"
+  },
+  {
+    "en": "amazing",
+    "he": "מדהים"
+  },
+  {
+    "en": "ambulance",
+    "he": "אמבולנס"
+  },
+  {
+    "en": "american",
+    "he": "אמריקאי"
+  },
+  {
+    "en": "amounts",
+    "he": "כמויות"
+  },
+  {
+    "en": "amygdala",
+    "he": "אמיגדלה"
+  },
+  {
+    "en": "angel",
+    "he": "מלאך"
+  },
+  {
+    "en": "animal",
+    "he": "חיה"
+  },
+  {
+    "en": "announcement",
+    "he": "הודעה"
+  },
+  {
+    "en": "anomaly",
+    "he": "אנומליה"
+  },
+  {
+    "en": "antenna",
+    "he": "אנטנה"
+  },
+  {
+    "en": "antlers",
+    "he": "קרניים"
+  },
+  {
+    "en": "anybody",
+    "he": "מישהו"
+  },
+  {
+    "en": "anymore",
+    "he": "יותר"
+  },
+  {
+    "en": "anytime",
+    "he": "בכל זמן"
+  },
+  {
+    "en": "apparently",
+    "he": "כנראה"
+  },
+  {
+    "en": "applause",
+    "he": "מחיאות כפיים"
+  },
+  {
+    "en": "approaches",
+    "he": "גישות"
+  },
+  {
+    "en": "arms",
+    "he": "זרועות"
+  },
+  {
+    "en": "army",
+    "he": "צבא"
+  },
+  {
+    "en": "art",
+    "he": "אמנות"
+  },
+  {
+    "en": "ashamed",
+    "he": "מתבייש"
+  },
+  {
+    "en": "ask",
+    "he": "לשאול"
+  },
+  {
+    "en": "asked",
+    "he": "שאל"
+  },
+  {
+    "en": "asking",
+    "he": "שואל"
+  },
+  {
+    "en": "ass",
+    "he": "תחת"
+  },
+  {
+    "en": "asshole",
+    "he": "מניאק"
+  },
+  {
+    "en": "astounding",
+    "he": "מדהים"
+  },
+  {
+    "en": "atom",
+    "he": "אטום"
+  },
+  {
+    "en": "attacked",
+    "he": "תקף"
+  },
+  {
+    "en": "attic",
+    "he": "עליית גג"
+  },
+  {
+    "en": "attitude",
+    "he": "גישה"
+  },
+  {
+    "en": "audience",
+    "he": "קהל"
+  },
+  {
+    "en": "audio",
+    "he": "שמע"
+  },
+  {
+    "en": "audition",
+    "he": "אודישן"
+  },
+  {
+    "en": "auditioned",
+    "he": "נבחן"
+  },
+  {
+    "en": "av",
+    "he": "אודיו-וידאו"
+  },
+  {
+    "en": "awaiting",
+    "he": "ממתין"
+  },
+  {
+    "en": "award",
+    "he": "פרס"
+  },
+  {
+    "en": "away",
+    "he": "הרחק"
+  },
+  {
+    "en": "axe",
+    "he": "גרזן"
+  },
+  {
+    "en": "babe",
+    "he": "מותק"
+  },
+  {
+    "en": "baby",
+    "he": "תינוק / מאמי"
+  },
+  {
+    "en": "backstage",
+    "he": "מאחורי הקלעים"
+  },
+  {
+    "en": "bad",
+    "he": "רע"
+  },
+  {
+    "en": "bag",
+    "he": "תיק"
+  },
+  {
+    "en": "bait",
+    "he": "פיתיון"
+  },
+  {
+    "en": "ball",
+    "he": "כדור"
+  },
+  {
+    "en": "ballad",
+    "he": "בלדה"
+  },
+  {
+    "en": "bank",
+    "he": "בנק"
+  },
+  {
+    "en": "base",
+    "he": "בסיס"
+  },
+  {
+    "en": "based",
+    "he": "מבוסס"
+  },
+  {
+    "en": "basic",
+    "he": "בסיסי"
+  },
+  {
+    "en": "basically",
+    "he": "בעיקרון"
+  },
+  {
+    "en": "bastard",
+    "he": "ממזר"
+  },
+  {
+    "en": "beat",
+    "he": "להכות"
+  },
+  {
+    "en": "beautiful",
+    "he": "יפה"
+  },
+  {
+    "en": "bed",
+    "he": "מיטה"
+  },
+  {
+    "en": "begging",
+    "he": "מתחנן"
+  },
+  {
+    "en": "beginning",
+    "he": "התחלה"
+  },
+  {
+    "en": "believe",
+    "he": "להאמין"
+  },
+  {
+    "en": "believed",
+    "he": "האמין"
+  },
+  {
+    "en": "belong",
+    "he": "שייך"
+  },
+  {
+    "en": "benefits",
+    "he": "יתרונות"
+  },
+  {
+    "en": "best",
+    "he": "הכי טוב"
+  },
+  {
+    "en": "betrayed",
+    "he": "נבגד"
+  },
+  {
+    "en": "better",
+    "he": "טוב יותר"
+  },
+  {
+    "en": "beware",
+    "he": "היזהר"
+  },
+  {
+    "en": "big",
+    "he": "גדול"
+  },
+  {
+    "en": "bigger",
+    "he": "גדול יותר"
+  },
+  {
+    "en": "biggest",
+    "he": "הכי גדול"
+  },
+  {
+    "en": "birds",
+    "he": "ציפורים"
+  },
+  {
+    "en": "birthday",
+    "he": "יום הולדת"
+  },
+  {
+    "en": "bit",
+    "he": "קצת"
+  },
+  {
+    "en": "bitch",
+    "he": "כלבה"
+  },
+  {
+    "en": "blackout",
+    "he": "האפלה"
+  },
+  {
+    "en": "blames",
+    "he": "מאשים"
+  },
+  {
+    "en": "bleeding",
+    "he": "מדמם"
+  },
+  {
+    "en": "blind",
+    "he": "עיוור"
+  },
+  {
+    "en": "blindfold",
+    "he": "כיסוי עיניים"
+  },
+  {
+    "en": "blood",
+    "he": "דם"
+  },
+  {
+    "en": "blown",
+    "he": "מפוצץ"
+  },
+  {
+    "en": "blue",
+    "he": "כחול"
+  },
+  {
+    "en": "blueprints",
+    "he": "תוכניות"
+  },
+  {
+    "en": "body",
+    "he": "גוף"
+  },
+  {
+    "en": "bomb",
+    "he": "פצצה"
+  },
+  {
+    "en": "bone",
+    "he": "עצם"
+  },
+  {
+    "en": "book",
+    "he": "ספר"
+  },
+  {
+    "en": "boozes",
+    "he": "שותה"
+  },
+  {
+    "en": "bored",
+    "he": "משועמם"
+  },
+  {
+    "en": "bother",
+    "he": "להטריד"
+  },
+  {
+    "en": "boulevard",
+    "he": "שדרה"
+  },
+  {
+    "en": "bout",
+    "he": "סבב"
+  },
+  {
+    "en": "box",
+    "he": "קופסה"
+  },
+  {
+    "en": "boy",
+    "he": "ילד"
+  },
+  {
+    "en": "boyfriend",
+    "he": "חבר"
+  },
+  {
+    "en": "brain",
+    "he": "מוח"
+  },
+  {
+    "en": "break",
+    "he": "לשבור"
+  },
+  {
+    "en": "breaking",
+    "he": "שבירה"
+  },
+  {
+    "en": "breaks",
+    "he": "שובר"
+  },
+  {
+    "en": "breath",
+    "he": "נשימה"
+  },
+  {
+    "en": "breathe",
+    "he": "לנשום"
+  },
+  {
+    "en": "breathing",
+    "he": "נושם"
+  },
+  {
+    "en": "brief",
+    "he": "קצר"
+  },
+  {
+    "en": "briefly",
+    "he": "בקצרה"
+  },
+  {
+    "en": "bring",
+    "he": "להביא"
+  },
+  {
+    "en": "bringing",
+    "he": "מביא"
+  },
+  {
+    "en": "brings",
+    "he": "מביא"
+  },
+  {
+    "en": "broadcast",
+    "he": "שידור"
+  },
+  {
+    "en": "broadcasting",
+    "he": "משדר"
+  },
+  {
+    "en": "broke",
+    "he": "נשבר"
+  },
+  {
+    "en": "broken",
+    "he": "שבור"
+  },
+  {
+    "en": "brother",
+    "he": "אח"
+  },
+  {
+    "en": "brought",
+    "he": "הביא"
+  },
+  {
+    "en": "brutally",
+    "he": "באכזריות"
+  },
+  {
+    "en": "buck",
+    "he": "דולר"
+  },
+  {
+    "en": "buddy",
+    "he": "חבר"
+  },
+  {
+    "en": "buds",
+    "he": "ניצנים"
+  },
+  {
+    "en": "building",
+    "he": "בניין"
+  },
+  {
+    "en": "bulletin",
+    "he": "לוח מודעות"
+  },
+  {
+    "en": "bullshit",
+    "he": "שטויות"
+  },
+  {
+    "en": "bully",
+    "he": "בריון"
+  },
+  {
+    "en": "bunch",
+    "he": "חבורה"
+  },
+  {
+    "en": "bunny",
+    "he": "ארנב"
+  },
+  {
+    "en": "burden",
+    "he": "נטל"
+  },
+  {
+    "en": "burger",
+    "he": "המבורגר"
+  },
+  {
+    "en": "buried",
+    "he": "קבור"
+  },
+  {
+    "en": "burn",
+    "he": "לשרוף"
+  },
+  {
+    "en": "bus",
+    "he": "אוטובוס"
+  },
+  {
+    "en": "buy",
+    "he": "לקנות"
+  },
+  {
+    "en": "bye",
+    "he": "להתראות"
+  },
+  {
+    "en": "cake",
+    "he": "עוגה"
+  },
+  {
+    "en": "called",
+    "he": "נקרא"
+  },
+  {
+    "en": "calling",
+    "he": "קורא"
+  },
+  {
+    "en": "calls",
+    "he": "קורא"
+  },
+  {
+    "en": "calm",
+    "he": "רגוע"
+  },
+  {
+    "en": "came",
+    "he": "בא"
+  },
+  {
+    "en": "camera",
+    "he": "מצלמה"
+  },
+  {
+    "en": "candy",
+    "he": "ממתק"
+  },
+  {
+    "en": "captain",
+    "he": "קפטן"
+  },
+  {
+    "en": "car",
+    "he": "מכונית"
+  },
+  {
+    "en": "care",
+    "he": "אכפת"
+  },
+  {
+    "en": "case",
+    "he": "מקרה"
+  },
+  {
+    "en": "casino",
+    "he": "קזינו"
+  },
+  {
+    "en": "cast",
+    "he": "ליהק"
+  },
+  {
+    "en": "casting",
+    "he": "ליהוק"
+  },
+  {
+    "en": "cat",
+    "he": "חתול"
+  },
+  {
+    "en": "catch",
+    "he": "לתפוס"
+  },
+  {
+    "en": "catwalk",
+    "he": "מסלול"
+  },
+  {
+    "en": "caught",
+    "he": "נתפס"
+  },
+  {
+    "en": "cause",
+    "he": "סיבה"
+  },
+  {
+    "en": "cave",
+    "he": "מערה"
+  },
+  {
+    "en": "ceiling",
+    "he": "תקרה"
+  },
+  {
+    "en": "central",
+    "he": "מרכזי"
+  },
+  {
+    "en": "cents",
+    "he": "סנטים"
+  },
+  {
+    "en": "certainly",
+    "he": "בוודאי"
+  },
+  {
+    "en": "chair",
+    "he": "כיסא"
+  },
+  {
+    "en": "change",
+    "he": "לשנות"
+  },
+  {
+    "en": "changed",
+    "he": "שינה (לשנות)"
+  },
+  {
+    "en": "changes",
+    "he": "שינויים"
+  },
+  {
+    "en": "changing",
+    "he": "משתנה"
+  },
+  {
+    "en": "chaos",
+    "he": "כאוס"
+  },
+  {
+    "en": "character",
+    "he": "דמות"
+  },
+  {
+    "en": "checked",
+    "he": "בדק"
+  },
+  {
+    "en": "cheers",
+    "he": "לחיים"
+  },
+  {
+    "en": "cheese",
+    "he": "גבינה"
+  },
+  {
+    "en": "cheeseburger",
+    "he": "צ'יזבורגר"
+  },
+  {
+    "en": "chemistry",
+    "he": "כימיה"
+  },
+  {
+    "en": "chestnut",
+    "he": "ערמון"
+  },
+  {
+    "en": "chevy",
+    "he": "שברולט (מכונית)"
+  },
+  {
+    "en": "chief",
+    "he": "מפקד"
+  },
+  {
+    "en": "child",
+    "he": "ילד"
+  },
+  {
+    "en": "children",
+    "he": "ילדים"
+  },
+  {
+    "en": "chimpanzees",
+    "he": "שימפנזים"
+  },
+  {
+    "en": "china",
+    "he": "חרסינה / סין"
+  },
+  {
+    "en": "choir",
+    "he": "מקהלה"
+  },
+  {
+    "en": "choose",
+    "he": "לבחור"
+  },
+  {
+    "en": "christmas",
+    "he": "חג המולד"
+  },
+  {
+    "en": "church",
+    "he": "כנסייה"
+  },
+  {
+    "en": "cigarettes",
+    "he": "סיגריות"
+  },
+  {
+    "en": "city",
+    "he": "עיר"
+  },
+  {
+    "en": "civilians",
+    "he": "אזרחים"
+  },
+  {
+    "en": "civilized",
+    "he": "מתורבת"
+  },
+  {
+    "en": "claims",
+    "he": "טוען"
+  },
+  {
+    "en": "clap",
+    "he": "מחיאת כפיים"
+  },
+  {
+    "en": "class",
+    "he": "כיתה"
+  },
+  {
+    "en": "classifiable",
+    "he": "ניתן לסיווג"
+  },
+  {
+    "en": "clay",
+    "he": "חימר"
+  },
+  {
+    "en": "clean",
+    "he": "לנקות / נקי"
+  },
+  {
+    "en": "climbing",
+    "he": "מטפס"
+  },
+  {
+    "en": "clip",
+    "he": "קליפ"
+  },
+  {
+    "en": "cloak",
+    "he": "גלימה"
+  },
+  {
+    "en": "clock",
+    "he": "שעון"
+  },
+  {
+    "en": "close",
+    "he": "לסגור"
+  },
+  {
+    "en": "closed",
+    "he": "סגור"
+  },
+  {
+    "en": "closer",
+    "he": "קרוב יותר"
+  },
+  {
+    "en": "closet",
+    "he": "ארון"
+  },
+  {
+    "en": "club",
+    "he": "מועדון"
+  },
+  {
+    "en": "clues",
+    "he": "רמזים"
+  },
+  {
+    "en": "code",
+    "he": "קוד"
+  },
+  {
+    "en": "coffee",
+    "he": "קפה"
+  },
+  {
+    "en": "cold",
+    "he": "קר"
+  },
+  {
+    "en": "college",
+    "he": "מכללה"
+  },
+  {
+    "en": "colors",
+    "he": "צבעים"
+  },
+  {
+    "en": "combination",
+    "he": "צירוף"
+  },
+  {
+    "en": "come",
+    "he": "לבוא"
+  },
+  {
+    "en": "comes",
+    "he": "בא"
+  },
+  {
+    "en": "comic",
+    "he": "קומיקס"
+  },
+  {
+    "en": "coming",
+    "he": "בא"
+  },
+  {
+    "en": "commander",
+    "he": "מפקד"
+  },
+  {
+    "en": "committed",
+    "he": "מחויב"
+  },
+  {
+    "en": "common",
+    "he": "נפוץ"
+  },
+  {
+    "en": "communicate",
+    "he": "לתקשר"
+  },
+  {
+    "en": "communist",
+    "he": "קומוניסט"
+  },
+  {
+    "en": "completely",
+    "he": "לגמרי"
+  },
+  {
+    "en": "concerned",
+    "he": "מודאג"
+  },
+  {
+    "en": "condition",
+    "he": "מצב"
+  },
+  {
+    "en": "confess",
+    "he": "להתוודות"
+  },
+  {
+    "en": "confession",
+    "he": "וידוי"
+  },
+  {
+    "en": "confidentiality",
+    "he": "סודיות"
+  },
+  {
+    "en": "confirmed",
+    "he": "אושר"
+  },
+  {
+    "en": "confused",
+    "he": "מבולבל"
+  },
+  {
+    "en": "congratulations",
+    "he": "מזל טוב"
+  },
+  {
+    "en": "conjur",
+    "he": "כישוף"
+  },
+  {
+    "en": "connected",
+    "he": "מחובר"
+  },
+  {
+    "en": "connection",
+    "he": "קשר"
+  },
+  {
+    "en": "consent",
+    "he": "הסכמה"
+  },
+  {
+    "en": "console",
+    "he": "קונסולה"
+  },
+  {
+    "en": "consumed",
+    "he": "נצרך"
+  },
+  {
+    "en": "contact",
+    "he": "קשר"
+  },
+  {
+    "en": "contacting",
+    "he": "יוצר קשר"
+  },
+  {
+    "en": "contaminated",
+    "he": "מזוהם"
+  },
+  {
+    "en": "content",
+    "he": "תוכן"
+  },
+  {
+    "en": "control",
+    "he": "שליטה"
+  },
+  {
+    "en": "conversation",
+    "he": "שיחה"
+  },
+  {
+    "en": "cool",
+    "he": "מגניב"
+  },
+  {
+    "en": "coolest",
+    "he": "הכי מגניב"
+  },
+  {
+    "en": "cooped",
+    "he": "כלוא"
+  },
+  {
+    "en": "cops",
+    "he": "שוטרים"
+  },
+  {
+    "en": "copy",
+    "he": "העתק"
+  },
+  {
+    "en": "cornball",
+    "he": "נדוש"
+  },
+  {
+    "en": "correct",
+    "he": "נכון"
+  },
+  {
+    "en": "cortisol",
+    "he": "קורטיזול"
+  },
+  {
+    "en": "costume",
+    "he": "תחפושת"
+  },
+  {
+    "en": "count",
+    "he": "לספור"
+  },
+  {
+    "en": "countdown",
+    "he": "ספירה לאחור"
+  },
+  {
+    "en": "counting",
+    "he": "סופר"
+  },
+  {
+    "en": "country",
+    "he": "מדינה"
+  },
+  {
+    "en": "county",
+    "he": "מחוז"
+  },
+  {
+    "en": "courage",
+    "he": "אומץ"
+  },
+  {
+    "en": "course",
+    "he": "מסלול"
+  },
+  {
+    "en": "cousin",
+    "he": "בן דוד"
+  },
+  {
+    "en": "cover",
+    "he": "לכסות"
+  },
+  {
+    "en": "cow",
+    "he": "פרה"
+  },
+  {
+    "en": "coward",
+    "he": "פחדן"
+  },
+  {
+    "en": "cracked",
+    "he": "פיצח"
+  },
+  {
+    "en": "cracking",
+    "he": "פיצוח"
+  },
+  {
+    "en": "crave",
+    "he": "להשתוקק"
+  },
+  {
+    "en": "crawl",
+    "he": "לזחול"
+  },
+  {
+    "en": "crawling",
+    "he": "זוחל"
+  },
+  {
+    "en": "crazy",
+    "he": "משוגע"
+  },
+  {
+    "en": "creeps",
+    "he": "מוזרים"
+  },
+  {
+    "en": "creepy",
+    "he": "מפחיד"
+  },
+  {
+    "en": "crew",
+    "he": "צוות"
+  },
+  {
+    "en": "criminal",
+    "he": "פושע"
+  },
+  {
+    "en": "crush",
+    "he": "מחץ"
+  },
+  {
+    "en": "crusher",
+    "he": "מרסק"
+  },
+  {
+    "en": "cue",
+    "he": "סימן"
+  },
+  {
+    "en": "curfew",
+    "he": "עוצר"
+  },
+  {
+    "en": "curious",
+    "he": "סקרן"
+  },
+  {
+    "en": "currently",
+    "he": "כרגע"
+  },
+  {
+    "en": "curses",
+    "he": "קללות"
+  },
+  {
+    "en": "curtain",
+    "he": "וילון"
+  },
+  {
+    "en": "cut",
+    "he": "לחתוך"
+  },
+  {
+    "en": "cute",
+    "he": "חמוד"
+  },
+  {
+    "en": "dad",
+    "he": "אבא"
+  },
+  {
+    "en": "dammit",
+    "he": "לעזאזל"
+  },
+  {
+    "en": "damn",
+    "he": "ארור"
+  },
+  {
+    "en": "damndest",
+    "he": "הכי משוגע"
+  },
+  {
+    "en": "dance",
+    "he": "לרקוד"
+  },
+  {
+    "en": "dancers",
+    "he": "רקדנים"
+  },
+  {
+    "en": "dancing",
+    "he": "ריקוד"
+  },
+  {
+    "en": "dang",
+    "he": "לעזאזל"
+  },
+  {
+    "en": "dangerous",
+    "he": "מסוכן"
+  },
+  {
+    "en": "dare",
+    "he": "להעז"
+  },
+  {
+    "en": "dark",
+    "he": "חשוך"
+  },
+  {
+    "en": "darkness",
+    "he": "חושך"
+  },
+  {
+    "en": "darling",
+    "he": "יקירי"
+  },
+  {
+    "en": "date",
+    "he": "דייט"
+  },
+  {
+    "en": "dating",
+    "he": "יוצא עם"
+  },
+  {
+    "en": "daughter",
+    "he": "בת"
+  },
+  {
+    "en": "day",
+    "he": "יום"
+  },
+  {
+    "en": "dead",
+    "he": "מת"
+  },
+  {
+    "en": "deal",
+    "he": "עסקה"
+  },
+  {
+    "en": "dear",
+    "he": "יקר"
+  },
+  {
+    "en": "death",
+    "he": "מוות"
+  },
+  {
+    "en": "december",
+    "he": "דצמבר"
+  },
+  {
+    "en": "decide",
+    "he": "להחליט"
+  },
+  {
+    "en": "deck",
+    "he": "סיפון"
+  },
+  {
+    "en": "deep",
+    "he": "עמוק"
+  },
+  {
+    "en": "defeat",
+    "he": "להביס / תבוסה"
+  },
+  {
+    "en": "defense",
+    "he": "הגנה"
+  },
+  {
+    "en": "definitely",
+    "he": "בהחלט"
+  },
+  {
+    "en": "dei",
+    "he": "דיי"
+  },
+  {
+    "en": "delicate",
+    "he": "עדין"
+  },
+  {
+    "en": "delights",
+    "he": "תענוגות"
+  },
+  {
+    "en": "department",
+    "he": "מחלקה"
+  },
+  {
+    "en": "derailed",
+    "he": "ירד מהפסים"
+  },
+  {
+    "en": "deserve",
+    "he": "להגיע"
+  },
+  {
+    "en": "destroy",
+    "he": "להרוס"
+  },
+  {
+    "en": "destroyed",
+    "he": "נהרס"
+  },
+  {
+    "en": "destructive",
+    "he": "הרסני"
+  },
+  {
+    "en": "detect",
+    "he": "לזהות"
+  },
+  {
+    "en": "detention",
+    "he": "ריתוק"
+  },
+  {
+    "en": "deteriorated",
+    "he": "הידרדר"
+  },
+  {
+    "en": "devastate",
+    "he": "להחריב"
+  },
+  {
+    "en": "develop",
+    "he": "לפתח"
+  },
+  {
+    "en": "developed",
+    "he": "מפותח"
+  },
+  {
+    "en": "device",
+    "he": "מכשיר"
+  },
+  {
+    "en": "devil",
+    "he": "שטן"
+  },
+  {
+    "en": "diagnostic",
+    "he": "אבחוני"
+  },
+  {
+    "en": "did",
+    "he": "עשה"
+  },
+  {
+    "en": "die",
+    "he": "למות"
+  },
+  {
+    "en": "died",
+    "he": "מת"
+  },
+  {
+    "en": "dies",
+    "he": "מת"
+  },
+  {
+    "en": "different",
+    "he": "שונה"
+  },
+  {
+    "en": "digging",
+    "he": "חופר"
+  },
+  {
+    "en": "dime",
+    "he": "מטבע"
+  },
+  {
+    "en": "dimension",
+    "he": "ממד"
+  },
+  {
+    "en": "ding",
+    "he": "דינג"
+  },
+  {
+    "en": "dingleberry",
+    "he": "טמבל"
+  },
+  {
+    "en": "dinner",
+    "he": "ארוחת ערב"
+  },
+  {
+    "en": "direct",
+    "he": "ישיר"
+  },
+  {
+    "en": "directional",
+    "he": "כיווני"
+  },
+  {
+    "en": "director",
+    "he": "במאי"
+  },
+  {
+    "en": "dirty",
+    "he": "מלוכלך"
+  },
+  {
+    "en": "disappeared",
+    "he": "נעלם"
+  },
+  {
+    "en": "disgusting",
+    "he": "מגעיל"
+  },
+  {
+    "en": "dismissed",
+    "he": "שוחרר"
+  },
+  {
+    "en": "disorders",
+    "he": "הפרעות"
+  },
+  {
+    "en": "dispose",
+    "he": "להיפטר"
+  },
+  {
+    "en": "distracted",
+    "he": "מוסח"
+  },
+  {
+    "en": "diversion",
+    "he": "הסחת דעת"
+  },
+  {
+    "en": "division",
+    "he": "אוגדה"
+  },
+  {
+    "en": "dj",
+    "he": "די-ג'יי"
+  },
+  {
+    "en": "doctor",
+    "he": "רופא"
+  },
+  {
+    "en": "does",
+    "he": "עושה"
+  },
+  {
+    "en": "dog",
+    "he": "כלב"
+  },
+  {
+    "en": "doing",
+    "he": "עושה"
+  },
+  {
+    "en": "dollar",
+    "he": "דולר"
+  },
+  {
+    "en": "dong",
+    "he": "דונג"
+  },
+  {
+    "en": "doom",
+    "he": "אבדון"
+  },
+  {
+    "en": "door",
+    "he": "דלת"
+  },
+  {
+    "en": "doorway",
+    "he": "פתח"
+  },
+  {
+    "en": "dr",
+    "he": "דוקטור"
+  },
+  {
+    "en": "dragged",
+    "he": "נגרר"
+  },
+  {
+    "en": "drama",
+    "he": "דרמה"
+  },
+  {
+    "en": "draw",
+    "he": "לצייר"
+  },
+  {
+    "en": "dream",
+    "he": "חלום"
+  },
+  {
+    "en": "dreamer",
+    "he": "חולם"
+  },
+  {
+    "en": "drew",
+    "he": "צייר"
+  },
+  {
+    "en": "drink",
+    "he": "לשתות"
+  },
+  {
+    "en": "drinking",
+    "he": "שותה"
+  },
+  {
+    "en": "drive",
+    "he": "לנסוע"
+  },
+  {
+    "en": "drop",
+    "he": "להפיל"
+  },
+  {
+    "en": "drug",
+    "he": "סם"
+  },
+  {
+    "en": "drums",
+    "he": "תופים"
+  },
+  {
+    "en": "drunk",
+    "he": "שיכור"
+  },
+  {
+    "en": "dry",
+    "he": "יבש"
+  },
+  {
+    "en": "duck",
+    "he": "ברווז"
+  },
+  {
+    "en": "dumb",
+    "he": "טיפש"
+  },
+  {
+    "en": "dumbest",
+    "he": "הכי טיפש"
+  },
+  {
+    "en": "dump",
+    "he": "להשליך"
+  },
+  {
+    "en": "dumpling",
+    "he": "כיסון"
+  },
+  {
+    "en": "dumpster",
+    "he": "פח אשפה"
+  },
+  {
+    "en": "dwelling",
+    "he": "מגורים"
+  },
+  {
+    "en": "dysfunctional",
+    "he": "לא מתפקד"
+  },
+  {
+    "en": "early",
+    "he": "מוקדם"
+  },
+  {
+    "en": "easier",
+    "he": "קל יותר"
+  },
+  {
+    "en": "easy",
+    "he": "קל"
+  },
+  {
+    "en": "eat",
+    "he": "לאכול"
+  },
+  {
+    "en": "eats",
+    "he": "אוכל"
+  },
+  {
+    "en": "edgy",
+    "he": "נועז"
+  },
+  {
+    "en": "eighth",
+    "he": "שמיני"
+  },
+  {
+    "en": "electric",
+    "he": "חשמלי"
+  },
+  {
+    "en": "electromagnetic",
+    "he": "אלקטרומגנטי"
+  },
+  {
+    "en": "elevator",
+    "he": "מעלית"
+  },
+  {
+    "en": "embark",
+    "he": "לצאת לדרך"
+  },
+  {
+    "en": "embarrass",
+    "he": "להביך"
+  },
+  {
+    "en": "enchant",
+    "he": "לכשף"
+  },
+  {
+    "en": "end",
+    "he": "סוף"
+  },
+  {
+    "en": "ending",
+    "he": "סיום"
+  },
+  {
+    "en": "energy",
+    "he": "אנרגיה"
+  },
+  {
+    "en": "enforcing",
+    "he": "אוכף"
+  },
+  {
+    "en": "engage",
+    "he": "להפעיל"
+  },
+  {
+    "en": "engine",
+    "he": "מנוע"
+  },
+  {
+    "en": "enjoy",
+    "he": "ליהנות"
+  },
+  {
+    "en": "entering",
+    "he": "נכנס"
+  },
+  {
+    "en": "entrance",
+    "he": "כניסה"
+  },
+  {
+    "en": "equipment",
+    "he": "ציוד"
+  },
+  {
+    "en": "escaped",
+    "he": "נמלט"
+  },
+  {
+    "en": "establishment",
+    "he": "מוסד"
+  },
+  {
+    "en": "estimated",
+    "he": "מוערך"
+  },
+  {
+    "en": "evening",
+    "he": "ערב"
+  },
+  {
+    "en": "everybody",
+    "he": "כולם"
+  },
+  {
+    "en": "everyone's",
+    "he": "של כולם"
+  },
+  {
+    "en": "everything's",
+    "he": "הכול"
+  },
+  {
+    "en": "evidence",
+    "he": "ראיה"
+  },
+  {
+    "en": "exactly",
+    "he": "בדיוק"
+  },
+  {
+    "en": "examined",
+    "he": "נבדק"
+  },
+  {
+    "en": "example",
+    "he": "דוגמה"
+  },
+  {
+    "en": "excites",
+    "he": "מרגש"
+  },
+  {
+    "en": "exciting",
+    "he": "מרגש"
+  },
+  {
+    "en": "exclusive",
+    "he": "בלעדי"
+  },
+  {
+    "en": "exclusively",
+    "he": "בלעדית"
+  },
+  {
+    "en": "excuse",
+    "he": "סליחה"
+  },
+  {
+    "en": "exercises",
+    "he": "תרגילים"
+  },
+  {
+    "en": "exorcism",
+    "he": "גירוש שדים"
+  },
+  {
+    "en": "expect",
+    "he": "לצפות"
+  },
+  {
+    "en": "experiment",
+    "he": "ניסוי"
+  },
+  {
+    "en": "explain",
+    "he": "להסביר"
+  },
+  {
+    "en": "explode",
+    "he": "להתפוצץ"
+  },
+  {
+    "en": "explore",
+    "he": "לחקור"
+  },
+  {
+    "en": "extra",
+    "he": "נוסף"
+  },
+  {
+    "en": "eye",
+    "he": "עין"
+  },
+  {
+    "en": "face",
+    "he": "פנים"
+  },
+  {
+    "en": "facility",
+    "he": "מתקן"
+  },
+  {
+    "en": "fact",
+    "he": "עובדה"
+  },
+  {
+    "en": "fair",
+    "he": "הוגן"
+  },
+  {
+    "en": "fairytale",
+    "he": "אגדה"
+  },
+  {
+    "en": "fake",
+    "he": "מזויף"
+  },
+  {
+    "en": "faking",
+    "he": "מזייף"
+  },
+  {
+    "en": "fall",
+    "he": "ליפול"
+  },
+  {
+    "en": "fallen",
+    "he": "נפל"
+  },
+  {
+    "en": "falls",
+    "he": "נופל"
+  },
+  {
+    "en": "false",
+    "he": "שקרי"
+  },
+  {
+    "en": "family",
+    "he": "משפחה"
+  },
+  {
+    "en": "famous",
+    "he": "מפורסם"
+  },
+  {
+    "en": "far",
+    "he": "רחוק"
+  },
+  {
+    "en": "farther",
+    "he": "רחוק יותר"
+  },
+  {
+    "en": "fast",
+    "he": "מהר"
+  },
+  {
+    "en": "fatal",
+    "he": "קטלני"
+  },
+  {
+    "en": "father",
+    "he": "אב"
+  },
+  {
+    "en": "favor",
+    "he": "טובה"
+  },
+  {
+    "en": "fear",
+    "he": "פחד"
+  },
+  {
+    "en": "fears",
+    "he": "פחדים"
+  },
+  {
+    "en": "feathers",
+    "he": "נוצות"
+  },
+  {
+    "en": "feel",
+    "he": "להרגיש"
+  },
+  {
+    "en": "feeling",
+    "he": "תחושה"
+  },
+  {
+    "en": "feels",
+    "he": "מרגיש"
+  },
+  {
+    "en": "fell",
+    "he": "נפל"
+  },
+  {
+    "en": "felt",
+    "he": "הרגיש"
+  },
+  {
+    "en": "fight",
+    "he": "להילחם"
+  },
+  {
+    "en": "fighting",
+    "he": "לחימה"
+  },
+  {
+    "en": "fights",
+    "he": "נלחם"
+  },
+  {
+    "en": "figure",
+    "he": "דמות"
+  },
+  {
+    "en": "final",
+    "he": "סופי"
+  },
+  {
+    "en": "finally",
+    "he": "לבסוף"
+  },
+  {
+    "en": "finding",
+    "he": "מציאה"
+  },
+  {
+    "en": "fine",
+    "he": "בסדר"
+  },
+  {
+    "en": "finish",
+    "he": "לסיים"
+  },
+  {
+    "en": "firecrackers",
+    "he": "חזיזים"
+  },
+  {
+    "en": "fix",
+    "he": "לתקן"
+  },
+  {
+    "en": "fixed",
+    "he": "תוקן"
+  },
+  {
+    "en": "flat",
+    "he": "שטוח"
+  },
+  {
+    "en": "flattered",
+    "he": "מחמיא"
+  },
+  {
+    "en": "flesh",
+    "he": "בשר"
+  },
+  {
+    "en": "flirt",
+    "he": "לפלרטט"
+  },
+  {
+    "en": "floor",
+    "he": "רצפה"
+  },
+  {
+    "en": "fly",
+    "he": "לעוף"
+  },
+  {
+    "en": "flyer",
+    "he": "פלייר"
+  },
+  {
+    "en": "flying",
+    "he": "עף"
+  },
+  {
+    "en": "focus",
+    "he": "מיקוד"
+  },
+  {
+    "en": "focused",
+    "he": "ממוקד"
+  },
+  {
+    "en": "folk",
+    "he": "אנשים"
+  },
+  {
+    "en": "follow",
+    "he": "לעקוב"
+  },
+  {
+    "en": "followed",
+    "he": "עקב"
+  },
+  {
+    "en": "following",
+    "he": "עוקב"
+  },
+  {
+    "en": "follows",
+    "he": "עוקב"
+  },
+  {
+    "en": "force",
+    "he": "כוח"
+  },
+  {
+    "en": "forget",
+    "he": "לשכוח"
+  },
+  {
+    "en": "forgot",
+    "he": "שכח"
+  },
+  {
+    "en": "form",
+    "he": "צורה"
+  },
+  {
+    "en": "forward",
+    "he": "קדימה"
+  },
+  {
+    "en": "fought",
+    "he": "נלחם"
+  },
+  {
+    "en": "foul",
+    "he": "מגעיל"
+  },
+  {
+    "en": "founder",
+    "he": "מייסד"
+  },
+  {
+    "en": "foundling",
+    "he": "אסופית"
+  },
+  {
+    "en": "freak",
+    "he": "פריק"
+  },
+  {
+    "en": "frequency",
+    "he": "תדירות"
+  },
+  {
+    "en": "fresh",
+    "he": "טרי"
+  },
+  {
+    "en": "freshman",
+    "he": "תלמיד חדש"
+  },
+  {
+    "en": "fried",
+    "he": "שרוף"
+  },
+  {
+    "en": "friend",
+    "he": "חבר"
+  },
+  {
+    "en": "frightened",
+    "he": "מפוחד"
+  },
+  {
+    "en": "frozen",
+    "he": "קפוא"
+  },
+  {
+    "en": "ft",
+    "he": "פורט"
+  },
+  {
+    "en": "fuck",
+    "he": "פאק"
+  },
+  {
+    "en": "fuel",
+    "he": "דלק"
+  },
+  {
+    "en": "fun",
+    "he": "כיף"
+  },
+  {
+    "en": "funeral",
+    "he": "לוויה"
+  },
+  {
+    "en": "funny",
+    "he": "מצחיק"
+  },
+  {
+    "en": "fuses",
+    "he": "נתיכים"
+  },
+  {
+    "en": "gadget",
+    "he": "גאדג'ט"
+  },
+  {
+    "en": "gal",
+    "he": "בחורה"
+  },
+  {
+    "en": "game",
+    "he": "משחק"
+  },
+  {
+    "en": "gate",
+    "he": "שער"
+  },
+  {
+    "en": "gave",
+    "he": "נתן"
+  },
+  {
+    "en": "gay",
+    "he": "גיי"
+  },
+  {
+    "en": "geek",
+    "he": "חנון"
+  },
+  {
+    "en": "general",
+    "he": "כללי"
+  },
+  {
+    "en": "generators",
+    "he": "גנרטורים"
+  },
+  {
+    "en": "generous",
+    "he": "נדיב"
+  },
+  {
+    "en": "genius",
+    "he": "גאון"
+  },
+  {
+    "en": "gentlemen",
+    "he": "רבותיי"
+  },
+  {
+    "en": "german",
+    "he": "גרמני"
+  },
+  {
+    "en": "gets",
+    "he": "מקבל"
+  },
+  {
+    "en": "getting",
+    "he": "מקבל"
+  },
+  {
+    "en": "gimme",
+    "he": "תן לי"
+  },
+  {
+    "en": "girl",
+    "he": "ילדה"
+  },
+  {
+    "en": "girlfriend",
+    "he": "חברה"
+  },
+  {
+    "en": "gives",
+    "he": "נותן"
+  },
+  {
+    "en": "god",
+    "he": "אלוהים"
+  },
+  {
+    "en": "goddammit",
+    "he": "לעזאזל"
+  },
+  {
+    "en": "goddamn",
+    "he": "ארור"
+  },
+  {
+    "en": "goddamnit",
+    "he": "לעזאזל"
+  },
+  {
+    "en": "goes",
+    "he": "הולך"
+  },
+  {
+    "en": "going",
+    "he": "הולך"
+  },
+  {
+    "en": "gone",
+    "he": "נעלם"
+  },
+  {
+    "en": "good",
+    "he": "טוב"
+  },
+  {
+    "en": "goodbye",
+    "he": "להתראות"
+  },
+  {
+    "en": "goodnight",
+    "he": "לילה טוב"
+  },
+  {
+    "en": "gosh",
+    "he": "אלוהים"
+  },
+  {
+    "en": "gossip",
+    "he": "רכילות"
+  },
+  {
+    "en": "got",
+    "he": "קיבל"
+  },
+  {
+    "en": "gotten",
+    "he": "קיבל"
+  },
+  {
+    "en": "government",
+    "he": "ממשלה"
+  },
+  {
+    "en": "grab",
+    "he": "לתפוס"
+  },
+  {
+    "en": "grace",
+    "he": "חן"
+  },
+  {
+    "en": "grade",
+    "he": "כיתה"
+  },
+  {
+    "en": "grand",
+    "he": "גדול"
+  },
+  {
+    "en": "grandfather",
+    "he": "סבא"
+  },
+  {
+    "en": "grant",
+    "he": "מענק"
+  },
+  {
+    "en": "graph",
+    "he": "גרף"
+  },
+  {
+    "en": "great",
+    "he": "נהדר"
+  },
+  {
+    "en": "greater",
+    "he": "גדול יותר"
+  },
+  {
+    "en": "green",
+    "he": "ירוק"
+  },
+  {
+    "en": "ground",
+    "he": "קרקע"
+  },
+  {
+    "en": "grounded",
+    "he": "מרותק"
+  },
+  {
+    "en": "growing",
+    "he": "גדל"
+  },
+  {
+    "en": "growth",
+    "he": "צמיחה"
+  },
+  {
+    "en": "guess",
+    "he": "לנחש"
+  },
+  {
+    "en": "guest",
+    "he": "אורח"
+  },
+  {
+    "en": "guitar",
+    "he": "גיטרה"
+  },
+  {
+    "en": "gun",
+    "he": "אקדח"
+  },
+  {
+    "en": "gurney",
+    "he": "אלונקה"
+  },
+  {
+    "en": "guts",
+    "he": "אומץ"
+  },
+  {
+    "en": "guy",
+    "he": "בחור"
+  },
+  {
+    "en": "hair",
+    "he": "שיער"
+  },
+  {
+    "en": "hand",
+    "he": "יד"
+  },
+  {
+    "en": "handcuffs",
+    "he": "אזיקים"
+  },
+  {
+    "en": "handedly",
+    "he": "בכוחות עצמו"
+  },
+  {
+    "en": "handheld",
+    "he": "ידני"
+  },
+  {
+    "en": "handy",
+    "he": "שימושי"
+  },
+  {
+    "en": "hang",
+    "he": "לתלות"
+  },
+  {
+    "en": "hanging",
+    "he": "תלוי"
+  },
+  {
+    "en": "happen",
+    "he": "לקרות"
+  },
+  {
+    "en": "happened",
+    "he": "קרה"
+  },
+  {
+    "en": "happening",
+    "he": "קורה"
+  },
+  {
+    "en": "happens",
+    "he": "קורה"
+  },
+  {
+    "en": "happy",
+    "he": "שמח"
+  },
+  {
+    "en": "hard",
+    "he": "קשה"
+  },
+  {
+    "en": "harder",
+    "he": "קשה יותר"
+  },
+  {
+    "en": "hate",
+    "he": "לשנוא"
+  },
+  {
+    "en": "hated",
+    "he": "שנא"
+  },
+  {
+    "en": "hates",
+    "he": "שונא"
+  },
+  {
+    "en": "haul",
+    "he": "מסע"
+  },
+  {
+    "en": "haunted",
+    "he": "רדוף"
+  },
+  {
+    "en": "having",
+    "he": "יש"
+  },
+  {
+    "en": "head",
+    "he": "ראש"
+  },
+  {
+    "en": "hear",
+    "he": "לשמוע"
+  },
+  {
+    "en": "heard",
+    "he": "שמע"
+  },
+  {
+    "en": "hearing",
+    "he": "שמיעה"
+  },
+  {
+    "en": "heart",
+    "he": "לב"
+  },
+  {
+    "en": "heavens",
+    "he": "שמיים"
+  },
+  {
+    "en": "hell",
+    "he": "גיהינום"
+  },
+  {
+    "en": "hello",
+    "he": "שלום"
+  },
+  {
+    "en": "help",
+    "he": "לעזור"
+  },
+  {
+    "en": "helping",
+    "he": "עוזר"
+  },
+  {
+    "en": "helps",
+    "he": "עוזר"
+  },
+  {
+    "en": "here's",
+    "he": "הנה"
+  },
+  {
+    "en": "hero",
+    "he": "גיבור"
+  },
+  {
+    "en": "hertz",
+    "he": "הרץ"
+  },
+  {
+    "en": "hey",
+    "he": "היי"
+  },
+  {
+    "en": "hi",
+    "he": "היי"
+  },
+  {
+    "en": "hick",
+    "he": "כפרי"
+  },
+  {
+    "en": "hiding",
+    "he": "מסתתר"
+  },
+  {
+    "en": "high",
+    "he": "גבוה"
+  },
+  {
+    "en": "hillbilly",
+    "he": "הילבילי"
+  },
+  {
+    "en": "hit",
+    "he": "להכות"
+  },
+  {
+    "en": "ho",
+    "he": "זונה"
+  },
+  {
+    "en": "hold",
+    "he": "להחזיק"
+  },
+  {
+    "en": "holding",
+    "he": "מחזיק"
+  },
+  {
+    "en": "hole",
+    "he": "חור"
+  },
+  {
+    "en": "holed",
+    "he": "מחורר"
+  },
+  {
+    "en": "holy",
+    "he": "קדוש"
+  },
+  {
+    "en": "home",
+    "he": "בית"
+  },
+  {
+    "en": "homing",
+    "he": "ביות"
+  },
+  {
+    "en": "honest",
+    "he": "ישר"
+  },
+  {
+    "en": "honey",
+    "he": "מותק"
+  },
+  {
+    "en": "hood",
+    "he": "ברדס"
+  },
+  {
+    "en": "hooded",
+    "he": "עם ברדס"
+  },
+  {
+    "en": "hop",
+    "he": "לקפוץ"
+  },
+  {
+    "en": "hope",
+    "he": "תקווה"
+  },
+  {
+    "en": "hopeless",
+    "he": "חסר תקווה"
+  },
+  {
+    "en": "hopelessly",
+    "he": "בלי תקווה"
+  },
+  {
+    "en": "horrible",
+    "he": "נורא"
+  },
+  {
+    "en": "horribly",
+    "he": "נורא"
+  },
+  {
+    "en": "hospital",
+    "he": "בית חולים"
+  },
+  {
+    "en": "hosting",
+    "he": "מארח"
+  },
+  {
+    "en": "hour",
+    "he": "שעה"
+  },
+  {
+    "en": "house",
+    "he": "בית"
+  },
+  {
+    "en": "how'd",
+    "he": "איך"
+  },
+  {
+    "en": "human",
+    "he": "אנושי"
+  },
+  {
+    "en": "humping",
+    "he": "מתחכך"
+  },
+  {
+    "en": "hungry",
+    "he": "רעב"
+  },
+  {
+    "en": "hunting",
+    "he": "ציד"
+  },
+  {
+    "en": "hurt",
+    "he": "לפגוע"
+  },
+  {
+    "en": "hurting",
+    "he": "פוגע"
+  },
+  {
+    "en": "hush",
+    "he": "שקט"
+  },
+  {
+    "en": "hypothalamus",
+    "he": "היפותלמוס"
+  },
+  {
+    "en": "hysterical",
+    "he": "היסטרי"
+  },
+  {
+    "en": "idea",
+    "he": "רעיון"
+  },
+  {
+    "en": "identity",
+    "he": "זהות"
+  },
+  {
+    "en": "idiot",
+    "he": "אידיוט"
+  },
+  {
+    "en": "ii",
+    "he": "שתיים"
+  },
+  {
+    "en": "iing",
+    "he": "ינג"
+  },
+  {
+    "en": "imagine",
+    "he": "לדמיין"
+  },
+  {
+    "en": "imagined",
+    "he": "דמיין"
+  },
+  {
+    "en": "importantly",
+    "he": "חשוב"
+  },
+  {
+    "en": "impossible",
+    "he": "בלתי אפשרי"
+  },
+  {
+    "en": "impress",
+    "he": "להרשים"
+  },
+  {
+    "en": "impressed",
+    "he": "מרשים"
+  },
+  {
+    "en": "inactive",
+    "he": "לא פעיל"
+  },
+  {
+    "en": "incest",
+    "he": "גילוי עריות"
+  },
+  {
+    "en": "incident",
+    "he": "תקרית"
+  },
+  {
+    "en": "information",
+    "he": "מידע"
+  },
+  {
+    "en": "initiating",
+    "he": "מתחיל"
+  },
+  {
+    "en": "initiation",
+    "he": "התחלה"
+  },
+  {
+    "en": "inmate",
+    "he": "אסיר"
+  },
+  {
+    "en": "innocent",
+    "he": "חף מפשע"
+  },
+  {
+    "en": "insane",
+    "he": "מטורף"
+  },
+  {
+    "en": "inside",
+    "he": "בפנים"
+  },
+  {
+    "en": "inspired",
+    "he": "בהשראה"
+  },
+  {
+    "en": "instance",
+    "he": "מקרה"
+  },
+  {
+    "en": "interesting",
+    "he": "מעניין"
+  },
+  {
+    "en": "interference",
+    "he": "הפרעה"
+  },
+  {
+    "en": "interrogate",
+    "he": "לחקור"
+  },
+  {
+    "en": "interrogated",
+    "he": "נחקר"
+  },
+  {
+    "en": "interrupt",
+    "he": "להפריע"
+  },
+  {
+    "en": "interview",
+    "he": "ראיון"
+  },
+  {
+    "en": "introduce",
+    "he": "להציג"
+  },
+  {
+    "en": "introducing",
+    "he": "מציג"
+  },
+  {
+    "en": "invariably",
+    "he": "באופן קבוע"
+  },
+  {
+    "en": "invent",
+    "he": "להמציא"
+  },
+  {
+    "en": "invention",
+    "he": "המצאה"
+  },
+  {
+    "en": "investigate",
+    "he": "לחקור"
+  },
+  {
+    "en": "investigating",
+    "he": "חוקר"
+  },
+  {
+    "en": "investigation",
+    "he": "חקירה"
+  },
+  {
+    "en": "invisible",
+    "he": "בלתי נראה"
+  },
+  {
+    "en": "issue",
+    "he": "בעיה"
+  },
+  {
+    "en": "item",
+    "he": "פריט"
+  },
+  {
+    "en": "jackshit",
+    "he": "כלום"
+  },
+  {
+    "en": "jazz",
+    "he": "ג'אז"
+  },
+  {
+    "en": "jealous",
+    "he": "קנאי"
+  },
+  {
+    "en": "jelly",
+    "he": "ג'לי"
+  },
+  {
+    "en": "jerk",
+    "he": "אידיוט"
+  },
+  {
+    "en": "job",
+    "he": "עבודה"
+  },
+  {
+    "en": "jocks",
+    "he": "ספורטאים"
+  },
+  {
+    "en": "join",
+    "he": "להצטרף"
+  },
+  {
+    "en": "joined",
+    "he": "הצטרף"
+  },
+  {
+    "en": "joint",
+    "he": "מפרק"
+  },
+  {
+    "en": "joke",
+    "he": "בדיחה"
+  },
+  {
+    "en": "joking",
+    "he": "צוחק"
+  },
+  {
+    "en": "jr",
+    "he": "ג׳וניור"
+  },
+  {
+    "en": "judge",
+    "he": "לשפוט"
+  },
+  {
+    "en": "junior",
+    "he": "ג'וניור"
+  },
+  {
+    "en": "just",
+    "he": "רק"
+  },
+  {
+    "en": "justice",
+    "he": "צדק"
+  },
+  {
+    "en": "keeping",
+    "he": "שומר"
+  },
+  {
+    "en": "kept",
+    "he": "שמר"
+  },
+  {
+    "en": "key",
+    "he": "מפתח"
+  },
+  {
+    "en": "kid",
+    "he": "ילד"
+  },
+  {
+    "en": "kidding",
+    "he": "צוחק"
+  },
+  {
+    "en": "kill",
+    "he": "להרוג"
+  },
+  {
+    "en": "killed",
+    "he": "נהרג"
+  },
+  {
+    "en": "killer",
+    "he": "רוצח"
+  },
+  {
+    "en": "killing",
+    "he": "הריגה"
+  },
+  {
+    "en": "kills",
+    "he": "הורג"
+  },
+  {
+    "en": "kind",
+    "he": "סוג"
+  },
+  {
+    "en": "kinda",
+    "he": "בערך"
+  },
+  {
+    "en": "king",
+    "he": "מלך"
+  },
+  {
+    "en": "kiss",
+    "he": "נשיקה"
+  },
+  {
+    "en": "knew",
+    "he": "ידע"
+  },
+  {
+    "en": "knife",
+    "he": "סכין"
+  },
+  {
+    "en": "know",
+    "he": "לדעת"
+  },
+  {
+    "en": "known",
+    "he": "ידוע"
+  },
+  {
+    "en": "knows",
+    "he": "יודע"
+  },
+  {
+    "en": "kodak",
+    "he": "קודאק"
+  },
+  {
+    "en": "laboratory",
+    "he": "מעבדה"
+  },
+  {
+    "en": "ladies",
+    "he": "גבירותיי"
+  },
+  {
+    "en": "land",
+    "he": "אדמה"
+  },
+  {
+    "en": "late",
+    "he": "מאוחר"
+  },
+  {
+    "en": "lately",
+    "he": "לאחרונה"
+  },
+  {
+    "en": "later",
+    "he": "מאוחר יותר"
+  },
+  {
+    "en": "laugh",
+    "he": "לצחוק"
+  },
+  {
+    "en": "lead",
+    "he": "להוביל"
+  },
+  {
+    "en": "learn",
+    "he": "ללמוד"
+  },
+  {
+    "en": "learned",
+    "he": "למד"
+  },
+  {
+    "en": "learning",
+    "he": "למידה"
+  },
+  {
+    "en": "leave",
+    "he": "לעזוב"
+  },
+  {
+    "en": "leaving",
+    "he": "עוזב"
+  },
+  {
+    "en": "left",
+    "he": "שמאל"
+  },
+  {
+    "en": "leg",
+    "he": "רגל"
+  },
+  {
+    "en": "lesbians",
+    "he": "לסביות"
+  },
+  {
+    "en": "let",
+    "he": "לתת"
+  },
+  {
+    "en": "lets",
+    "he": "נותן"
+  },
+  {
+    "en": "levels",
+    "he": "רמות"
+  },
+  {
+    "en": "library",
+    "he": "ספרייה"
+  },
+  {
+    "en": "lie",
+    "he": "לשקר"
+  },
+  {
+    "en": "lied",
+    "he": "שיקר"
+  },
+  {
+    "en": "lieutenant",
+    "he": "סגן"
+  },
+  {
+    "en": "life",
+    "he": "חיים"
+  },
+  {
+    "en": "light",
+    "he": "אור"
+  },
+  {
+    "en": "lights",
+    "he": "אורות"
+  },
+  {
+    "en": "like",
+    "he": "לאהוב"
+  },
+  {
+    "en": "liked",
+    "he": "אהב"
+  },
+  {
+    "en": "limbic",
+    "he": "לימבי"
+  },
+  {
+    "en": "limitation",
+    "he": "מגבלה"
+  },
+  {
+    "en": "limits",
+    "he": "גבולות"
+  },
+  {
+    "en": "line",
+    "he": "שורה"
+  },
+  {
+    "en": "lipstick",
+    "he": "שפתון"
+  },
+  {
+    "en": "liquor",
+    "he": "אלכוהול"
+  },
+  {
+    "en": "listen",
+    "he": "להקשיב"
+  },
+  {
+    "en": "listeners",
+    "he": "מאזינים"
+  },
+  {
+    "en": "listening",
+    "he": "מקשיב"
+  },
+  {
+    "en": "listens",
+    "he": "מקשיב"
+  },
+  {
+    "en": "literally",
+    "he": "ממש"
+  },
+  {
+    "en": "little",
+    "he": "קטן"
+  },
+  {
+    "en": "live",
+    "he": "לחיות"
+  },
+  {
+    "en": "lives",
+    "he": "חי"
+  },
+  {
+    "en": "living",
+    "he": "חיים"
+  },
+  {
+    "en": "load",
+    "he": "להעמיס"
+  },
+  {
+    "en": "loaded",
+    "he": "טעון"
+  },
+  {
+    "en": "loan",
+    "he": "הלוואה"
+  },
+  {
+    "en": "lobotomy",
+    "he": "לובוטומיה"
+  },
+  {
+    "en": "location",
+    "he": "מיקום"
+  },
+  {
+    "en": "lock",
+    "he": "לנעול"
+  },
+  {
+    "en": "locked",
+    "he": "נעול"
+  },
+  {
+    "en": "long",
+    "he": "ארוך"
+  },
+  {
+    "en": "longer",
+    "he": "ארוך יותר"
+  },
+  {
+    "en": "look",
+    "he": "להסתכל"
+  },
+  {
+    "en": "looking",
+    "he": "מחפש"
+  },
+  {
+    "en": "looks",
+    "he": "נראה"
+  },
+  {
+    "en": "loop",
+    "he": "לולאה"
+  },
+  {
+    "en": "lose",
+    "he": "להפסיד"
+  },
+  {
+    "en": "losers",
+    "he": "לוזרים"
+  },
+  {
+    "en": "lost",
+    "he": "אבוד"
+  },
+  {
+    "en": "lot",
+    "he": "הרבה"
+  },
+  {
+    "en": "loud",
+    "he": "רועש"
+  },
+  {
+    "en": "love",
+    "he": "אהבה"
+  },
+  {
+    "en": "loved",
+    "he": "אהב"
+  },
+  {
+    "en": "lover",
+    "he": "מאהב"
+  },
+  {
+    "en": "loves",
+    "he": "אוהב"
+  },
+  {
+    "en": "luck",
+    "he": "מזל"
+  },
+  {
+    "en": "lucky",
+    "he": "בר מזל"
+  },
+  {
+    "en": "lunatic",
+    "he": "מטורף"
+  },
+  {
+    "en": "lunch",
+    "he": "ארוחת צהריים"
+  },
+  {
+    "en": "lying",
+    "he": "משקר"
+  },
+  {
+    "en": "lynx",
+    "he": "לינקס"
+  },
+  {
+    "en": "ma'am",
+    "he": "גברתי"
+  },
+  {
+    "en": "machine",
+    "he": "מכונה"
+  },
+  {
+    "en": "machinery",
+    "he": "מכונות"
+  },
+  {
+    "en": "maestro",
+    "he": "מאסטרו"
+  },
+  {
+    "en": "magic",
+    "he": "קסם"
+  },
+  {
+    "en": "magnets",
+    "he": "מגנטים"
+  },
+  {
+    "en": "major",
+    "he": "מייג'ור"
+  },
+  {
+    "en": "make",
+    "he": "לעשות"
+  },
+  {
+    "en": "makes",
+    "he": "עושה"
+  },
+  {
+    "en": "making",
+    "he": "עושה"
+  },
+  {
+    "en": "maladjusted",
+    "he": "בלתי מסתגל"
+  },
+  {
+    "en": "malls",
+    "he": "קניונים"
+  },
+  {
+    "en": "man",
+    "he": "גבר"
+  },
+  {
+    "en": "manifesto",
+    "he": "מניפסט"
+  },
+  {
+    "en": "mannequin",
+    "he": "בובת ראווה"
+  },
+  {
+    "en": "manual",
+    "he": "ידני"
+  },
+  {
+    "en": "manually",
+    "he": "באופן ידני"
+  },
+  {
+    "en": "map",
+    "he": "מפה"
+  },
+  {
+    "en": "marquee",
+    "he": "שלט מואר"
+  },
+  {
+    "en": "married",
+    "he": "נשוי"
+  },
+  {
+    "en": "mask",
+    "he": "מסכה"
+  },
+  {
+    "en": "massive",
+    "he": "עצום"
+  },
+  {
+    "en": "match",
+    "he": "התאמה"
+  },
+  {
+    "en": "material",
+    "he": "חומר"
+  },
+  {
+    "en": "matter",
+    "he": "עניין"
+  },
+  {
+    "en": "matters",
+    "he": "חשוב"
+  },
+  {
+    "en": "maybe",
+    "he": "אולי"
+  },
+  {
+    "en": "mean",
+    "he": "להתכוון"
+  },
+  {
+    "en": "means",
+    "he": "אומר"
+  },
+  {
+    "en": "meat",
+    "he": "בשר"
+  },
+  {
+    "en": "meatball",
+    "he": "כדור בשר"
+  },
+  {
+    "en": "mechanism",
+    "he": "מנגנון"
+  },
+  {
+    "en": "medal",
+    "he": "מדליה"
+  },
+  {
+    "en": "medical",
+    "he": "רפואי"
+  },
+  {
+    "en": "medication",
+    "he": "תרופה"
+  },
+  {
+    "en": "meet",
+    "he": "לפגוש"
+  },
+  {
+    "en": "meeting",
+    "he": "פגישה"
+  },
+  {
+    "en": "melt",
+    "he": "להימס"
+  },
+  {
+    "en": "member",
+    "he": "חבר"
+  },
+  {
+    "en": "memory",
+    "he": "זיכרון"
+  },
+  {
+    "en": "men",
+    "he": "גברים"
+  },
+  {
+    "en": "mental",
+    "he": "נפשי"
+  },
+  {
+    "en": "merry",
+    "he": "שמח"
+  },
+  {
+    "en": "message",
+    "he": "הודעה"
+  },
+  {
+    "en": "met",
+    "he": "פגש"
+  },
+  {
+    "en": "method",
+    "he": "שיטה"
+  },
+  {
+    "en": "middle",
+    "he": "אמצע"
+  },
+  {
+    "en": "midnight",
+    "he": "חצות"
+  },
+  {
+    "en": "military",
+    "he": "צבאי"
+  },
+  {
+    "en": "milligrams",
+    "he": "מיליגרמים"
+  },
+  {
+    "en": "million",
+    "he": "מיליון"
+  },
+  {
+    "en": "mind",
+    "he": "מוח"
+  },
+  {
+    "en": "minus",
+    "he": "מינוס"
+  },
+  {
+    "en": "minutes",
+    "he": "דקות"
+  },
+  {
+    "en": "miracle",
+    "he": "נס"
+  },
+  {
+    "en": "misery",
+    "he": "אומללות"
+  },
+  {
+    "en": "misfire",
+    "he": "כשל ירי"
+  },
+  {
+    "en": "miss",
+    "he": "להחמיץ"
+  },
+  {
+    "en": "missing",
+    "he": "חסר"
+  },
+  {
+    "en": "mistake",
+    "he": "טעות"
+  },
+  {
+    "en": "mix",
+    "he": "לערבב"
+  },
+  {
+    "en": "mm",
+    "he": "ממ"
+  },
+  {
+    "en": "mobile",
+    "he": "נייד"
+  },
+  {
+    "en": "mom",
+    "he": "אמא"
+  },
+  {
+    "en": "moment",
+    "he": "רגע"
+  },
+  {
+    "en": "momentarily",
+    "he": "לרגע"
+  },
+  {
+    "en": "mommy",
+    "he": "אמא"
+  },
+  {
+    "en": "money",
+    "he": "כסף"
+  },
+  {
+    "en": "monster",
+    "he": "מפלצת"
+  },
+  {
+    "en": "month",
+    "he": "חודש"
+  },
+  {
+    "en": "moon",
+    "he": "ירח"
+  },
+  {
+    "en": "mooners",
+    "he": "חולמים"
+  },
+  {
+    "en": "morning",
+    "he": "בוקר"
+  },
+  {
+    "en": "moron",
+    "he": "מטומטם"
+  },
+  {
+    "en": "mother",
+    "he": "אמא"
+  },
+  {
+    "en": "mountain",
+    "he": "הר"
+  },
+  {
+    "en": "mouse",
+    "he": "עכבר"
+  },
+  {
+    "en": "mouth",
+    "he": "פה"
+  },
+  {
+    "en": "moved",
+    "he": "זז"
+  },
+  {
+    "en": "movie",
+    "he": "סרט"
+  },
+  {
+    "en": "mr",
+    "he": "מר"
+  },
+  {
+    "en": "mrs",
+    "he": "גברת"
+  },
+  {
+    "en": "ms",
+    "he": "גב׳"
+  },
+  {
+    "en": "murdered",
+    "he": "נרצח"
+  },
+  {
+    "en": "murderer",
+    "he": "רוצח"
+  },
+  {
+    "en": "music",
+    "he": "מוזיקה"
+  },
+  {
+    "en": "musical",
+    "he": "מחזמר"
+  },
+  {
+    "en": "mutilated",
+    "he": "מושחת"
+  },
+  {
+    "en": "mystery",
+    "he": "תעלומה"
+  },
+  {
+    "en": "naive",
+    "he": "נאיבי"
+  },
+  {
+    "en": "narcissist",
+    "he": "נרקיסיסט"
+  },
+  {
+    "en": "naval",
+    "he": "ימי"
+  },
+  {
+    "en": "nearby",
+    "he": "קרוב"
+  },
+  {
+    "en": "nearly",
+    "he": "כמעט"
+  },
+  {
+    "en": "nearness",
+    "he": "קרבה"
+  },
+  {
+    "en": "neat",
+    "he": "מסודר"
+  },
+  {
+    "en": "need",
+    "he": "צריך"
+  },
+  {
+    "en": "needed",
+    "he": "נחוץ"
+  },
+  {
+    "en": "needs",
+    "he": "צריך"
+  },
+  {
+    "en": "neighbor",
+    "he": "שכן"
+  },
+  {
+    "en": "nerve",
+    "he": "עצב"
+  },
+  {
+    "en": "nervous",
+    "he": "עצבני"
+  },
+  {
+    "en": "nevermind",
+    "he": "לא משנה"
+  },
+  {
+    "en": "new",
+    "he": "חדש"
+  },
+  {
+    "en": "news",
+    "he": "חדשות"
+  },
+  {
+    "en": "newsflash",
+    "he": "מבזק חדשות"
+  },
+  {
+    "en": "newspaper",
+    "he": "עיתון"
+  },
+  {
+    "en": "nice",
+    "he": "נחמד"
+  },
+  {
+    "en": "night",
+    "he": "לילה"
+  },
+  {
+    "en": "nightmare",
+    "he": "סיוט"
+  },
+  {
+    "en": "ninth",
+    "he": "תשיעי"
+  },
+  {
+    "en": "nipples",
+    "he": "פטמות"
+  },
+  {
+    "en": "noise",
+    "he": "רעש"
+  },
+  {
+    "en": "nope",
+    "he": "לא"
+  },
+  {
+    "en": "normal",
+    "he": "נורמלי"
+  },
+  {
+    "en": "nothing's",
+    "he": "שום דבר"
+  },
+  {
+    "en": "noticed",
+    "he": "שם לב"
+  },
+  {
+    "en": "number",
+    "he": "מספר"
+  },
+  {
+    "en": "nurse",
+    "he": "אחות"
+  },
+  {
+    "en": "nut",
+    "he": "אגוז"
+  },
+  {
+    "en": "oa",
+    "he": "או-איי"
+  },
+  {
+    "en": "obsessive",
+    "he": "אובססיבי"
+  },
+  {
+    "en": "october",
+    "he": "אוקטובר"
+  },
+  {
+    "en": "offering",
+    "he": "הצעה"
+  },
+  {
+    "en": "office",
+    "he": "משרד"
+  },
+  {
+    "en": "officer",
+    "he": "קצין"
+  },
+  {
+    "en": "official",
+    "he": "רשמי"
+  },
+  {
+    "en": "oh",
+    "he": "אה"
+  },
+  {
+    "en": "okay",
+    "he": "בסדר"
+  },
+  {
+    "en": "old",
+    "he": "ישן"
+  },
+  {
+    "en": "one's",
+    "he": "של אחד"
+  },
+  {
+    "en": "ones",
+    "he": "כאלה"
+  },
+  {
+    "en": "open",
+    "he": "לפתוח"
+  },
+  {
+    "en": "opening",
+    "he": "פתיחה"
+  },
+  {
+    "en": "oppressive",
+    "he": "מדכא"
+  },
+  {
+    "en": "order",
+    "he": "סדר"
+  },
+  {
+    "en": "original",
+    "he": "מקורי"
+  },
+  {
+    "en": "orphan",
+    "he": "יתום"
+  },
+  {
+    "en": "ouch",
+    "he": "איי"
+  },
+  {
+    "en": "outage",
+    "he": "תקלה"
+  },
+  {
+    "en": "outfitted",
+    "he": "מצויד"
+  },
+  {
+    "en": "outrun",
+    "he": "לברוח מהר יותר"
+  },
+  {
+    "en": "outside",
+    "he": "בחוץ"
+  },
+  {
+    "en": "outta",
+    "he": "מחוץ ל"
+  },
+  {
+    "en": "pack",
+    "he": "חפיסה"
+  },
+  {
+    "en": "page",
+    "he": "עמוד"
+  },
+  {
+    "en": "paid",
+    "he": "שילם"
+  },
+  {
+    "en": "pain",
+    "he": "כאב"
+  },
+  {
+    "en": "pair",
+    "he": "זוג"
+  },
+  {
+    "en": "pale",
+    "he": "חיוור"
+  },
+  {
+    "en": "pall",
+    "he": "חיוורון"
+  },
+  {
+    "en": "papa",
+    "he": "אבא"
+  },
+  {
+    "en": "parents",
+    "he": "הורים"
+  },
+  {
+    "en": "partner",
+    "he": "שותף"
+  },
+  {
+    "en": "parts",
+    "he": "חלקים"
+  },
+  {
+    "en": "pass",
+    "he": "לעבור"
+  },
+  {
+    "en": "past",
+    "he": "עבר"
+  },
+  {
+    "en": "pause",
+    "he": "הפסקה"
+  },
+  {
+    "en": "pawing",
+    "he": "ממשש"
+  },
+  {
+    "en": "pay",
+    "he": "לשלם"
+  },
+  {
+    "en": "pd",
+    "he": "משטרה"
+  },
+  {
+    "en": "peek",
+    "he": "להציץ"
+  },
+  {
+    "en": "peel",
+    "he": "לקלף"
+  },
+  {
+    "en": "people",
+    "he": "אנשים"
+  },
+  {
+    "en": "perfect",
+    "he": "מושלם"
+  },
+  {
+    "en": "permission",
+    "he": "רשות"
+  },
+  {
+    "en": "person",
+    "he": "אדם"
+  },
+  {
+    "en": "personal",
+    "he": "אישי"
+  },
+  {
+    "en": "pet",
+    "he": "חיית מחמד"
+  },
+  {
+    "en": "phone",
+    "he": "טלפון"
+  },
+  {
+    "en": "photo",
+    "he": "צילום"
+  },
+  {
+    "en": "photographed",
+    "he": "צולם"
+  },
+  {
+    "en": "physical",
+    "he": "פיזי"
+  },
+  {
+    "en": "pick",
+    "he": "לבחור"
+  },
+  {
+    "en": "picked",
+    "he": "נבחר"
+  },
+  {
+    "en": "picture",
+    "he": "תמונה"
+  },
+  {
+    "en": "piece",
+    "he": "חתיכה"
+  },
+  {
+    "en": "pills",
+    "he": "כדורים"
+  },
+  {
+    "en": "place",
+    "he": "מקום"
+  },
+  {
+    "en": "plains",
+    "he": "מישורים"
+  },
+  {
+    "en": "play",
+    "he": "מחזה"
+  },
+  {
+    "en": "playbook",
+    "he": "חוברת מחזה"
+  },
+  {
+    "en": "played",
+    "he": "שיחק"
+  },
+  {
+    "en": "playing",
+    "he": "משחק"
+  },
+  {
+    "en": "point",
+    "he": "נקודה"
+  },
+  {
+    "en": "police",
+    "he": "משטרה"
+  },
+  {
+    "en": "poor",
+    "he": "מסכן"
+  },
+  {
+    "en": "poorly",
+    "he": "גרוע"
+  },
+  {
+    "en": "pop",
+    "he": "פופ"
+  },
+  {
+    "en": "pops",
+    "he": "אבא"
+  },
+  {
+    "en": "possible",
+    "he": "אפשרי"
+  },
+  {
+    "en": "possibly",
+    "he": "אולי"
+  },
+  {
+    "en": "potential",
+    "he": "פוטנציאל"
+  },
+  {
+    "en": "power",
+    "he": "כוח"
+  },
+  {
+    "en": "powerful",
+    "he": "חזק"
+  },
+  {
+    "en": "practicing",
+    "he": "מתאמן"
+  },
+  {
+    "en": "prayer",
+    "he": "תפילה"
+  },
+  {
+    "en": "pregnant",
+    "he": "בהיריון"
+  },
+  {
+    "en": "prepare",
+    "he": "להכין"
+  },
+  {
+    "en": "prerequisite",
+    "he": "תנאי מוקדם"
+  },
+  {
+    "en": "prescribe",
+    "he": "לרשום"
+  },
+  {
+    "en": "present",
+    "he": "להציג"
+  },
+  {
+    "en": "presents",
+    "he": "מציג"
+  },
+  {
+    "en": "president",
+    "he": "נשיא"
+  },
+  {
+    "en": "pretend",
+    "he": "להעמיד פנים"
+  },
+  {
+    "en": "pretty",
+    "he": "יפה"
+  },
+  {
+    "en": "price",
+    "he": "מחיר"
+  },
+  {
+    "en": "principal",
+    "he": "מנהל"
+  },
+  {
+    "en": "private",
+    "he": "פרטי"
+  },
+  {
+    "en": "probably",
+    "he": "כנראה"
+  },
+  {
+    "en": "problem",
+    "he": "בעיה"
+  },
+  {
+    "en": "procedure",
+    "he": "הליך"
+  },
+  {
+    "en": "proceed",
+    "he": "להמשיך"
+  },
+  {
+    "en": "production",
+    "he": "הפקה"
+  },
+  {
+    "en": "project",
+    "he": "פרויקט"
+  },
+  {
+    "en": "prom",
+    "he": "נשף"
+  },
+  {
+    "en": "promise",
+    "he": "להבטיח"
+  },
+  {
+    "en": "proof",
+    "he": "הוכחה"
+  },
+  {
+    "en": "property",
+    "he": "רכוש"
+  },
+  {
+    "en": "props",
+    "he": "אביזרים"
+  },
+  {
+    "en": "protect",
+    "he": "להגן"
+  },
+  {
+    "en": "proud",
+    "he": "גאה"
+  },
+  {
+    "en": "prove",
+    "he": "להוכיח"
+  },
+  {
+    "en": "psychiatrist",
+    "he": "פסיכיאטר"
+  },
+  {
+    "en": "psycho",
+    "he": "פסיכי"
+  },
+  {
+    "en": "psychological",
+    "he": "פסיכולוגי"
+  },
+  {
+    "en": "psychologically",
+    "he": "פסיכולוגית"
+  },
+  {
+    "en": "psychopaths",
+    "he": "פסיכופתים"
+  },
+  {
+    "en": "pta",
+    "he": "ועד הורים"
+  },
+  {
+    "en": "public",
+    "he": "ציבורי"
+  },
+  {
+    "en": "pull",
+    "he": "למשוך"
+  },
+  {
+    "en": "pulse",
+    "he": "דופק"
+  },
+  {
+    "en": "punched",
+    "he": "נתן אגרוף"
+  },
+  {
+    "en": "punish",
+    "he": "להעניש"
+  },
+  {
+    "en": "punks",
+    "he": "פאנקיסטים"
+  },
+  {
+    "en": "puppet",
+    "he": "בובה"
+  },
+  {
+    "en": "puppy",
+    "he": "גור"
+  },
+  {
+    "en": "putting",
+    "he": "שם"
+  },
+  {
+    "en": "quarantined",
+    "he": "בבידוד"
+  },
+  {
+    "en": "question",
+    "he": "שאלה"
+  },
+  {
+    "en": "quick",
+    "he": "מהיר"
+  },
+  {
+    "en": "quiet",
+    "he": "שקט"
+  },
+  {
+    "en": "quit",
+    "he": "להפסיק"
+  },
+  {
+    "en": "quite",
+    "he": "די"
+  },
+  {
+    "en": "rabbit",
+    "he": "ארנב"
+  },
+  {
+    "en": "radio",
+    "he": "רדיו"
+  },
+  {
+    "en": "rainbow",
+    "he": "קשת"
+  },
+  {
+    "en": "rained",
+    "he": "ירד גשם"
+  },
+  {
+    "en": "raise",
+    "he": "להרים"
+  },
+  {
+    "en": "rats",
+    "he": "חולדות"
+  },
+  {
+    "en": "ray",
+    "he": "קרן"
+  },
+  {
+    "en": "reaches",
+    "he": "מגיע"
+  },
+  {
+    "en": "reaction",
+    "he": "תגובה"
+  },
+  {
+    "en": "read",
+    "he": "לקרוא"
+  },
+  {
+    "en": "reading",
+    "he": "קריאה"
+  },
+  {
+    "en": "ready",
+    "he": "מוכן"
+  },
+  {
+    "en": "real",
+    "he": "אמיתי"
+  },
+  {
+    "en": "really",
+    "he": "באמת"
+  },
+  {
+    "en": "reap",
+    "he": "לקצור"
+  },
+  {
+    "en": "reason",
+    "he": "סיבה"
+  },
+  {
+    "en": "rebel",
+    "he": "מורד"
+  },
+  {
+    "en": "rebuilt",
+    "he": "נבנה מחדש"
+  },
+  {
+    "en": "reception",
+    "he": "קליטה"
+  },
+  {
+    "en": "record",
+    "he": "להקליט"
+  },
+  {
+    "en": "recorded",
+    "he": "מוקלט"
+  },
+  {
+    "en": "red",
+    "he": "אדום"
+  },
+  {
+    "en": "regret",
+    "he": "חרטה"
+  },
+  {
+    "en": "regretful",
+    "he": "מתחרט"
+  },
+  {
+    "en": "regular",
+    "he": "רגיל"
+  },
+  {
+    "en": "regularly",
+    "he": "באופן קבוע"
+  },
+  {
+    "en": "rehearse",
+    "he": "לחזור"
+  },
+  {
+    "en": "rehearsing",
+    "he": "חזרות"
+  },
+  {
+    "en": "rejecting",
+    "he": "דוחה"
+  },
+  {
+    "en": "remember",
+    "he": "לזכור"
+  },
+  {
+    "en": "rendered",
+    "he": "עובד"
+  },
+  {
+    "en": "report",
+    "he": "דוח"
+  },
+  {
+    "en": "rescue",
+    "he": "הצלה"
+  },
+  {
+    "en": "resemblance",
+    "he": "דמיון"
+  },
+  {
+    "en": "responding",
+    "he": "מגיב"
+  },
+  {
+    "en": "responsible",
+    "he": "אחראי"
+  },
+  {
+    "en": "rest",
+    "he": "מנוחה"
+  },
+  {
+    "en": "resulted",
+    "he": "הוביל"
+  },
+  {
+    "en": "resume",
+    "he": "להמשיך"
+  },
+  {
+    "en": "retested",
+    "he": "נבדק שוב"
+  },
+  {
+    "en": "reveal",
+    "he": "לגלות"
+  },
+  {
+    "en": "revealed",
+    "he": "נחשף"
+  },
+  {
+    "en": "revolution",
+    "he": "מהפכה"
+  },
+  {
+    "en": "reward",
+    "he": "פרס"
+  },
+  {
+    "en": "rewiring",
+    "he": "חיווט מחדש"
+  },
+  {
+    "en": "rewrite",
+    "he": "לשכתב"
+  },
+  {
+    "en": "rid",
+    "he": "להיפטר"
+  },
+  {
+    "en": "ride",
+    "he": "נסיעה"
+  },
+  {
+    "en": "ridiculous",
+    "he": "מגוחך"
+  },
+  {
+    "en": "rig",
+    "he": "מערכת"
+  },
+  {
+    "en": "right",
+    "he": "נכון"
+  },
+  {
+    "en": "rip",
+    "he": "לקרוע"
+  },
+  {
+    "en": "risky",
+    "he": "מסוכן"
+  },
+  {
+    "en": "rocky",
+    "he": "סלעי"
+  },
+  {
+    "en": "role",
+    "he": "תפקיד"
+  },
+  {
+    "en": "romantic",
+    "he": "רומנטי"
+  },
+  {
+    "en": "room",
+    "he": "חדר"
+  },
+  {
+    "en": "rot",
+    "he": "להרקיב"
+  },
+  {
+    "en": "rots",
+    "he": "נרקב"
+  },
+  {
+    "en": "ruin",
+    "he": "להרוס"
+  },
+  {
+    "en": "rules",
+    "he": "חוקים"
+  },
+  {
+    "en": "rumor",
+    "he": "שמועה"
+  },
+  {
+    "en": "run",
+    "he": "לרוץ"
+  },
+  {
+    "en": "running",
+    "he": "רץ"
+  },
+  {
+    "en": "runs",
+    "he": "רץ"
+  },
+  {
+    "en": "rush",
+    "he": "למהר"
+  },
+  {
+    "en": "russian",
+    "he": "רוסי"
+  },
+  {
+    "en": "sacrifice",
+    "he": "קורבן"
+  },
+  {
+    "en": "sad",
+    "he": "עצוב"
+  },
+  {
+    "en": "safe",
+    "he": "בטוח"
+  },
+  {
+    "en": "safer",
+    "he": "בטוח יותר"
+  },
+  {
+    "en": "safety",
+    "he": "בטיחות"
+  },
+  {
+    "en": "said",
+    "he": "אמר"
+  },
+  {
+    "en": "sake",
+    "he": "למען"
+  },
+  {
+    "en": "sanity",
+    "he": "שפיות"
+  },
+  {
+    "en": "save",
+    "he": "להציל"
+  },
+  {
+    "en": "saved",
+    "he": "ניצל"
+  },
+  {
+    "en": "saw",
+    "he": "ראה"
+  },
+  {
+    "en": "say",
+    "he": "לומר"
+  },
+  {
+    "en": "sayin",
+    "he": "אומר"
+  },
+  {
+    "en": "saying",
+    "he": "אומר"
+  },
+  {
+    "en": "says",
+    "he": "אומר"
+  },
+  {
+    "en": "scam",
+    "he": "תרמית"
+  },
+  {
+    "en": "scare",
+    "he": "להפחיד"
+  },
+  {
+    "en": "scared",
+    "he": "מפוחד"
+  },
+  {
+    "en": "scaredy",
+    "he": "פחדן"
+  },
+  {
+    "en": "scary",
+    "he": "מפחיד"
+  },
+  {
+    "en": "scene",
+    "he": "סצנה"
+  },
+  {
+    "en": "scheduled",
+    "he": "מתוזמן"
+  },
+  {
+    "en": "scholarship",
+    "he": "מלגה"
+  },
+  {
+    "en": "school",
+    "he": "בית ספר"
+  },
+  {
+    "en": "science",
+    "he": "מדע"
+  },
+  {
+    "en": "scream",
+    "he": "לצרוח"
+  },
+  {
+    "en": "screams",
+    "he": "צרחות"
+  },
+  {
+    "en": "screw",
+    "he": "לחרבן"
+  },
+  {
+    "en": "screwed",
+    "he": "דפוק"
+  },
+  {
+    "en": "sculpted",
+    "he": "מפוסל"
+  },
+  {
+    "en": "sea",
+    "he": "ים"
+  },
+  {
+    "en": "seat",
+    "he": "מושב"
+  },
+  {
+    "en": "sec",
+    "he": "שנייה"
+  },
+  {
+    "en": "second",
+    "he": "שנייה"
+  },
+  {
+    "en": "secret",
+    "he": "סוד"
+  },
+  {
+    "en": "seeing",
+    "he": "רואה"
+  },
+  {
+    "en": "seeking",
+    "he": "מחפש"
+  },
+  {
+    "en": "seen",
+    "he": "נראה"
+  },
+  {
+    "en": "sees",
+    "he": "רואה"
+  },
+  {
+    "en": "selling",
+    "he": "מוכר"
+  },
+  {
+    "en": "send",
+    "he": "לשלוח"
+  },
+  {
+    "en": "senior",
+    "he": "שנה אחרונה"
+  },
+  {
+    "en": "sensation",
+    "he": "תחושה"
+  },
+  {
+    "en": "sense",
+    "he": "חוש"
+  },
+  {
+    "en": "sensitive",
+    "he": "רגיש"
+  },
+  {
+    "en": "sentenced",
+    "he": "נידון"
+  },
+  {
+    "en": "sergeant",
+    "he": "סמל"
+  },
+  {
+    "en": "seriously",
+    "he": "ברצינות"
+  },
+  {
+    "en": "served",
+    "he": "שירת"
+  },
+  {
+    "en": "service",
+    "he": "טקס"
+  },
+  {
+    "en": "set",
+    "he": "להגדיר"
+  },
+  {
+    "en": "settle",
+    "he": "להירגע"
+  },
+  {
+    "en": "sexy",
+    "he": "סקסי"
+  },
+  {
+    "en": "shadow",
+    "he": "צל"
+  },
+  {
+    "en": "sharing",
+    "he": "שיתוף"
+  },
+  {
+    "en": "sharp",
+    "he": "חד"
+  },
+  {
+    "en": "shell",
+    "he": "קליפה"
+  },
+  {
+    "en": "shepherd",
+    "he": "רועה"
+  },
+  {
+    "en": "shiner",
+    "he": "פנס בעין"
+  },
+  {
+    "en": "ship",
+    "he": "ספינה"
+  },
+  {
+    "en": "shit",
+    "he": "חרא"
+  },
+  {
+    "en": "shock",
+    "he": "הלם"
+  },
+  {
+    "en": "shocked",
+    "he": "מזועזע"
+  },
+  {
+    "en": "shoot",
+    "he": "לירות"
+  },
+  {
+    "en": "shop",
+    "he": "חנות"
+  },
+  {
+    "en": "shot",
+    "he": "ירייה"
+  },
+  {
+    "en": "shouting",
+    "he": "צעקות"
+  },
+  {
+    "en": "showing",
+    "he": "מראה"
+  },
+  {
+    "en": "shows",
+    "he": "מראה"
+  },
+  {
+    "en": "shrinks",
+    "he": "פסיכיאטרים"
+  },
+  {
+    "en": "shut",
+    "he": "לסגור"
+  },
+  {
+    "en": "shy",
+    "he": "ביישן"
+  },
+  {
+    "en": "sick",
+    "he": "חולה"
+  },
+  {
+    "en": "sidekick",
+    "he": "עוזר"
+  },
+  {
+    "en": "sign",
+    "he": "שלט"
+  },
+  {
+    "en": "signed",
+    "he": "חתום"
+  },
+  {
+    "en": "simple",
+    "he": "פשוט"
+  },
+  {
+    "en": "sing",
+    "he": "לשיר"
+  },
+  {
+    "en": "singer",
+    "he": "זמר"
+  },
+  {
+    "en": "singing",
+    "he": "שירה"
+  },
+  {
+    "en": "single",
+    "he": "יחיד"
+  },
+  {
+    "en": "sinister",
+    "he": "מרושע"
+  },
+  {
+    "en": "sir",
+    "he": "אדוני"
+  },
+  {
+    "en": "sister",
+    "he": "אחות"
+  },
+  {
+    "en": "sit",
+    "he": "לשבת"
+  },
+  {
+    "en": "sleep",
+    "he": "לישון"
+  },
+  {
+    "en": "sleepwalk",
+    "he": "הליכת שינה"
+  },
+  {
+    "en": "sleepy",
+    "he": "מנומנם"
+  },
+  {
+    "en": "sleeve",
+    "he": "שרוול"
+  },
+  {
+    "en": "sloppy",
+    "he": "מרושל"
+  },
+  {
+    "en": "slow",
+    "he": "איטי"
+  },
+  {
+    "en": "slowing",
+    "he": "מאט"
+  },
+  {
+    "en": "smart",
+    "he": "חכם"
+  },
+  {
+    "en": "smartass",
+    "he": "חכמולוג"
+  },
+  {
+    "en": "smell",
+    "he": "ריח"
+  },
+  {
+    "en": "smoke",
+    "he": "עשן"
+  },
+  {
+    "en": "smokes",
+    "he": "סיגריות"
+  },
+  {
+    "en": "sneak",
+    "he": "להתגנב"
+  },
+  {
+    "en": "sniveling",
+    "he": "מיילל"
+  },
+  {
+    "en": "socially",
+    "he": "חברתית"
+  },
+  {
+    "en": "sock",
+    "he": "גרב"
+  },
+  {
+    "en": "soft",
+    "he": "רך"
+  },
+  {
+    "en": "soldier",
+    "he": "חייל"
+  },
+  {
+    "en": "solid",
+    "he": "מוצק"
+  },
+  {
+    "en": "solo",
+    "he": "סולו"
+  },
+  {
+    "en": "something's",
+    "he": "משהו"
+  },
+  {
+    "en": "son",
+    "he": "בן"
+  },
+  {
+    "en": "song",
+    "he": "שיר"
+  },
+  {
+    "en": "soon",
+    "he": "בקרוב"
+  },
+  {
+    "en": "sooner",
+    "he": "מוקדם יותר"
+  },
+  {
+    "en": "sorry",
+    "he": "מצטער"
+  },
+  {
+    "en": "soul",
+    "he": "נשמה"
+  },
+  {
+    "en": "sound",
+    "he": "צליל"
+  },
+  {
+    "en": "source",
+    "he": "מקור"
+  },
+  {
+    "en": "south",
+    "he": "דרום"
+  },
+  {
+    "en": "speak",
+    "he": "לדבר"
+  },
+  {
+    "en": "speaking",
+    "he": "מדבר"
+  },
+  {
+    "en": "special",
+    "he": "מיוחד"
+  },
+  {
+    "en": "specialist",
+    "he": "מומחה"
+  },
+  {
+    "en": "specially",
+    "he": "במיוחד"
+  },
+  {
+    "en": "spiders",
+    "he": "עכבישים"
+  },
+  {
+    "en": "spin",
+    "he": "לסובב"
+  },
+  {
+    "en": "split",
+    "he": "לפצל"
+  },
+  {
+    "en": "spy",
+    "he": "מרגל"
+  },
+  {
+    "en": "squadron",
+    "he": "טייסת"
+  },
+  {
+    "en": "squares",
+    "he": "מרובעים"
+  },
+  {
+    "en": "squash",
+    "he": "למעוך"
+  },
+  {
+    "en": "squirrels",
+    "he": "סנאים"
+  },
+  {
+    "en": "st",
+    "he": "סנט"
+  },
+  {
+    "en": "stabilize",
+    "he": "לייצב"
+  },
+  {
+    "en": "stable",
+    "he": "יציב"
+  },
+  {
+    "en": "staff",
+    "he": "צוות"
+  },
+  {
+    "en": "stage",
+    "he": "במה"
+  },
+  {
+    "en": "stand",
+    "he": "לעמוד"
+  },
+  {
+    "en": "standing",
+    "he": "עומד"
+  },
+  {
+    "en": "star",
+    "he": "כוכב"
+  },
+  {
+    "en": "stardust",
+    "he": "אבק כוכבים"
+  },
+  {
+    "en": "start",
+    "he": "להתחיל"
+  },
+  {
+    "en": "started",
+    "he": "התחיל"
+  },
+  {
+    "en": "starting",
+    "he": "מתחיל"
+  },
+  {
+    "en": "state",
+    "he": "מדינה"
+  },
+  {
+    "en": "statements",
+    "he": "הצהרות"
+  },
+  {
+    "en": "static",
+    "he": "סטטיקה"
+  },
+  {
+    "en": "staticy",
+    "he": "מלא סטטיקה"
+  },
+  {
+    "en": "station",
+    "he": "תחנה"
+  },
+  {
+    "en": "statistical",
+    "he": "סטטיסטי"
+  },
+  {
+    "en": "stats",
+    "he": "סטטיסטיקה"
+  },
+  {
+    "en": "status",
+    "he": "מצב"
+  },
+  {
+    "en": "stay",
+    "he": "להישאר"
+  },
+  {
+    "en": "steady",
+    "he": "יציב"
+  },
+  {
+    "en": "step",
+    "he": "צעד"
+  },
+  {
+    "en": "stepdad",
+    "he": "אב חורג"
+  },
+  {
+    "en": "steps",
+    "he": "צעדים"
+  },
+  {
+    "en": "stomach",
+    "he": "בטן"
+  },
+  {
+    "en": "stop",
+    "he": "לעצור"
+  },
+  {
+    "en": "stopping",
+    "he": "עוצר"
+  },
+  {
+    "en": "store",
+    "he": "חנות"
+  },
+  {
+    "en": "story",
+    "he": "סיפור"
+  },
+  {
+    "en": "strange",
+    "he": "מוזר"
+  },
+  {
+    "en": "street",
+    "he": "רחוב"
+  },
+  {
+    "en": "strength",
+    "he": "כוח"
+  },
+  {
+    "en": "strike",
+    "he": "להכות"
+  },
+  {
+    "en": "strikes",
+    "he": "מכות"
+  },
+  {
+    "en": "strong",
+    "he": "חזק"
+  },
+  {
+    "en": "stronger",
+    "he": "חזק יותר"
+  },
+  {
+    "en": "stuck",
+    "he": "תקוע"
+  },
+  {
+    "en": "student",
+    "he": "תלמיד"
+  },
+  {
+    "en": "stupid",
+    "he": "טיפש"
+  },
+  {
+    "en": "subject",
+    "he": "נושא"
+  },
+  {
+    "en": "sucker",
+    "he": "פראייר"
+  },
+  {
+    "en": "suddenly",
+    "he": "פתאום"
+  },
+  {
+    "en": "suffer",
+    "he": "לסבול"
+  },
+  {
+    "en": "suits",
+    "he": "מתאים"
+  },
+  {
+    "en": "summer",
+    "he": "קיץ"
+  },
+  {
+    "en": "sun",
+    "he": "שמש"
+  },
+  {
+    "en": "sung",
+    "he": "מושר"
+  },
+  {
+    "en": "super",
+    "he": "סופר"
+  },
+  {
+    "en": "superhero",
+    "he": "גיבור על"
+  },
+  {
+    "en": "superpower",
+    "he": "כוח על"
+  },
+  {
+    "en": "supersonic",
+    "he": "על-קולי"
+  },
+  {
+    "en": "supposed",
+    "he": "אמור"
+  },
+  {
+    "en": "sure",
+    "he": "בטוח"
+  },
+  {
+    "en": "surge",
+    "he": "קפיצה"
+  },
+  {
+    "en": "surprised",
+    "he": "מופתע"
+  },
+  {
+    "en": "survive",
+    "he": "לשרוד"
+  },
+  {
+    "en": "sus",
+    "he": "חשוד"
+  },
+  {
+    "en": "suspected",
+    "he": "נחשד"
+  },
+  {
+    "en": "swear",
+    "he": "להישבע"
+  },
+  {
+    "en": "sweeping",
+    "he": "מטאטא"
+  },
+  {
+    "en": "sweet",
+    "he": "מתוק"
+  },
+  {
+    "en": "sweetcheeks",
+    "he": "מתוקה"
+  },
+  {
+    "en": "sweetheart",
+    "he": "מתוקה"
+  },
+  {
+    "en": "sweetie",
+    "he": "מותק"
+  },
+  {
+    "en": "swellin",
+    "he": "מתנפחים"
+  },
+  {
+    "en": "swimsuit",
+    "he": "בגד ים"
+  },
+  {
+    "en": "switch",
+    "he": "להחליף"
+  },
+  {
+    "en": "table",
+    "he": "שולחן"
+  },
+  {
+    "en": "tada",
+    "he": "טה-דה"
+  },
+  {
+    "en": "taken",
+    "he": "נלקח"
+  },
+  {
+    "en": "takes",
+    "he": "לוקח"
+  },
+  {
+    "en": "taking",
+    "he": "לוקח"
+  },
+  {
+    "en": "talk",
+    "he": "לדבר"
+  },
+  {
+    "en": "talked",
+    "he": "דיבר"
+  },
+  {
+    "en": "talking",
+    "he": "מדבר"
+  },
+  {
+    "en": "talks",
+    "he": "מדבר"
+  },
+  {
+    "en": "talky",
+    "he": "פטפטן"
+  },
+  {
+    "en": "tape",
+    "he": "סרט"
+  },
+  {
+    "en": "taste",
+    "he": "טעם"
+  },
+  {
+    "en": "taught",
+    "he": "לימד"
+  },
+  {
+    "en": "team",
+    "he": "צוות"
+  },
+  {
+    "en": "teeth",
+    "he": "שיניים"
+  },
+  {
+    "en": "tell",
+    "he": "לספר"
+  },
+  {
+    "en": "telling",
+    "he": "מספר"
+  },
+  {
+    "en": "tells",
+    "he": "מספר"
+  },
+  {
+    "en": "terrible",
+    "he": "נורא"
+  },
+  {
+    "en": "terrified",
+    "he": "מבועת"
+  },
+  {
+    "en": "test",
+    "he": "בדיקה"
+  },
+  {
+    "en": "tested",
+    "he": "נבדק"
+  },
+  {
+    "en": "testing",
+    "he": "בדיקה"
+  },
+  {
+    "en": "text",
+    "he": "טקסט"
+  },
+  {
+    "en": "textbook",
+    "he": "ספר לימוד"
+  },
+  {
+    "en": "th",
+    "he": "ת׳"
+  },
+  {
+    "en": "thank",
+    "he": "תודה"
+  },
+  {
+    "en": "thanks",
+    "he": "תודה"
+  },
+  {
+    "en": "theater",
+    "he": "תיאטרון"
+  },
+  {
+    "en": "theory",
+    "he": "תיאוריה"
+  },
+  {
+    "en": "there'll",
+    "he": "יהיה"
+  },
+  {
+    "en": "thespians",
+    "he": "שחקנים"
+  },
+  {
+    "en": "thing",
+    "he": "דבר"
+  },
+  {
+    "en": "thing's",
+    "he": "הדבר"
+  },
+  {
+    "en": "think",
+    "he": "לחשוב"
+  },
+  {
+    "en": "thinking",
+    "he": "חושב"
+  },
+  {
+    "en": "thinks",
+    "he": "חושב"
+  },
+  {
+    "en": "thought",
+    "he": "מחשבה"
+  },
+  {
+    "en": "thousands",
+    "he": "אלפים"
+  },
+  {
+    "en": "threatens",
+    "he": "מאיים"
+  },
+  {
+    "en": "thrills",
+    "he": "ריגושים"
+  },
+  {
+    "en": "throw",
+    "he": "לזרוק"
+  },
+  {
+    "en": "throws",
+    "he": "זורק"
+  },
+  {
+    "en": "thumb",
+    "he": "אגודל"
+  },
+  {
+    "en": "ticket",
+    "he": "כרטיס"
+  },
+  {
+    "en": "tigers",
+    "he": "נמרים"
+  },
+  {
+    "en": "tight",
+    "he": "הדוק"
+  },
+  {
+    "en": "tighten",
+    "he": "להדק"
+  },
+  {
+    "en": "til",
+    "he": "עד"
+  },
+  {
+    "en": "till",
+    "he": "עד"
+  },
+  {
+    "en": "time",
+    "he": "זמן"
+  },
+  {
+    "en": "timeline",
+    "he": "ציר זמן"
+  },
+  {
+    "en": "toast",
+    "he": "טוסט"
+  },
+  {
+    "en": "today",
+    "he": "היום"
+  },
+  {
+    "en": "told",
+    "he": "סיפר"
+  },
+  {
+    "en": "tomorrow",
+    "he": "מחר"
+  },
+  {
+    "en": "tone",
+    "he": "טון"
+  },
+  {
+    "en": "tongue",
+    "he": "לשון"
+  },
+  {
+    "en": "tonight",
+    "he": "הלילה"
+  },
+  {
+    "en": "tons",
+    "he": "טונות"
+  },
+  {
+    "en": "took",
+    "he": "לקח"
+  },
+  {
+    "en": "total",
+    "he": "סך הכול"
+  },
+  {
+    "en": "totally",
+    "he": "לגמרי"
+  },
+  {
+    "en": "touch",
+    "he": "לגעת"
+  },
+  {
+    "en": "tough",
+    "he": "קשוח"
+  },
+  {
+    "en": "tower",
+    "he": "מגדל"
+  },
+  {
+    "en": "town",
+    "he": "עיירה"
+  },
+  {
+    "en": "track",
+    "he": "מסלול"
+  },
+  {
+    "en": "tracking",
+    "he": "מעקב"
+  },
+  {
+    "en": "tragic",
+    "he": "טראגי"
+  },
+  {
+    "en": "train",
+    "he": "רכבת"
+  },
+  {
+    "en": "training",
+    "he": "אימון"
+  },
+  {
+    "en": "tranquilizers",
+    "he": "כדורי הרגעה"
+  },
+  {
+    "en": "transfusion",
+    "he": "עירוי דם"
+  },
+  {
+    "en": "transmitter",
+    "he": "משדר"
+  },
+  {
+    "en": "traveled",
+    "he": "נסע"
+  },
+  {
+    "en": "treatment",
+    "he": "טיפול"
+  },
+  {
+    "en": "tried",
+    "he": "ניסה"
+  },
+  {
+    "en": "true",
+    "he": "נכון"
+  },
+  {
+    "en": "trust",
+    "he": "אמון"
+  },
+  {
+    "en": "truth",
+    "he": "אמת"
+  },
+  {
+    "en": "try",
+    "he": "לנסות"
+  },
+  {
+    "en": "trying",
+    "he": "מנסה"
+  },
+  {
+    "en": "tune",
+    "he": "לכוון"
+  },
+  {
+    "en": "turkey",
+    "he": "הודו"
+  },
+  {
+    "en": "turn",
+    "he": "לפנות"
+  },
+  {
+    "en": "turning",
+    "he": "פונה"
+  },
+  {
+    "en": "turns",
+    "he": "פונה"
+  },
+  {
+    "en": "twas",
+    "he": "זה היה"
+  },
+  {
+    "en": "type",
+    "he": "סוג"
+  },
+  {
+    "en": "typical",
+    "he": "טיפוסי"
+  },
+  {
+    "en": "unable",
+    "he": "לא מסוגל"
+  },
+  {
+    "en": "uncanny",
+    "he": "מדהים"
+  },
+  {
+    "en": "unconscious",
+    "he": "מחוסר הכרה"
+  },
+  {
+    "en": "understand",
+    "he": "להבין"
+  },
+  {
+    "en": "understood",
+    "he": "הבין"
+  },
+  {
+    "en": "unexpected",
+    "he": "לא צפוי"
+  },
+  {
+    "en": "ungratefulness",
+    "he": "חוסר הכרת תודה"
+  },
+  {
+    "en": "unique",
+    "he": "ייחודי"
+  },
+  {
+    "en": "united",
+    "he": "מאוחד"
+  },
+  {
+    "en": "units",
+    "he": "יחידות"
+  },
+  {
+    "en": "unless",
+    "he": "אלא אם"
+  },
+  {
+    "en": "update",
+    "he": "עדכון"
+  },
+  {
+    "en": "upset",
+    "he": "נסער"
+  },
+  {
+    "en": "upstairs",
+    "he": "למעלה"
+  },
+  {
+    "en": "use",
+    "he": "להשתמש"
+  },
+  {
+    "en": "used",
+    "he": "השתמש"
+  },
+  {
+    "en": "uses",
+    "he": "משתמש"
+  },
+  {
+    "en": "using",
+    "he": "משתמש"
+  },
+  {
+    "en": "uss",
+    "he": "יו-אס-אס"
+  },
+  {
+    "en": "usual",
+    "he": "רגיל"
+  },
+  {
+    "en": "usually",
+    "he": "בדרך כלל"
+  },
+  {
+    "en": "vent",
+    "he": "פתח אוורור"
+  },
+  {
+    "en": "ventilation",
+    "he": "אוורור"
+  },
+  {
+    "en": "vicious",
+    "he": "אכזרי"
+  },
+  {
+    "en": "video",
+    "he": "וידאו"
+  },
+  {
+    "en": "violent",
+    "he": "אלים"
+  },
+  {
+    "en": "vips",
+    "he": "אח״מים"
+  },
+  {
+    "en": "voice",
+    "he": "קול"
+  },
+  {
+    "en": "voluntarily",
+    "he": "מרצון"
+  },
+  {
+    "en": "volunteered",
+    "he": "התנדב"
+  },
+  {
+    "en": "wait",
+    "he": "לחכות"
+  },
+  {
+    "en": "waiting",
+    "he": "מחכה"
+  },
+  {
+    "en": "wake",
+    "he": "להתעורר"
+  },
+  {
+    "en": "walk",
+    "he": "ללכת"
+  },
+  {
+    "en": "walker",
+    "he": "מהלך"
+  },
+  {
+    "en": "walking",
+    "he": "הליכה"
+  },
+  {
+    "en": "waltz",
+    "he": "ואלס"
+  },
+  {
+    "en": "want",
+    "he": "לרצות"
+  },
+  {
+    "en": "wanted",
+    "he": "רצה"
+  },
+  {
+    "en": "wanting",
+    "he": "רוצה"
+  },
+  {
+    "en": "wants",
+    "he": "רוצה"
+  },
+  {
+    "en": "war",
+    "he": "מלחמה"
+  },
+  {
+    "en": "wardrobe",
+    "he": "ארון בגדים"
+  },
+  {
+    "en": "warn",
+    "he": "להזהיר"
+  },
+  {
+    "en": "warned",
+    "he": "הזהיר"
+  },
+  {
+    "en": "warning",
+    "he": "אזהרה"
+  },
+  {
+    "en": "waste",
+    "he": "לבזבז"
+  },
+  {
+    "en": "wasted",
+    "he": "מבוזבז"
+  },
+  {
+    "en": "watch",
+    "he": "לצפות"
+  },
+  {
+    "en": "watched",
+    "he": "צפה"
+  },
+  {
+    "en": "water",
+    "he": "מים"
+  },
+  {
+    "en": "wave",
+    "he": "גל"
+  },
+  {
+    "en": "way",
+    "he": "דרך"
+  },
+  {
+    "en": "weak",
+    "he": "חלש"
+  },
+  {
+    "en": "weakness",
+    "he": "חולשה"
+  },
+  {
+    "en": "weapon",
+    "he": "נשק"
+  },
+  {
+    "en": "wear",
+    "he": "ללבוש"
+  },
+  {
+    "en": "week",
+    "he": "שבוע"
+  },
+  {
+    "en": "weenie",
+    "he": "פחדן"
+  },
+  {
+    "en": "weird",
+    "he": "מוזר"
+  },
+  {
+    "en": "weirdo",
+    "he": "מוזר"
+  },
+  {
+    "en": "welcome",
+    "he": "ברוך הבא"
+  },
+  {
+    "en": "went",
+    "he": "הלך"
+  },
+  {
+    "en": "wet",
+    "he": "רטוב"
+  },
+  {
+    "en": "whatchya",
+    "he": "מה אתה"
+  },
+  {
+    "en": "wheels",
+    "he": "גלגלים"
+  },
+  {
+    "en": "wife",
+    "he": "אישה"
+  },
+  {
+    "en": "wild",
+    "he": "פראי"
+  },
+  {
+    "en": "win",
+    "he": "לנצח"
+  },
+  {
+    "en": "wind",
+    "he": "רוח"
+  },
+  {
+    "en": "window",
+    "he": "חלון"
+  },
+  {
+    "en": "wings",
+    "he": "כנפיים"
+  },
+  {
+    "en": "wires",
+    "he": "חוטים"
+  },
+  {
+    "en": "wiring",
+    "he": "חיווט"
+  },
+  {
+    "en": "wish",
+    "he": "לאחל"
+  },
+  {
+    "en": "wished",
+    "he": "איחל"
+  },
+  {
+    "en": "witch",
+    "he": "מכשפה"
+  },
+  {
+    "en": "witness",
+    "he": "עד"
+  },
+  {
+    "en": "woman",
+    "he": "אישה"
+  },
+  {
+    "en": "wonder",
+    "he": "לתהות"
+  },
+  {
+    "en": "wonderful",
+    "he": "נפלא"
+  },
+  {
+    "en": "wondering",
+    "he": "תוהה"
+  },
+  {
+    "en": "woods",
+    "he": "יער"
+  },
+  {
+    "en": "woolskin",
+    "he": "עור צמר"
+  },
+  {
+    "en": "word",
+    "he": "מילה"
+  },
+  {
+    "en": "work",
+    "he": "לעבוד"
+  },
+  {
+    "en": "working",
+    "he": "עובד"
+  },
+  {
+    "en": "works",
+    "he": "עובד"
+  },
+  {
+    "en": "workshopping",
+    "he": "עיבוד"
+  },
+  {
+    "en": "world",
+    "he": "עולם"
+  },
+  {
+    "en": "worried",
+    "he": "מודאג"
+  },
+  {
+    "en": "worry",
+    "he": "לדאוג"
+  },
+  {
+    "en": "worse",
+    "he": "גרוע יותר"
+  },
+  {
+    "en": "worth",
+    "he": "שווה"
+  },
+  {
+    "en": "would've",
+    "he": "היה"
+  },
+  {
+    "en": "wound",
+    "he": "פצע"
+  },
+  {
+    "en": "wow",
+    "he": "וואו"
+  },
+  {
+    "en": "write",
+    "he": "לכתוב"
+  },
+  {
+    "en": "writing",
+    "he": "כתיבה"
+  },
+  {
+    "en": "wrong",
+    "he": "לא נכון"
+  },
+  {
+    "en": "yeah",
+    "he": "כן"
+  },
+  {
+    "en": "year",
+    "he": "שנה"
+  },
+  {
+    "en": "yes",
+    "he": "כן"
+  },
+  {
+    "en": "youngest",
+    "he": "הצעיר ביותר"
+  }
+]
+
