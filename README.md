@@ -38,7 +38,13 @@ The tests cover vocabulary normalization, ambiguous distractors, matching, revie
 
 Serve **`dist/`** from any static web host. Use the contents of that directory as the public root. All app/data references are relative, so a repository subpath such as `/emmaenglish2/` is supported. Client navigation uses URL fragments and needs no server rewrites.
 
-For GitHub Pages, publish `dist/` using your preferred Pages deployment workflow. A CI/deployment workflow is intentionally not configured automatically. The `.openai/hosting.json` file identifies the companion private Sites preview; it is not required by other static hosts.
+The public app is published at **https://apestogetherstronger.github.io/emmaenglish2/**.
+
+GitHub Pages serves the **`gh-pages` branch, `/` (root)**, using GitHub’s standard Pages build and deployment workflow. That branch contains the validated contents of `dist/` at its root, plus `.nojekyll` to disable Jekyll processing.
+
+To publish a later app update, update the files on `gh-pages` with the current contents of `dist/`, retaining `.nojekyll`. Changes to `main` alone do not update the live site. Keep source, tests, and project documentation on `main`.
+
+The `.openai/hosting.json` file identifies the companion private Sites preview; it is not required by GitHub Pages or other static hosts.
 
 ## Move your existing progress
 
