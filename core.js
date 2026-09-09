@@ -1,6 +1,6 @@
 // Pure learning and data functions. No browser or network dependencies.
 export const STORAGE_KEY = 'emmaenglish2:v1';
-export const DEFAULT_SETTINGS = Object.freeze({ pack: 'everyday', questions: 10, choices: 4, sound: true, rate: 0.85, bonus: true, goal: 10 });
+export const DEFAULT_SETTINGS = Object.freeze({ pack: 'everyday', questions: 10, choices: 4, sound: true, effects: true, language: 'en', rate: 0.85, bonus: true, goal: 30, goalVersion: 2 });
 const DAY = 86400000;
 export const wordId = value => String(value).trim().toLocaleLowerCase('en-US');
 export const localDay = (value = new Date()) => {
@@ -9,14 +9,20 @@ export const localDay = (value = new Date()) => {
 };
 export function createState() { return { version: 1, settings: { ...DEFAULT_SETTINGS }, answers: [], sessions: [], xp: 0 }; }
 export function normalizeSettings(settings = {}) {
+  if (!settings || typeof settings !== 'object') settings = {};
+  // Upgrade the previous ten-exercise default once; later explicit choices are retained.
+  const goal = settings.goalVersion !== 2 && Number(settings.goal) === 10 ? 30 : Number(settings.goal);
   return {
     pack: ['everyday', 'stories', 'all'].includes(settings.pack) ? settings.pack : 'everyday',
-    questions: [5, 10, 15, 20].includes(Number(settings.questions)) ? Number(settings.questions) : 10,
+    questions: [5, 10, 15, 20, 30].includes(Number(settings.questions)) ? Number(settings.questions) : 10,
     choices: [4, 7].includes(Number(settings.choices)) ? Number(settings.choices) : 4,
     sound: typeof settings.sound === 'boolean' ? settings.sound : true,
+    effects: typeof settings.effects === 'boolean' ? settings.effects : true,
+    language: settings.language === 'he' ? 'he' : 'en',
     rate: [0.7, 0.85, 1].includes(Number(settings.rate)) ? Number(settings.rate) : 0.85,
     bonus: typeof settings.bonus === 'boolean' ? settings.bonus : true,
-    goal: [5, 10, 15, 20].includes(Number(settings.goal)) ? Number(settings.goal) : 10,
+    goal: [5, 10, 15, 20, 30].includes(goal) ? goal : 30,
+    goalVersion: 2,
   };
 }
 export function normalizeDictionary(base, stories) {
