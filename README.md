@@ -1,11 +1,14 @@
 # Emma English 2
 
-A calmer, more purposeful English–Hebrew learning app based on [Emma English](https://github.com/apestogetherstronger/emmaenglish). It runs as a static website, with no runtime packages, account setup, API keys, or application server.
+A playful English–Hebrew learning app based on [Emma English](https://github.com/apestogetherstronger/emmaenglish). It runs as a static website, with no runtime packages, account setup, API keys, or application server.
 
 ## What changed
 
-- A responsive study workspace with mobile navigation, clear touch targets, keyboard answer shortcuts, visible focus, Hebrew direction, and reduced-motion support.
-- Short 5/10/15/20-question lessons instead of an endless random quiz. Four choices by default; the original seven-choice challenge remains available in settings.
+- A dark learning path with raised coral, blue, and gold activity buttons, large outlined answer tiles, mobile navigation, visible focus, and reduced-motion support.
+- An English/Hebrew interface toggle in the top bar and settings. Hebrew mirrors the layout, translates feedback and progress, and localizes weekday labels while preserving the language of the vocabulary being practised. Switching languages retains the current question and selected answer.
+- Separate correct/incorrect feedback sounds for quiz answers and matching attempts. Sounds are synthesized locally with Web Audio, enabled by default, and can be muted independently of spoken pronunciation.
+- A default daily goal of 30 exercises, adjustable to 5/10/15/20/30. Each answered quiz question counts, including mistakes; standalone matching remains unscored. Existing ten-exercise defaults upgrade once, other saved goals are preserved, and choosing ten again in the updated settings is retained.
+- Short 5/10/15/20/30-question lessons (10 by default) instead of an endless random quiz. Four choices by default; the original seven-choice challenge remains available in settings.
 - Separate Everyday and Story vocabulary sets, plus a combined set. Both source dictionaries are retained verbatim. Duplicate English entries are grouped while retaining alternate translations.
 - A simple spaced-review schedule prioritizes words due for another look, interleaved with new words. Errors make a word due immediately; successive correct answers extend the interval to 1, 2, 4, 7, 14, then 30 days. “Confident” means three consecutive correct answers, not an externally assessed proficiency level.
 - English → Hebrew, Hebrew → English, and listening practice. Replay, slower pronunciation, and a text fallback for unavailable audio.
@@ -32,7 +35,7 @@ npm test
 npm run check
 ```
 
-The tests cover vocabulary normalization, ambiguous distractors, matching, review intervals, lesson selection, CSV escaping/import/export, duplicate imports, malformed data, local-day streaks, and settings validation. The static check validates the entrypoint and syntax, and checks quiz options against every word in every word set. Browser/device testing is separate; these checks do not validate visual layout or the availability of device speech voices.
+The tests cover vocabulary normalization, ambiguous distractors, matching, review intervals, lesson selection, CSV escaping/import/export, duplicate imports, malformed data, local-day streaks, settings migration, bilingual copy and parameters, sound muting/fallbacks, language changes during a question, and 30-question lesson completion/reloading. The static check validates the entrypoint and syntax, and checks quiz options against every word in every word set. Browser/device testing is separate; these checks do not validate visual layout or the availability of device speech voices.
 
 ## Deploy
 
@@ -56,7 +59,7 @@ Different websites cannot access one another's browser storage. Existing answers
 
 Progress is local to a browser profile on a device. Clearing site data removes it. This is not an account-based or cross-device sync service; keep a backup before changing devices. Storage failures are shown instead of silently claiming progress was saved. Simultaneous editing in multiple tabs is best-effort, not a transactional database.
 
-The app does not upload your answers or contain analytics. Optional Google Fonts requests may occur; system fonts are fallbacks. Speech uses the browser's Web Speech API, and voice availability and local/remote processing depend on the device and browser. There is no guaranteed offline mode.
+The app does not upload your answers or contain analytics. Optional Google Fonts requests may occur; system fonts are fallbacks. Answer feedback uses the browser’s Web Audio API and needs no downloaded audio. Speech uses the browser's Web Speech API, and voice availability and local/remote processing depend on the device and browser. There is no guaranteed offline mode.
 
 ## Layout
 
@@ -65,6 +68,8 @@ dist/index.html        App shell and metadata
 dist/styles.css        Responsive design and interaction states
 dist/app.js            Rendering, interactions, audio, and device storage
 dist/core.js           Pure vocabulary, learning, and import/export logic
+dist/i18n.js           English/Hebrew interface translations
+dist/sounds.js         Locally synthesized answer feedback
 dist/data/             Original vocabulary JSON files
 scripts/               Dependency-free local server and validation
 tests/                 Core behavior tests

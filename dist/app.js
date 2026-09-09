@@ -1,4 +1,6 @@
-import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js';
+import { translate, locale, dayLabel } from './i18n.js?v=2.1.0';
+import { createAnswerSounds } from './sounds.js?v=2.1.0';
+import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.1.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -13,6 +15,7 @@ const paths = {
   chevron: '<path d="m9 5 7 7-7 7"/>',
   back: '<path d="m14 5-7 7 7 7"/>',
   sound: '<path d="m11 4-6 5H2v6h3l6 5Zm4 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
+  mute: '<path d="m11 4-6 5H2v6h3l6 5Zm5 5 6 6m-6 0 6-6"/>',
   headphones: '<path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="12" width="5" height="9" rx="2"/><rect x="17" y="12" width="5" height="9" rx="2"/>',
   swap: '<path d="M3 7h17m-5-5 5 5-5 5M21 17H4m5-5-5 5 5 5"/>',
   match: '<rect x="3" y="4" width="7" height="16" rx="2"/><rect x="14" y="4" width="7" height="16" rx="2"/><path d="m5 12 1 1 2-3m8 2 1 1 2-3"/>',
@@ -36,6 +39,10 @@ let state = createState(), words = [], stats = new Map(), loadWarning = '', stor
 let view = 'learn', session = null, match = null, summary = null;
 let wordQuery = '', wordFilter = 'all', wordSort = 'practice', wordPage = 0;
 let toastTimer, confirmCallback = null, ready = false;
+const t = (key, values) => translate(state.settings.language, key, values);
+const answerSounds = createAnswerSounds(window);
+const packName = key => t(packNames[key]);
+const statusName = key => t(statusNames[key]);
 const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 const main = $('#main');
 
@@ -55,7 +62,7 @@ function loadState() {
 }
 let persistenceBlocked = false;
 function cleanSessions(list) {
-  return Array.isArray(list) ? list.filter(s => s && typeof s.id === 'string' && s.id.length < 100 && Number.isFinite(Date.parse(s.completedAt)) && Number.isInteger(s.total) && s.total > 0 && s.total <= 20 && Number.isInteger(s.correct) && s.correct >= 0 && s.correct <= s.total)
+  return Array.isArray(list) ? list.filter(s => s && typeof s.id === 'string' && s.id.length < 100 && Number.isFinite(Date.parse(s.completedAt)) && Number.isInteger(s.total) && s.total > 0 && s.total <= 30 && Number.isInteger(s.correct) && s.correct >= 0 && s.correct <= s.total)
     .map(s => ({ id: s.id, completedAt: new Date(s.completedAt).toISOString(), total: s.total, correct: s.correct })) : [];
 }
 function persist() {
@@ -68,7 +75,7 @@ function todayCount() { return state.answers.filter(a => localDay(a.ts) === loca
 function currentPool() { return forPack(words, state.settings.pack); }
 function dueWords(pool = currentPool()) { return pool.filter(w => stats.has(w.id) && stats.get(w.id).due <= Date.now()); }
 function toast(message) {
-  clearTimeout(toastTimer); const el = $('#toast'); el.textContent = message; el.hidden = false;
+  clearTimeout(toastTimer); const el = $('#toast'); el.textContent = t(message); el.hidden = false;
   toastTimer = setTimeout(() => { el.hidden = true; }, 6500);
 }
 function speak(text, language = 'en-US', manual = false, slow = false) {
@@ -88,17 +95,37 @@ function confetti() {
   const el = document.createElement('div'); el.className = 'confetti'; el.setAttribute('aria-hidden', 'true');
   for (let i = 0; i < 28; i++) {
     const p = document.createElement('span'); p.style.left = `${Math.random() * 100}%`;
-    p.style.background = ['#6752e8', '#f9c653', '#39a88b', '#a997fa'][i % 4]; p.style.animationDelay = `${Math.random() * 0.35}s`; el.append(p);
+    p.style.background = ['#ff4b55', '#ffc800', '#58cc02', '#49c0f8'][i % 4]; p.style.animationDelay = `${Math.random() * 0.35}s`; el.append(p);
   }
   document.body.append(el); setTimeout(() => el.remove(), 2100);
 }
-function packOptions(value) { return Object.entries(packNames).filter(([key]) => forPack(words, key).length).map(([key, name]) => `<option value="${key}" ${value === key ? 'selected' : ''}>${name}</option>`).join(''); }
+function packOptions(value) { return Object.entries(packNames).filter(([key]) => forPack(words, key).length).map(([key, name]) => `<option value="${key}" ${value === key ? 'selected' : ''}>${t(name)}</option>`).join(''); }
 function noticeMarkup() {
-  return [storageWarning, loadWarning].filter(Boolean).map(t => `<div class="notice">${icon('info')}<span>${escape(t)}</span></div>`).join('');
+  return [storageWarning, loadWarning].filter(Boolean).map(t => `<div class="notice">${icon('info')}<span>${escape(typeof t === 'string' ? translate(state.settings.language, t) : translate(state.settings.language, 'The {pack} list could not load. You can still practise the available words. Refresh to try again.', { pack: packName(t.pack) }))}</span></div>`).join('');
+}
+function applyLanguage() {
+  const language = state.settings.language;
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
+  document.title = `Emma English · ${t('Your daily adventure')}`;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-label]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nLabel)); });
+  const toggle = $('#language-toggle');
+  toggle.textContent = language === 'en' ? 'עברית' : 'English';
+  toggle.lang = language === 'en' ? 'he' : 'en';
+  toggle.dir = language === 'en' ? 'rtl' : 'ltr';
+  toggle.setAttribute('aria-label', language === 'en' ? 'Switch interface to Hebrew' : 'החלפת שפת הממשק לאנגלית');
+  const sound = $('#sound-toggle');
+  sound.innerHTML = icon(state.settings.effects ? 'sound' : 'mute');
+  sound.setAttribute('aria-label', t(state.settings.effects ? 'Turn answer sounds off' : 'Turn answer sounds on'));
+  sound.setAttribute('aria-pressed', String(state.settings.effects));
 }
 function header() {
-  const streak = streakDays(state.answers);
-  $('#streak-pill').innerHTML = `${icon('fire')}<span>${streak ? `${streak} day${streak === 1 ? '' : 's'}` : 'A fresh start'}</span>`;
+  applyLanguage();
+  const streak = streakDays(state.answers), xp = state.answers.filter(a => a.correct).length * 10;
+  $('#streak-pill').innerHTML = `${icon('fire')}<span>${streak}</span><span class="sr-only">${t('day streak')}</span>`;
+  $('#xp-pill').innerHTML = `${icon('star')}<span>${xp.toLocaleString(locale(state.settings.language))}</span><span class="stat-unit">XP</span>`;
+  document.body.classList.toggle('in-practice', ['lesson', 'match'].includes(view));
   document.querySelectorAll('[data-page]').forEach(a => {
     if (a.dataset.page === (['lesson', 'match', 'summary'].includes(view) ? 'learn' : view)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
@@ -124,21 +151,24 @@ function renderHome() {
   const today = todayCount(), goal = state.settings.goal, percent = Math.min(1, today / goal);
   const due = dueWords().length, pool = currentPool(), count = Math.min(state.settings.questions, pool.length);
   const featured = pool.find(w => w.id === 'curious') || pool.find(w => w.id === 'discover') || pool[0];
-  const confident = [...stats.values()].filter(s => wordStatus(s) === 'confident').length;
-  main.innerHTML = `${noticeMarkup()}
-    <div class="page-heading"><div><h1>${state.answers.length ? 'Ready for your next little win?' : 'Hello, curious mind.'}</h1><p>Make a little room for English today.</p></div><div class="pack-control"><label for="home-pack">Your word set</label><select id="home-pack" data-change="pack">${packOptions(state.settings.pack)}</select></div></div>
-    <div class="hero-grid">
-      <section class="lesson-start" aria-labelledby="daily-title"><div class="hero-label">${icon('star')} YOUR DAILY PRACTICE</div><h2 id="daily-title">${today >= goal ? 'Keep the good\nwords coming.' : 'Small lesson.\nBig little win.'}</h2><p>${count} questions <span aria-hidden="true">·</span> ${packNames[state.settings.pack]}</p><button class="primary-button yellow" data-action="start">${state.answers.length ? 'Start my lesson' : 'Let’s do this'} ${icon('arrow')}</button><div class="hero-letters" aria-hidden="true">Aa<span>אבג</span></div></section>
-      <section class="goal-card" aria-label="Daily practice goal"><div class="goal-label">Today's goal ${icon('target')}</div><div class="goal-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="51"/><circle class="ring-fill" cx="60" cy="60" r="51" stroke-dasharray="320.44" stroke-dashoffset="${320.44 * (1 - percent)}"/></svg><div class="goal-value">${today}<small> / ${goal}</small></div></div><p>questions practised today</p><div class="goal-note">${today >= goal ? 'Daily goal complete. Nice work!' : today ? `${goal - today} more to reach your goal` : 'One little lesson is all it takes.'}</div></section>
+  const steps = [
+    { action: 'start', symbol: 'star', title: t(state.answers.length ? 'Continue learning' : 'Start a lesson'), detail: t('{count} questions', { count }), color: 'coral', current: true },
+    { action: 'listen', symbol: 'headphones', title: t('Listen & learn'), detail: t(canSpeak ? 'Hear it. Know it.' : 'Audio unavailable here'), color: 'blue', disabled: !canSpeak },
+    { action: 'reverse', symbol: 'swap', title: t('Flip the words'), detail: t('Hebrew to English'), color: 'coral' },
+    { action: 'match', symbol: 'match', title: t('Make a match'), detail: t('Find the word pairs'), color: 'gold' },
+  ];
+  main.innerHTML = `${noticeMarkup()}<div class="learning-layout"><section class="path-panel" aria-label="${t('Your learning path')}">
+    <div class="path-heading"><h1>${t('Your learning path')}</h1><label class="sr-only" for="home-pack">${t('Your word set')}</label><select id="home-pack" data-change="pack">${packOptions(state.settings.pack)}</select></div>
+    <div class="unit-banner"><div><div class="eyebrow">${t('DAILY PRACTICE')}</div><h2>${t(today >= goal ? 'Goal complete! Keep exploring' : 'Let’s keep learning')}</h2></div><span class="unit-symbol">${icon('book')}</span></div>
+    <div class="path-progress"><span>${t('{count} exercises today', { count: today })}</span><strong><bdi>${Math.min(today, goal)} / ${goal}</bdi></strong><div class="progress-track" role="progressbar" aria-label="${t('Daily goal')}" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${Math.min(today, goal)}"><span style="width:${percent * 100}%"></span></div></div>
+    <div class="learning-path">${steps.map((step, i) => `<div class="path-stop stop-${i} ${step.color}">${step.current ? `<span class="start-bubble">${t('YOUR NEXT STEP')}</span>` : ''}<button class="path-node ${step.current ? 'current' : ''}" data-action="${step.action}" aria-label="${escape(step.title)}" ${step.disabled ? 'disabled' : ''}>${icon(step.symbol)}</button><div class="path-label"><strong>${step.title}</strong><span>${step.detail}</span></div></div>`).join('')}
+      <div class="path-finish ${today >= goal ? 'reached' : ''}"><div class="finish-icon">${icon('trophy')}</div><strong>${t(today >= goal ? 'Daily goal complete. Nice work!' : '{count} exercises per day', { count: goal })}</strong></div>
     </div>
-    <div class="section-title"><h2>A different way to practise</h2><span class="subtle">Find your rhythm</span></div>
-    <div class="practice-grid">
-      <button class="practice-card" data-action="listen" ${canSpeak ? '' : 'disabled'}><span class="card-icon">${icon('headphones')}</span><span><span class="practice-title">Listen & learn</span><span class="practice-description">${canSpeak ? 'Hear it. Know it.' : 'Audio unavailable here'}</span></span><span class="practice-arrow">${icon('chevron')}</span></button>
-      <button class="practice-card" data-action="reverse"><span class="card-icon teal">${icon('swap')}</span><span><span class="practice-title">Flip the words</span><span class="practice-description">Hebrew to English</span></span><span class="practice-arrow">${icon('chevron')}</span></button>
-      <button class="practice-card" data-action="match"><span class="card-icon amber">${icon('match')}</span><span><span class="practice-title">Make a match</span><span class="practice-description">Find the word pairs</span></span><span class="practice-arrow">${icon('chevron')}</span></button>
-    </div>
-    <div class="home-bottom"><section class="review-card"><div><h3>${due ? `${due} word${due === 1 ? '' : 's'} ready for another try` : state.answers.length ? 'Your words are finding their place.' : 'Every word starts somewhere.'}</h3><p>${due ? 'A quick revisit helps them stick.' : confident ? `${confident} words answered correctly 3 times in a row.` : state.answers.length ? 'Come back tomorrow for a little review.' : 'Your first lesson will get things going.'}</p></div><button class="text-button" data-action="${due ? 'review' : 'words'}">${due ? 'Practise' : 'My words'} ${icon('arrow')}</button></section>
-      <section class="word-spotlight" aria-label="Word spotlight"><div><div class="eyebrow">A WORD TO KEEP</div><strong>${escape(featured.en)} <span lang="he" dir="rtl">${escape(featured.he)}</span></strong></div><button class="icon-button" data-speak="${escape(featured.id)}" aria-label="Hear ${escape(featured.en)}">${icon('sound')}</button></section></div>`;
+    </section><aside class="learning-rail">
+      <section class="goal-card"><div class="goal-label">${icon('target')}<h2>${t('Daily goal')}</h2><button class="text-button" data-action="settings">${t('Change goal')}</button></div><div class="goal-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="51"/><circle class="ring-fill" cx="60" cy="60" r="51" stroke-dasharray="320.44" stroke-dashoffset="${320.44 * (1 - percent)}"/></svg><div class="goal-value"><bdi>${today}<small> / ${goal}</small></bdi><span>${t('Exercises')}</span></div></div><p>${t(today >= goal ? 'Daily goal complete. Nice work!' : '{count} more to reach your goal', { count: Math.max(0, goal - today) })}</p></section>
+      <section class="review-card"><span class="card-icon">${icon('retry')}</span><h2>${t('Ready for a review?')}</h2><p>${due ? t('{count} words ready for another try', { count: due }) : t('Your next review will appear here.')}</p><button class="secondary-button" data-action="${due ? 'review' : 'words'}">${t(due ? 'Practise' : 'My words')} ${icon('arrow')}</button></section>
+      <section class="word-spotlight"><div class="eyebrow">${t('WORD SPOTLIGHT')}</div><div class="spotlight-word"><strong lang="en" dir="ltr">${escape(featured.en)}</strong><button class="icon-button" data-speak="${escape(featured.id)}" aria-label="${escape(t('Hear {word}', { word: featured.en }))}">${icon('sound')}</button></div><span lang="he" dir="rtl">${escape(featured.he)}</span></section>
+    </aside></div>`;
 }
 function startLesson(mode = 'translate', reviewOnly = false, overrideWords = null) {
   const pool = currentPool();
@@ -158,24 +188,20 @@ function pronounceQuestion() {
   else if (session.mode === 'translate') speak(session.current.word.en);
 }
 function lessonTop(label, progress, score) {
-  return `<div class="lesson-top"><button class="icon-button" data-action="leave" aria-label="Leave practice">${icon('close')}</button><div class="lesson-progress-wrap"><div class="lesson-progress-label"><span>${label}</span><span>${Math.round(progress)}%</span></div><div class="progress-track" role="progressbar" aria-label="Lesson progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}"><span style="width:${progress}%"></span></div></div><div class="lesson-score">${icon('star')} ${score} XP</div></div>`;
+  return `<div class="lesson-top"><button class="icon-button" data-action="leave" aria-label="${t('Leave practice')}">${icon('close')}</button><div class="lesson-progress-wrap"><div class="lesson-progress-label"><span>${label}</span><bdi>${Math.round(progress)}%</bdi></div><div class="progress-track" role="progressbar" aria-label="${t('Lesson progress')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress)}"><span style="width:${progress}%"></span></div></div><div class="lesson-score">${icon('star')}<bdi>${score} XP</bdi></div></div>`;
 }
 function renderLesson() {
   const { current: q, index, queue, mode, records } = session;
   const { word, answered, correct, options, chosen } = q, reverse = mode === 'reverse', listening = mode === 'listen';
-  const target = reverse ? word.en : word.he;
-  const prompt = reverse ? word.he : word.en;
-  main.innerHTML = `<div class="lesson-shell">${lessonTop(`Question ${index + 1} of ${queue.length}`, records.length / queue.length * 100, records.filter(a => a.correct).length * 10)}
-    <section class="question-card" aria-labelledby="question-instruction"><span class="question-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><h1 class="eyebrow" id="question-instruction">${listening ? 'Listen. What does the word mean?' : reverse ? 'Choose the English meaning' : 'Choose the Hebrew meaning'}</h1>
-      ${listening && !q.revealed && !answered ? `<div class="prompt-row"><button class="listen-button" data-action="replay" aria-label="Play the English word">${icon('sound')}</button></div><div class="listen-label"><button class="text-button" data-action="slow">Play slowly</button> <span aria-hidden="true">·</span> <button class="text-button" data-action="reveal">Show word</button></div>` : `<div class="prompt-row"><div class="prompt-word" lang="${reverse ? 'he' : 'en'}" dir="${reverse ? 'rtl' : 'ltr'}">${escape(prompt)}</div><button class="icon-button" data-action="replay" aria-label="Hear ${escape(prompt)}">${icon('sound')}</button></div>`}
-      <div class="choices" role="group" aria-label="Answer choices">${options.map((option, i) => {
-        const isCorrect = option === target;
-        const style = answered ? isCorrect ? 'correct' : chosen === option ? 'wrong' : 'faded' : '';
-        return `<button class="choice ${style}" lang="${reverse ? 'en' : 'he'}" data-choice="${i}" ${answered ? 'disabled' : ''}><span class="choice-key" aria-hidden="true">${i + 1}</span><span class="choice-label" dir="${reverse ? 'ltr' : 'rtl'}">${escape(option)}</span>${answered && (isCorrect || chosen === option) ? icon(isCorrect ? 'check' : 'close') : ''}</button>`;
-      }).join('')}</div>
-      <p class="quiz-helper">${icon('info')} ${answered ? 'Take a moment to remember this one.' : 'Choose one answer. Take your time.'}</p>
-    </section>
-    <div class="lesson-bottom">${answered ? `<div class="feedback ${correct ? '' : 'incorrect'}" role="status"><span class="feedback-icon">${icon(correct ? 'check' : 'book')}</span><div><strong>${correct ? ['You’ve got it!', 'That’s the one!', 'Nicely done!'][index % 3] : 'A new word to remember.'}</strong><p><span lang="en">${escape(word.en)}</span> <span aria-hidden="true">=</span> <span lang="he" dir="rtl">${escape(word.translations.join(' / '))}</span></p></div></div><button id="continue-button" class="primary-button" data-action="next">${index + 1 === queue.length ? 'See my results' : 'Continue'} ${icon('arrow')}</button>` : `<button class="text-button" data-action="skip">I don’t know yet</button><span class="subtle" style="font-size:.8rem">${listening ? 'Tap the speaker to listen again' : `Keyboard: ${options.map((_, i) => i + 1).join('–')}`}</span>`}</div></div>`;
+  const target = reverse ? word.en : word.he, prompt = reverse ? word.he : word.en;
+  main.innerHTML = `<div class="lesson-shell">${lessonTop(t('Question {current} of {total}', { current: index + 1, total: queue.length }), records.length / queue.length * 100, records.filter(a => a.correct).length * 10)}
+    <section class="question-card" aria-labelledby="question-instruction"><span class="break-label">${icon(listening ? 'headphones' : 'star')}${t('DAILY PRACTICE')}</span><h1 id="question-instruction">${t(listening ? 'Listen. What does the word mean?' : reverse ? 'Choose the English meaning' : 'Choose the Hebrew meaning')}</h1>
+      ${listening && !q.revealed && !answered ? `<div class="prompt-row"><button class="listen-button" data-action="replay" aria-label="${t('Play the English word')}">${icon('sound')}</button></div><div class="listen-label"><button class="text-button" data-action="slow">${t('Play slowly')}</button><span aria-hidden="true">·</span><button class="text-button" data-action="reveal">${t('Show word')}</button></div>` : `<div class="prompt-row"><div class="prompt-word" lang="${reverse ? 'he' : 'en'}" dir="${reverse ? 'rtl' : 'ltr'}">${escape(prompt)}</div><button class="icon-button" data-action="replay" aria-label="${escape(t('Hear {word}', { word: prompt }))}">${icon('sound')}</button></div>`}
+      <div class="choices" role="group" aria-label="${t('Answer choices')}">${options.map((option, i) => {
+        const isCorrect = option === target, style = answered ? isCorrect ? 'correct' : chosen === option ? 'wrong' : 'faded' : '';
+        return `<button class="choice ${style}" data-choice="${i}" ${answered ? 'disabled' : ''}><span class="choice-key" aria-hidden="true">${i + 1}</span><span class="choice-label" lang="${reverse ? 'en' : 'he'}" dir="${reverse ? 'ltr' : 'rtl'}">${escape(option)}</span>${answered && (isCorrect || chosen === option) ? icon(isCorrect ? 'check' : 'close') : ''}</button>`;
+      }).join('')}</div><p class="quiz-helper">${t(answered ? 'Take a moment to remember this one.' : 'Choose one answer. Take your time.')}</p>
+    </section><div class="lesson-bottom ${answered ? correct ? 'is-correct' : 'is-wrong' : ''}">${answered ? `<div class="feedback" role="status"><span class="feedback-icon">${icon(correct ? 'check' : 'close')}</span><div><strong>${t(correct ? ['You’ve got it!', 'That’s the one!', 'Nicely done!'][index % 3] : 'A new word to remember.')}</strong><p><bdi lang="en">${escape(word.en)}</bdi> <span aria-hidden="true">=</span> <bdi lang="he">${escape(word.translations.join(' / '))}</bdi></p></div></div><button id="continue-button" class="primary-button" data-action="next">${t(index + 1 === queue.length ? 'See my results' : 'Continue')} ${icon('arrow')}</button>` : `<button class="secondary-button" data-action="skip">${t('I don’t know yet')}</button><span class="keyboard-hint">${t(listening ? 'Tap the speaker to listen again' : 'Keyboard: {keys}', { keys: options.map((_, i) => i + 1).join('–') })}</span>`}</div></div>`;
 }
 function answer(index) {
   if (view !== 'lesson' || !session || session.current.answered) return;
@@ -184,7 +210,7 @@ function answer(index) {
   // Lock before any side effect so double taps and key repeats cannot score twice.
   q.answered = true; q.chosen = chosen; q.correct = chosen === (session.mode === 'reverse' ? q.word.en : q.word.he);
   const record = answerRecord(q.word, chosen, q.correct, session.mode, performance.now() - q.start);
-  session.records.push(record); state.answers.push(record); refreshStats(); persist(); cancelSpeech();
+  session.records.push(record); state.answers.push(record); refreshStats(); persist(); cancelSpeech(); answerSounds.play(q.correct, state.settings.effects);
   renderLesson(); header(); $('#continue-button')?.focus({ preventScroll: true });
 }
 function nextQuestion() {
@@ -213,12 +239,12 @@ function startMatch(isBonus = false) {
 }
 function renderMatch(focusKey = null) {
   const m = match;
-  const column = (items, side) => `<div class="match-column"><div class="match-column-title" ${side === 'he' ? 'lang="he" dir="rtl"' : ''}>${side === 'en' ? 'ENGLISH' : 'עברית'}</div>${items.map(w => {
+  const column = (items, side) => `<div class="match-column"><div class="match-column-title">${t(side === 'en' ? 'English' : 'Hebrew')}</div>${items.map(w => {
     const key = `${side}:${w.id}`;
     const classes = [m.matched.has(w.id) ? 'matched' : '', m.selected?.key === key ? 'selected' : '', m.wrong === key ? 'mismatch' : ''].join(' ');
-    return `<button class="pair-button ${classes}" data-pair="${escape(key)}" data-side="${side}" data-word="${escape(w.id)}" lang="${side}" dir="${side === 'he' ? 'rtl' : 'ltr'}" aria-pressed="${m.selected?.key === key}" ${m.matched.has(w.id) ? 'disabled' : ''}>${escape(w[side])}${m.matched.has(w.id) ? ' ✓' : ''}</button>`;
+    return `<button class="pair-button ${classes}" data-pair="${escape(key)}" data-side="${side}" data-word="${escape(w.id)}" aria-pressed="${m.selected?.key === key}" ${m.matched.has(w.id) ? 'disabled' : ''}><span lang="${side}" dir="${side === 'he' ? 'rtl' : 'ltr'}">${escape(w[side])}</span>${m.matched.has(w.id) ? icon('check') : ''}</button>`;
   }).join('')}</div>`;
-  main.innerHTML = `<div class="lesson-shell">${lessonTop(m.bonus ? 'A little word break' : 'Make a match', m.matched.size / m.pairs.length * 100, m.bonus ? session.records.filter(r => r.correct).length * 10 : 0)}<section class="question-card"><span class="break-label">${m.bonus ? 'HALFWAY THERE' : 'WORD PLAY'}</span><h1 style="font-size:1.9rem">Better together.</h1><p class="subtle" style="margin-top:8px;font-size:.9rem">Match each English word to its Hebrew meaning.</p><div class="match-grid">${column(m.left, 'en')}${column(m.right, 'he')}</div><div class="match-status" role="status">${escape(m.status)}</div></section><div class="lesson-bottom"><span class="subtle" style="font-size:.85rem">${m.matched.size} of ${m.pairs.length} pairs found${m.moves ? ` · ${m.moves} tries` : ''}</span>${m.complete ? `<button class="primary-button" data-action="match-done">${m.bonus ? 'Back to my lesson' : 'Play again'} ${icon('arrow')}</button>` : m.bonus ? '<button class="text-button" data-action="skip-match">Skip this break</button>' : '<button class="text-button" data-action="home">Back to learning</button>'}</div></div>`;
+  main.innerHTML = `<div class="lesson-shell matching-shell">${lessonTop(t(m.bonus ? 'A little word break' : 'Make a match'), m.matched.size / m.pairs.length * 100, m.bonus ? session.records.filter(r => r.correct).length * 10 : 0)}<section class="question-card"><span class="break-label">${icon('star')}${t(m.bonus ? 'HALFWAY THERE' : 'WARM-UP')}</span><h1>${t('Tap the matching pairs')}</h1><p class="question-description">${t('Match each English word to its Hebrew meaning.')}</p><div class="match-grid">${column(m.left, 'en')}${column(m.right, 'he')}</div><div class="match-status" role="status">${t(m.status)}</div></section><div class="lesson-bottom"><span class="subtle">${t('{found} of {total} pairs found', { found: m.matched.size, total: m.pairs.length })}${m.moves ? ` · ${t('{count} tries', { count: m.moves })}` : ''}</span>${m.complete ? `<button class="primary-button" data-action="match-done">${t(m.bonus ? 'Back to my lesson' : 'Play again')} ${icon('arrow')}</button>` : `<button class="secondary-button" data-action="${m.bonus ? 'skip-match' : 'home'}">${t(m.bonus ? 'Skip this break' : 'Back to learning')}</button>`}</div></div>`;
   if (focusKey) [...main.querySelectorAll('[data-pair]')].find(b => b.dataset.pair === focusKey && !b.disabled)?.focus({ preventScroll: true });
 }
 function choosePair(button) {
@@ -230,7 +256,7 @@ function choosePair(button) {
     match.status = match.selected ? 'Now find its partner on the other side.' : 'Choose a word, then its match on the other side.';
     if (side === 'en' && match.selected) speak(match.pairs.find(w => w.id === id).en);
   } else {
-    match.moves++;
+    match.moves++; cancelSpeech(); answerSounds.play(match.selected.id === id, state.settings.effects);
     if (match.selected.id === id) {
       match.matched.add(id); match.selected = null; match.status = 'That’s a match. Keep going!';
       if (match.matched.size === match.pairs.length) { match.complete = true; match.status = 'All together! You found every pair.'; confetti(); }
@@ -246,10 +272,10 @@ function finishMatch() {
 }
 function renderSummary() {
   const total = summary.records.length, correct = summary.records.filter(r => r.correct).length, missed = summary.records.filter(r => !r.correct);
-  main.innerHTML = `<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle" style="margin-bottom:10px">LESSON COMPLETE</div><h1>${correct === total ? 'Look at you go!' : 'A little better than before.'}</h1><p>${correct === total ? 'Every word, every time. That’s a lovely little win.' : 'Every try counts. You showed up and kept learning.'}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>XP earned</span></div><div class="summary-stat"><strong>${correct}/${total}</strong><span>correct answers</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>accuracy</span></div></div>${missed.length ? `<div class="review-list"><h3>A few words to take with you</h3>${missed.map(r => `<div class="review-row"><span>${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : '<div class="notice" style="justify-content:center">Come back tomorrow to help these words stick.</div>'}<div class="summary-actions">${missed.length ? '<button class="primary-button" data-action="retry-missed">Try those words again</button>' : '<button class="primary-button" data-action="start">Another little lesson</button>'}<button class="secondary-button" data-action="home">Back to learning</button></div></section>`;
+  main.innerHTML = `<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle">${t('LESSON COMPLETE')}</div><h1>${t(correct === total ? 'Perfect practice!' : 'One step stronger!')}</h1><p>${t(correct === total ? 'Every word, every time. Well done!' : 'Every try counts. Keep learning.')}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>${t('XP earned')}</span></div><div class="summary-stat"><strong><bdi>${correct}/${total}</bdi></strong><span>${t('correct answers')}</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>${t('accuracy')}</span></div></div>${missed.length ? `<div class="review-list"><h2>${t('Words to try again')}</h2>${missed.map(r => `<div class="review-row"><span lang="en" dir="ltr">${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : `<div class="notice">${t('Come back tomorrow to help these words stick.')}</div>`}<div class="summary-actions"><button class="primary-button" data-action="${missed.length ? 'retry-missed' : 'start'}">${t(missed.length ? 'Try those words again' : 'Another lesson')}</button><button class="secondary-button" data-action="home">${t('Back to learning')}</button></div></section>`;
 }
 function renderWords() {
-  main.innerHTML = `${noticeMarkup()}<div class="page-heading"><div><h1>Your growing word collection.</h1><p>Listen, explore, and find the words that need another try.</p></div></div><div class="toolbar"><label class="search-box" for="word-search">${icon('search')}<input type="search" id="word-search" value="${escape(wordQuery)}" placeholder="Find a word in English or Hebrew" aria-label="Search English and Hebrew words" autocomplete="off"></label><select data-change="word-pack" aria-label="Word set">${packOptions(state.settings.pack)}</select><select data-change="sort" aria-label="Sort words"><option value="practice" ${wordSort === 'practice' ? 'selected' : ''}>Needs practice first</option><option value="alpha" ${wordSort === 'alpha' ? 'selected' : ''}>English A–Z</option><option value="accuracy" ${wordSort === 'accuracy' ? 'selected' : ''}>Lowest accuracy first</option><option value="recent" ${wordSort === 'recent' ? 'selected' : ''}>Recently practised</option></select></div><div class="word-filters" role="group" aria-label="Filter learning status">${[['all', 'All words'], ...Object.entries(statusNames)].map(([key, label]) => `<button class="filter-button ${wordFilter === key ? 'active' : ''}" data-filter="${key}" aria-pressed="${wordFilter === key}">${label}</button>`).join('')}</div><div id="word-results"></div>`;
+  main.innerHTML = `${noticeMarkup()}<div class="page-heading"><h1>${t('Your word collection')}</h1><p>${t('Listen, explore, and find the words that need another try.')}</p></div><div class="toolbar"><label class="search-box" for="word-search">${icon('search')}<input type="search" id="word-search" value="${escape(wordQuery)}" placeholder="${t('Find a word in English or Hebrew')}" aria-label="${t('Search English and Hebrew words')}" autocomplete="off"></label><select data-change="word-pack" aria-label="${t('Word set')}">${packOptions(state.settings.pack)}</select><select data-change="sort" aria-label="${t('Sort words')}">${[['practice', 'Needs practice first'], ['alpha', 'English A–Z'], ['accuracy', 'Lowest accuracy first'], ['recent', 'Recently practised']].map(([key, label]) => `<option value="${key}" ${wordSort === key ? 'selected' : ''}>${t(label)}</option>`).join('')}</select></div><div class="word-filters" role="group" aria-label="${t('Filter learning status')}">${[['all', 'All words'], ...Object.entries(statusNames)].map(([key, label]) => `<button class="filter-button ${wordFilter === key ? 'active' : ''}" data-filter="${key}" aria-pressed="${wordFilter === key}">${t(label)}</button>`).join('')}</div><div id="word-results"></div>`;
   renderWordTable();
 }
 function renderWordTable() {
@@ -265,30 +291,30 @@ function renderWordTable() {
   });
   const pageSize = 20, pages = Math.max(1, Math.ceil(list.length / pageSize)); wordPage = Math.min(wordPage, pages - 1);
   const slice = list.slice(wordPage * pageSize, (wordPage + 1) * pageSize);
-  $('#word-results').innerHTML = !list.length ? `<div class="empty-state"><div class="card-icon">${icon('search')}</div><h2>No words here yet.</h2><p>${wordQuery ? 'Try a different spelling or a wider filter.' : 'Try another filter, or take a lesson to get your collection growing.'}</p><button class="text-button" data-action="clear-filters">Clear filters</button></div>` : `<div class="table-wrap"><table class="word-table"><caption class="sr-only">Your vocabulary and practice results. Confident means three consecutive correct answers.</caption><thead><tr><th scope="col">ENGLISH</th><th scope="col">HEBREW</th><th scope="col">PROGRESS</th><th scope="col">ACCURACY</th></tr></thead><tbody>${slice.map(w => { const s = stats.get(w.id), status = wordStatus(s); return `<tr><td><div class="word-and-sound"><button class="icon-button" data-speak="${escape(w.id)}" aria-label="Hear ${escape(w.en)}">${icon('sound')}</button><span>${escape(w.en)}</span></div></td><td lang="he" dir="rtl">${escape(w.translations.join(' / '))}</td><td><span class="badge ${status}">${statusNames[status]}</span></td><td>${s ? `${Math.round(s.correct / s.attempts * 100)}% <span class="review-accuracy">(${s.correct}/${s.attempts})</span>` : '<span class="subtle">—</span>'}</td></tr>`; }).join('')}</tbody></table></div><div class="table-footer"><span>${wordPage * pageSize + 1}–${Math.min((wordPage + 1) * pageSize, list.length)} of ${list.length.toLocaleString()} words</span><div class="pagination"><button class="icon-button" data-action="prev-page" aria-label="Previous page" ${wordPage ? '' : 'disabled'}>${icon('back')}</button><span>${wordPage + 1} / ${pages}</span><button class="icon-button" data-action="next-page" aria-label="Next page" ${wordPage + 1 >= pages ? 'disabled' : ''}>${icon('chevron')}</button></div></div>`;
+  $('#word-results').innerHTML = !list.length ? `<div class="empty-state"><div class="card-icon">${icon('search')}</div><h2>${t('No words here yet.')}</h2><p>${t(wordQuery ? 'Try a different spelling or a wider filter.' : 'Try another filter, or take a lesson to grow your collection.')}</p><button class="text-button" data-action="clear-filters">${t('Clear filters')}</button></div>` : `<div class="table-wrap"><table class="word-table"><caption class="sr-only">${t('Your vocabulary and practice results. Confident means three consecutive correct answers.')}</caption><thead><tr>${['English', 'Hebrew', 'Progress', 'Accuracy'].map(label => `<th scope="col">${t(label)}</th>`).join('')}</tr></thead><tbody>${slice.map(w => { const stat = stats.get(w.id), status = wordStatus(stat); return `<tr><td><div class="word-and-sound"><button class="icon-button" data-speak="${escape(w.id)}" aria-label="${escape(t('Hear {word}', { word: w.en }))}">${icon('sound')}</button><span lang="en" dir="ltr">${escape(w.en)}</span></div></td><td lang="he" dir="rtl">${escape(w.translations.join(' / '))}</td><td><span class="badge ${status}">${statusName(status)}</span></td><td>${stat ? `<bdi>${Math.round(stat.correct / stat.attempts * 100)}% <span class="review-accuracy">(${stat.correct}/${stat.attempts})</span></bdi>` : '<span class="subtle">—</span>'}</td></tr>`; }).join('')}</tbody></table></div><div class="table-footer"><span>${t('{first}–{last} of {count} words', { first: wordPage * pageSize + 1, last: Math.min((wordPage + 1) * pageSize, list.length), count: list.length.toLocaleString(locale(state.settings.language)) })}</span><div class="pagination"><button class="icon-button" data-action="prev-page" aria-label="${t('Previous page')}" ${wordPage ? '' : 'disabled'}>${icon('back')}</button><bdi>${wordPage + 1} / ${pages}</bdi><button class="icon-button" data-action="next-page" aria-label="${t('Next page')}" ${wordPage + 1 >= pages ? 'disabled' : ''}>${icon('chevron')}</button></div></div>`;
 }
 function renderProgress() {
   const total = state.answers.length, correct = state.answers.filter(a => a.correct).length;
   const counts = { learning: 0, confident: 0, review: 0 };
   for (const w of words) { const status = wordStatus(stats.get(w.id)); if (status !== 'new') counts[status]++; }
   const practiced = counts.learning + counts.confident + counts.review;
-  const week = weekActivity(state.answers), peak = Math.max(1, ...week.map(d => d.count));
-  const statCards = [['Words practised', practiced, 'Distinct English words', 'book'], ['Accuracy', total ? `${Math.round(correct / total * 100)}%` : '—', `${correct} correct of ${total} answers`, 'target'], ['Current streak', streakDays(state.answers), 'Days with a little practice', 'fire'], ['Total XP', correct * 10, '10 XP for each correct answer', 'star']];
-  main.innerHTML = `${noticeMarkup()}<div class="page-heading"><div><h1>Look how far you’re growing.</h1><p>Your progress across all word sets. One little step at a time.</p></div></div><div class="stats-grid">${statCards.map(([label, value, foot, symbol]) => `<section class="stat-card"><div class="stat-top"><span>${label}</span>${icon(symbol)}</div><div class="big-number">${typeof value === 'number' ? value.toLocaleString() : value}</div><p class="stat-foot">${foot}</p></section>`).join('')}</div>
-    ${!total ? '<div class="empty-state" style="margin-bottom:24px"><h2>Your story starts with one word.</h2><p>Finish a few questions and watch your progress take shape.</p><button class="primary-button" data-action="start">Start my first lesson</button></div>' : ''}
-    <div class="progress-grid"><section class="panel"><h2>Your week in words</h2><p>Questions practised over the last seven days</p><div class="week-chart" role="img" aria-label="${escape(week.map(d => `${d.label}: ${d.count} questions`).join(', '))}">${week.map((d, i) => `<div class="day-bar ${i === 6 ? 'today' : ''}" aria-hidden="true"><div class="bar-space"><span class="bar-count">${d.count || ''}</span><span class="bar" style="height:${Math.max(4, d.count / peak * 95)}px"></span></div><span class="bar-label">${d.label}</span></div>`).join('')}</div></section><section class="panel"><h2>Words finding their place</h2><p>“Confident” means 3 correct answers in a row.</p><div class="learning-breakdown" aria-hidden="true">${[['confident', '#249573'], ['learning', '#8975ed'], ['review', '#e9b744']].map(([k, color]) => `<span style="width:${practiced ? counts[k] / practiced * 100 : 0}%;background:${color}"></span>`).join('')}</div>${[['confident', '#249573'], ['learning', '#8975ed'], ['review', '#e9b744']].map(([k, color]) => `<div class="breakdown-row"><span class="breakdown-label"><i class="legend-square" style="background:${color}" aria-hidden="true"></i>${statusNames[k]}</span><strong>${counts[k]}</strong></div>`).join('')}<p class="progress-badge">${state.sessions.length} lesson${state.sessions.length === 1 ? '' : 's'} completed</p></section></div>
-    <section class="data-panel"><div><h3>Keep your progress close.</h3><p>Progress stays in this browser on this device. Download a backup to move it, or import your original Emma English answer-history CSV.</p></div><div class="data-actions"><button class="secondary-button" data-action="export-csv" ${total ? '' : 'disabled'}>${icon('download')} CSV</button><button class="secondary-button" data-action="backup">Backup</button><button class="secondary-button" data-action="import">${icon('upload')} Import</button></div></section><input id="import-file" type="file" accept=".csv,.json,text/csv,application/json" hidden>`;
+  const week = weekActivity(state.answers).map(d => ({ ...d, label: dayLabel(d.day, state.settings.language) })), peak = Math.max(1, ...week.map(d => d.count));
+  const statCards = [['Words practised', practiced, t('Distinct English words'), 'book'], ['Accuracy', total ? `${Math.round(correct / total * 100)}%` : '—', t('{correct} correct of {total} answers', { correct, total }), 'target'], ['Current streak', streakDays(state.answers), t('Days with a little practice'), 'fire'], ['Total XP', correct * 10, t('10 XP for each correct answer'), 'star']];
+  main.innerHTML = `${noticeMarkup()}<div class="page-heading"><h1>${t('Your progress')}</h1><p>${t('Every exercise moves you forward.')}</p></div><div class="stats-grid">${statCards.map(([label, value, foot, symbol]) => `<section class="stat-card"><div class="stat-top"><span>${t(label)}</span>${icon(symbol)}</div><div class="big-number"><bdi>${typeof value === 'number' ? value.toLocaleString(locale(state.settings.language)) : value}</bdi></div><p class="stat-foot">${foot}</p></section>`).join('')}</div>
+    ${!total ? `<div class="empty-state"><h2>${t('Your story starts with one word.')}</h2><p>${t('Finish a few questions and watch your progress take shape.')}</p><button class="primary-button" data-action="start">${t('Start my first lesson')}</button></div>` : ''}
+    <div class="progress-grid"><section class="panel"><h2>${t('Your week in words')}</h2><p>${t('Exercises over the last seven days')}</p><div class="week-chart" role="img" aria-label="${escape(week.map(d => t('{day}: {count} exercises', { day: d.label, count: d.count })).join(', '))}">${week.map((d, i) => `<div class="day-bar ${i === 6 ? 'today' : ''}" aria-hidden="true"><div class="bar-space"><span class="bar-count">${d.count || ''}</span><span class="bar" style="height:${Math.max(4, d.count / peak * 95)}px"></span></div><span class="bar-label">${d.label}</span></div>`).join('')}</div></section><section class="panel"><h2>${t('Words finding their place')}</h2><p>${t('“Confident” means 3 correct answers in a row.')}</p><div class="learning-breakdown" aria-hidden="true">${[['confident', '#58cc02'], ['learning', '#49c0f8'], ['review', '#ffc800']].map(([k, color]) => `<span style="width:${practiced ? counts[k] / practiced * 100 : 0}%;background:${color}"></span>`).join('')}</div>${[['confident', '#58cc02'], ['learning', '#49c0f8'], ['review', '#ffc800']].map(([k, color]) => `<div class="breakdown-row"><span class="breakdown-label"><i class="legend-square" style="background:${color}" aria-hidden="true"></i>${statusName(k)}</span><strong>${counts[k]}</strong></div>`).join('')}<p class="progress-badge">${t('{count} lessons completed', { count: state.sessions.length })}</p></section></div>
+    <section class="data-panel"><div><h2>${t('Keep your progress')}</h2><p>${t('Progress stays in this browser on this device. Download a backup to move it, or import your original Emma English answer-history CSV.')}</p></div><div class="data-actions"><button class="secondary-button" data-action="export-csv" ${total ? '' : 'disabled'}>${icon('download')} CSV</button><button class="secondary-button" data-action="backup">${t('Backup')}</button><button class="secondary-button" data-action="import">${icon('upload')} ${t('Import')}</button></div></section><input id="import-file" type="file" accept=".csv,.json,text/csv,application/json" hidden>`;
 }
 function showSettings() {
   if (!ready) return;
   const s = state.settings, dialog = $('#settings-dialog');
-  dialog.innerHTML = `<form id="settings-form"><div class="dialog-heading"><h2 id="settings-title">Make it yours.</h2><button class="icon-button" type="button" data-action="close-settings" aria-label="Close settings">${icon('close')}</button></div><p class="dialog-subtitle">Choose a comfortable pace. ${session ? 'Lesson changes apply next time. Audio changes apply now.' : 'You can change this anytime.'}</p><div class="settings-grid"><label>Word set<select name="pack">${packOptions(s.pack)}</select></label><label>Questions per lesson<select name="questions">${[5, 10, 15, 20].map(n => `<option ${n === s.questions ? 'selected' : ''} value="${n}">${n} questions</option>`).join('')}</select></label><label>Answer choices<select name="choices"><option value="4" ${s.choices === 4 ? 'selected' : ''}>4 · Focused</option><option value="7" ${s.choices === 7 ? 'selected' : ''}>7 · Extra challenge</option></select></label><label>Daily goal<select name="goal">${[5, 10, 15, 20].map(n => `<option value="${n}" ${n === s.goal ? 'selected' : ''}>${n} questions</option>`).join('')}</select></label><label>Pronunciation speed<select name="rate">${[[0.7, 'Slow'], [0.85, 'Gentle'], [1, 'Natural']].map(([n, label]) => `<option value="${n}" ${n === s.rate ? 'selected' : ''}>${label}</option>`).join('')}</select></label></div><label class="setting-toggle"><span><strong>Read words aloud</strong><span>Play English pronunciation automatically. You can always tap replay.</span></span><input type="checkbox" name="sound" ${s.sound ? 'checked' : ''}></label><label class="setting-toggle"><span><strong>A little matching break</strong><span>Match four pairs after five questions in longer lessons.</span></span><input type="checkbox" name="bonus" ${s.bonus ? 'checked' : ''}></label><div class="settings-data"><p>Pronunciation depends on the voices available on your device. Progress is saved in this browser.</p><button class="text-button" type="button" data-action="reset">Reset this device’s progress</button></div><div class="dialog-actions"><button class="secondary-button" type="button" data-action="close-settings">Cancel</button><button class="primary-button" type="submit">Save settings</button></div></form>`;
+  dialog.innerHTML = `<form id="settings-form"><div class="dialog-heading"><h2 id="settings-title">${t('Make it yours')}</h2><button class="icon-button" type="button" data-action="close-settings" aria-label="${t('Close settings')}">${icon('close')}</button></div><p class="dialog-subtitle">${t(session ? 'Lesson changes apply next time. Audio and language change now.' : 'Choose your pace. You can change this anytime.')}</p><div class="settings-grid"><label>${t('Interface language')}<select name="language"><option lang="en" value="en" ${s.language === 'en' ? 'selected' : ''}>English</option><option lang="he" value="he" ${s.language === 'he' ? 'selected' : ''}>עברית</option></select></label><label>${t('Word set')}<select name="pack">${packOptions(s.pack)}</select></label><label>${t('Questions per lesson')}<select name="questions">${[5, 10, 15, 20, 30].map(n => `<option ${n === s.questions ? 'selected' : ''} value="${n}">${t('{count} questions', { count: n })}</option>`).join('')}</select></label><label>${t('Answer choices')}<select name="choices"><option value="4" ${s.choices === 4 ? 'selected' : ''}>${t('4 · Focused')}</option><option value="7" ${s.choices === 7 ? 'selected' : ''}>${t('7 · Extra challenge')}</option></select></label><label>${t('Daily goal')}<select name="goal">${[5, 10, 15, 20, 30].map(n => `<option value="${n}" ${n === s.goal ? 'selected' : ''}>${t('{count} exercises per day', { count: n })}</option>`).join('')}</select></label><label>${t('Pronunciation speed')}<select name="rate">${[[0.7, 'Slow'], [0.85, 'Gentle'], [1, 'Natural']].map(([n, label]) => `<option value="${n}" ${n === s.rate ? 'selected' : ''}>${t(label)}</option>`).join('')}</select></label></div><label class="setting-toggle"><span><strong>${t('Answer sounds')}</strong><span>${t('Play a different sound for correct and incorrect answers.')}</span></span><input type="checkbox" role="switch" name="effects" ${s.effects ? 'checked' : ''}></label><label class="setting-toggle"><span><strong>${t('Read words aloud')}</strong><span>${t('Play English pronunciation automatically. You can always tap replay.')}</span></span><input type="checkbox" role="switch" name="sound" ${s.sound ? 'checked' : ''}></label><label class="setting-toggle"><span><strong>${t('A matching break')}</strong><span>${t('Match four pairs after five questions in longer lessons.')}</span></span><input type="checkbox" role="switch" name="bonus" ${s.bonus ? 'checked' : ''}></label><div class="settings-data"><p>${t('Pronunciation depends on the voices available on your device. Progress is saved in this browser.')}</p><button class="text-button" type="button" data-action="reset">${t('Reset this device’s progress')}</button></div><div class="dialog-actions"><button class="secondary-button" type="button" data-action="close-settings">${t('Cancel')}</button><button class="primary-button" type="submit">${t('Save settings')}</button></div></form>`;
   dialog.showModal();
 }
 function confirmAction(title, description, label, callback, dangerous = false) {
   const dialog = $('#confirm-dialog');
   confirmCallback = callback;
-  dialog.innerHTML = `<div class="dialog-heading"><h2 id="confirm-title">${escape(title)}</h2></div><p class="dialog-subtitle" style="margin-top:14px">${escape(description)}</p><div class="dialog-actions"><button class="secondary-button" data-action="cancel-confirm" autofocus>Keep going</button><button class="${dangerous ? 'danger-button' : 'primary-button'}" data-action="accept-confirm">${escape(label)}</button></div>`;
+  dialog.innerHTML = `<div class="dialog-heading"><h2 id="confirm-title">${escape(t(title))}</h2></div><p class="dialog-subtitle" style="margin-top:14px">${escape(t(description))}</p><div class="dialog-actions"><button class="secondary-button" data-action="cancel-confirm" autofocus>${t('Keep going')}</button><button class="${dangerous ? 'danger-button' : 'primary-button'}" data-action="accept-confirm">${escape(t(label))}</button></div>`;
   dialog.showModal();
 }
 function download(content, filename, type) {
@@ -326,13 +352,15 @@ async function importFile(file) {
       if (!forPack(words, state.settings.pack).length) state.settings.pack = words[0].packs[0];
       state.sessions = [...new Map([...state.sessions, ...importedSessions].map(s => [s.id, s])).values()];
       persistenceBlocked = false; refreshStats(); persist(); view = 'progress'; render(true);
-      toast(`Imported ${state.answers.length - before} answers. Duplicate answers were skipped.`);
+      toast(t('Imported {count} answers. Duplicate answers were skipped.', { count: state.answers.length - before }));
     };
     if (persistenceBlocked) confirmAction('Replace unreadable saved data?', 'Download the recovery backup first if you want to keep it. Importing will replace that unreadable copy.', 'Import and replace', apply, true);
     else apply();
-  } catch (error) { toast(error.message || 'That file could not be imported. Your progress has not changed.'); }
+  } catch (error) { const message = error.message || ''; toast(message && (state.settings.language === 'en' || t(message) !== message) ? message : 'That file could not be imported. Your progress has not changed.'); }
 }
 const actions = {
+  'toggle-language': () => { state.settings.language = state.settings.language === 'en' ? 'he' : 'en'; persist(); render(); },
+  'toggle-effects': () => { state.settings.effects = !state.settings.effects; if (!state.settings.effects) answerSounds.stop(); persist(); header(); },
   start: () => startLesson(), listen: () => startLesson('listen'), reverse: () => startLesson('reverse'), review: () => startLesson('translate', true),
   match: () => startMatch(), home: () => navigate('learn'), words: () => navigate('words'), leave: () => navigate('learn'),
   replay: () => { if (session) speak(session.mode === 'reverse' ? session.current.word.he : session.current.word.en, session.mode === 'reverse' ? 'he-IL' : 'en-US', true); },
@@ -376,8 +404,8 @@ document.addEventListener('change', event => {
 document.addEventListener('submit', event => {
   if (event.target.id !== 'settings-form') return;
   event.preventDefault(); const data = new FormData(event.target);
-  state.settings = normalizeSettings({ ...Object.fromEntries(data), sound: data.has('sound'), bonus: data.has('bonus') });
-  if (!state.settings.sound) cancelSpeech(); const saved = persist(); $('#settings-dialog').close(); render(); toast(saved ? 'Your practice settings are saved.' : 'Settings updated in this tab. Download a backup to keep them.');
+  state.settings = normalizeSettings({ ...Object.fromEntries(data), goalVersion: 2, effects: data.has('effects'), sound: data.has('sound'), bonus: data.has('bonus') });
+  if (!state.settings.effects) answerSounds.stop(); if (!state.settings.sound) cancelSpeech(); const saved = persist(); $('#settings-dialog').close(); render(); toast(saved ? 'Your practice settings are saved.' : 'Settings updated in this tab. Download a backup to keep them.');
 });
 document.addEventListener('keydown', event => {
   if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]') || ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
@@ -385,7 +413,7 @@ document.addEventListener('keydown', event => {
   if (view === 'lesson' && session?.current.answered && event.key === 'Enter' && document.activeElement?.id !== 'continue-button' && document.activeElement?.tagName !== 'BUTTON') { event.preventDefault(); nextQuestion(); }
 });
 window.addEventListener('hashchange', () => { if (ready) navigate(location.hash.slice(1)); });
-window.addEventListener('pagehide', cancelSpeech);
+window.addEventListener('pagehide', () => { cancelSpeech(); answerSounds.stop(); });
 // Avoid silent cross-tab overwrites of saved learning history.
 window.addEventListener('storage', event => {
   if (event.key !== STORAGE_KEY || !event.newValue || persistenceBlocked) return;
@@ -408,10 +436,10 @@ async function init() {
   const stories = results[1].status === 'fulfilled' ? results[1].value : [];
   words = normalizeDictionary(base, stories);
   if (!words.length) {
-    main.innerHTML = `<div class="empty-state"><div class="card-icon">${icon('book')}</div><h1>Your words couldn’t load.</h1><p>Check your connection and try again. Your saved progress is still here.</p><button class="primary-button" id="retry-load">Try again</button></div>`;
+    main.innerHTML = `<div class="empty-state"><div class="card-icon">${icon('book')}</div><h1>${t('Your words couldn’t load.')}</h1><p>${t('Check your connection and try again. Your saved progress is still here.')}</p><button class="primary-button" id="retry-load">${t('Try again')}</button></div>`;
     $('#retry-load').onclick = () => location.reload(); return;
   }
-  if (!base.length || !stories.length) loadWarning = `The ${!base.length ? 'Everyday' : 'Story'} words list could not load. You can still practise the available words. Refresh to try again.`;
+  if (!base.length || !stories.length) loadWarning = { pack: !base.length ? 'everyday' : 'stories' };
   if (!forPack(words, state.settings.pack).length) state.settings.pack = base.length ? 'everyday' : 'stories';
   ready = true; view = ['words', 'progress'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'learn'; render();
 }
