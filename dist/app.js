@@ -1,9 +1,9 @@
-import { createGame, normalizeGame, mergeGames, inventory, bonusXP, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.2.0';
+import { createGame, normalizeGame, mergeGames, inventory, bonusXP, initializeRewards, creditPractice, earnBonusChests, bonusProgress, pendingChests, chooseChestStyle, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.3.0';
 import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
 import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
-import { translate, locale, dayLabel } from './i18n.js?v=2.2.0';
+import { translate, locale, dayLabel } from './i18n.js?v=2.3.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
-import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.2.0';
+import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.3.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -57,7 +57,8 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
-    if (data.version !== 1) throw new Error('Unknown data version');
+    if (![1, 2].includes(data.version)) throw new Error('Unknown data version');
+    saveUpgradeNeeded = data.version === 1;
     state = { ...createState(), settings: normalizeSettings(data.settings), answers: cleanAnswers(data.answers), sessions: cleanSessions(data.sessions), speaking: mergeSpeaking([], cleanSpeaking(data.speaking)), game: normalizeGame(data.game) };
     state.answers = mergeAnswers([], state.answers);
   } catch {
@@ -66,14 +67,14 @@ function loadState() {
     state = createState(); persistenceBlocked = true;
   }
 }
-let persistenceBlocked = false;
+let persistenceBlocked = false, saveUpgradeNeeded = false;
 function cleanSessions(list) {
   return Array.isArray(list) ? list.filter(s => s && typeof s.id === 'string' && s.id.length < 100 && Number.isFinite(Date.parse(s.completedAt)) && Number.isInteger(s.total) && s.total > 0 && s.total <= 30 && Number.isInteger(s.correct) && s.correct >= 0 && s.correct <= s.total)
     .map(s => ({ id: s.id, completedAt: new Date(s.completedAt).toISOString(), total: s.total, correct: s.correct })) : [];
 }
 function syncLatestProgress() {
   const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return;
-  const incoming = JSON.parse(raw); if (incoming.version !== 1) throw new Error('Unknown data version');
+  const incoming = JSON.parse(raw); if (![1, 2].includes(incoming.version)) throw new Error('Unknown data version');
   state.game = mergeGames(state.game, incoming.game);
   state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
   state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
@@ -82,14 +83,18 @@ function syncLatestProgress() {
 }
 function persist(replace = false) {
   if (persistenceBlocked) { toast('Saving is paused because previous progress could not be read. See My progress.'); return false; }
-  try { if (!replace) syncLatestProgress(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); storageWarning = ''; return true; }
+  try { if (!replace) syncLatestProgress(); refreshRewards(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); saveUpgradeNeeded = false; storageWarning = ''; return true; }
   catch { storageWarning = 'Your browser could not save the latest progress. Keep this tab open and download a backup from My progress.'; toast('Progress is only in this tab for now. Download a backup to keep it.'); return false; }
 }
 function refreshStats() { stats = summarizeWords(state.answers); }
 function activityRecords() { return [...state.answers, ...state.speaking]; }
 function todayCount() { return activityRecords().filter(a => localDay(a.ts) === localDay()).length; }
 function totalXP() { return state.answers.filter(a => a.correct).length * 10 + state.speaking.length * 5 + bonusXP(state.game); }
-function refreshRewards() { state.game = earnDailyChest(state.game, localDay(), todayCount(), state.settings.goal); }
+function refreshRewards() {
+  state.game = initializeRewards(state.game);
+  state.game = earnDailyChest(state.game, localDay(), todayCount(), state.settings.goal);
+  state.game = earnBonusChests(state.game, localDay());
+}
 function currentPool() { return forPack(words, state.settings.pack); }
 function dueWords(pool = currentPool()) { return pool.filter(w => stats.has(w.id) && stats.get(w.id).due <= Date.now()); }
 function toast(message) {
@@ -188,6 +193,7 @@ function renderHome() {
       ${dailyChestMarkup()}
     </div>
     </section><aside class="learning-rail">
+      ${bonusTreasureMarkup()}
       <section class="goal-card"><div class="goal-label">${icon('target')}<h2>${t('Daily goal')}</h2><button class="text-button" data-action="settings">${t('Change goal')}</button></div><div class="goal-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="51"/><circle class="ring-fill" cx="60" cy="60" r="51" stroke-dasharray="320.44" stroke-dashoffset="${320.44 * (1 - percent)}"/></svg><div class="goal-value"><bdi>${today}<small> / ${goal}</small></bdi><span>${t('Exercises')}</span></div></div><p>${t(today >= goal ? 'Daily goal complete. Nice work!' : '{count} more to reach your goal', { count: Math.max(0, goal - today) })}</p></section>
       <section class="review-card"><span class="card-icon">${icon('retry')}</span><h2>${t('Ready for a review?')}</h2><p>${due ? t('{count} words ready for another try', { count: due }) : t('Your next review will appear here.')}</p><button class="secondary-button" data-action="${due ? 'review' : 'words'}">${t(due ? 'Practise' : 'My words')} ${icon('arrow')}</button></section>
       <section class="word-spotlight"><div class="eyebrow">${t('WORD SPOTLIGHT')}</div><div class="spotlight-word"><strong lang="en" dir="ltr">${escape(featured.en)}</strong><button class="icon-button" data-speak="${escape(featured.id)}" aria-label="${escape(t('Hear {word}', { word: featured.en }))}">${icon('sound')}</button></div><span lang="he" dir="rtl">${escape(featured.he)}</span></section>
@@ -234,7 +240,9 @@ function answer(index) {
   // Lock before any side effect so double taps and key repeats cannot score twice.
   q.answered = true; q.chosen = chosen; q.correct = chosen === (session.mode === 'reverse' ? q.word.en : q.word.he);
   const record = answerRecord(q.word, chosen, q.correct, session.mode, performance.now() - q.start);
-  session.records.push(record); state.answers.push(record); refreshStats(); refreshRewards(); persist(); cancelSpeech(); answerSounds.play(q.correct, state.settings.effects);
+  session.records.push(record); state.answers.push(record); refreshStats(); refreshRewards();
+  if (record.correct) state.game = creditPractice(state.game, `q:${JSON.stringify([record.ts, record.wordId, record.chosen, record.correct])}`, 10, localDay());
+  persist(); cancelSpeech(); answerSounds.play(q.correct, state.settings.effects);
   renderLesson(); header(); $('#continue-button')?.focus({ preventScroll: true });
 }
 function nextQuestion() {
@@ -296,7 +304,7 @@ function finishMatch() {
 }
 function renderSummary() {
   const total = summary.records.length, correct = summary.records.filter(r => r.correct).length, missed = summary.records.filter(r => !r.correct);
-  main.innerHTML = `${pendingChestBanner()}<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle">${t('LESSON COMPLETE')}</div><h1>${t(correct === total ? 'Perfect practice!' : 'One step stronger!')}</h1><p>${t(correct === total ? 'Every word, every time. Well done!' : 'Every try counts. Keep learning.')}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>${t('XP earned')}</span></div><div class="summary-stat"><strong><bdi>${correct}/${total}</bdi></strong><span>${t('correct answers')}</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>${t('accuracy')}</span></div></div>${missed.length ? `<div class="review-list"><h2>${t('Words to try again')}</h2>${missed.map(r => `<div class="review-row"><span lang="en" dir="ltr">${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : `<div class="notice">${t('Come back tomorrow to help these words stick.')}</div>`}<div class="summary-actions"><button class="primary-button" data-action="${missed.length ? 'retry-missed' : 'start'}">${t(missed.length ? 'Try those words again' : 'Another lesson')}</button><button class="secondary-button" data-action="home">${t('Back to learning')}</button></div></section>`;
+  main.innerHTML = `${pendingChestBanner()}<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle">${t('LESSON COMPLETE')}</div><h1>${t(correct === total ? 'Perfect practice!' : 'One step stronger!')}</h1><p>${t(correct === total ? 'Every word, every time. Well done!' : 'Every try counts. Keep learning.')}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>${t('XP earned')}</span></div><div class="summary-stat"><strong><bdi>${correct}/${total}</bdi></strong><span>${t('correct answers')}</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>${t('accuracy')}</span></div></div>${missed.length ? `<div class="review-list"><h2>${t('Words to try again')}</h2>${missed.map(r => `<div class="review-row"><span lang="en" dir="ltr">${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : `<div class="notice">${t('Come back tomorrow to help these words stick.')}</div>`}<div class="summary-actions"><button class="primary-button" data-action="${missed.length ? 'retry-missed' : 'start'}">${t(missed.length ? 'Try those words again' : 'Another lesson')}</button><button class="secondary-button" data-action="home">${t('Back to learning')}</button></div>${bonusTreasureMarkup()}</section>`;
 }
 function renderWords() {
   main.innerHTML = `${noticeMarkup()}<div class="page-heading"><h1>${t('Your word collection')}</h1><p>${t('Listen, explore, and find the words that need another try.')}</p></div><div class="toolbar"><label class="search-box" for="word-search">${icon('search')}<input type="search" id="word-search" value="${escape(wordQuery)}" placeholder="${t('Find a word in English or Hebrew')}" aria-label="${t('Search English and Hebrew words')}" autocomplete="off"></label><select data-change="word-pack" aria-label="${t('Word set')}">${packOptions(state.settings.pack)}</select><select data-change="sort" aria-label="${t('Sort words')}">${[['practice', 'Needs practice first'], ['alpha', 'English A–Z'], ['accuracy', 'Lowest accuracy first'], ['recent', 'Recently practised']].map(([key, label]) => `<option value="${key}" ${wordSort === key ? 'selected' : ''}>${t(label)}</option>`).join('')}</select></div><div class="word-filters" role="group" aria-label="${t('Filter learning status')}">${[['all', 'All words'], ...Object.entries(statusNames)].map(([key, label]) => `<button class="filter-button ${wordFilter === key ? 'active' : ''}" data-filter="${key}" aria-pressed="${wordFilter === key}">${t(label)}</button>`).join('')}</div><div id="word-results"></div>`;
@@ -364,7 +372,7 @@ async function importFile(file) {
     if (file.name.toLowerCase().endsWith('.csv')) incoming = parseCSV(text);
     else {
       const data = JSON.parse(text);
-      if (data.version !== 1 || !Array.isArray(data.answers)) throw new Error('Choose an Emma English 2 backup or an original answer-history CSV.');
+      if (![1, 2].includes(data.version) || !Array.isArray(data.answers)) throw new Error('Choose an Emma English 2 backup or an original answer-history CSV.');
       incoming = cleanAnswers(data.answers); importedSettings = normalizeSettings(data.settings); importedSessions = cleanSessions(data.sessions); importedSpeaking = cleanSpeaking(data.speaking); importedGame = normalizeGame(data.game);
     }
     if (!incoming.length && !importedSettings) throw new Error('No valid practice answers were found in that file.');
@@ -384,7 +392,7 @@ async function importFile(file) {
     else apply();
   } catch (error) { const message = error.message || ''; toast(message && (state.settings.language === 'en' || t(message) !== message) ? message : 'That file could not be imported. Your progress has not changed.'); }
 }
-let chestDay = null, chestBusy = false, sentenceIndex = 0;
+let chestId = null, chestBusy = false, sentenceIndex = 0;
 const offeredChests = new Set();
 let speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' };
 const currentSentence = () => SENTENCES[sentenceIndex];
@@ -392,37 +400,46 @@ function avatarMarkup(profile, className = 'avatar-portrait') {
   return `<span class="${className} avatar-frame-${profile.frame}"><img src="${avatarDataUri(profile)}" width="280" height="280" alt="" draggable="false"></span>`;
 }
 function pendingChestBanner() {
-  const count = state.game.chests.filter(c => c.taps < 3).length;
-  return count ? `<div class="reward-banner"><span class="chest-sprite chest-mini" aria-hidden="true"></span><div><strong>${t('Your treasure is ready!')}</strong><span>${t('{count} unopened treasures', { count })}</span></div><button class="secondary-button" data-action="open-chest">${t('Open treasure')}</button></div>` : '';
+  const count = pendingChests(state.game).length;
+  return count ? `<div class="reward-banner"><span class="chest-sprite chest-mini" aria-hidden="true"></span><div><strong>${t('Your treasure is ready!')}</strong><span>${t('{count} treasures waiting', { count })}</span></div><button class="secondary-button" data-action="open-chest">${t('Open treasure')}</button></div>` : '';
+}
+function bonusTreasureMarkup() {
+  const { progress } = bonusProgress(state.game);
+  return `<section class="panel bonus-treasure-card"><div class="bonus-treasure-heading"><span class="chest-sprite chest-mini" aria-hidden="true"></span><div><span class="eyebrow">${t('BONUS TREASURE')}</span><h2>${t('More practice. More treasures.')}</h2></div></div><strong class="bonus-xp-total">${t('{count} practice XP saved', { count: progress })}</strong><div class="progress-track" role="progressbar" aria-label="${t('Practice XP toward a bonus chest')}" aria-valuemin="0" aria-valuemax="400" aria-valuenow="${Math.min(progress, 400)}"><span style="width:${Math.min(progress / 400, 1) * 100}%"></span></div><p>${t('A bonus chest appears between 240 and 400 practice XP.')}</p><p class="subtle">${t('Your progress carries into tomorrow. Daily chests keep it intact.')}</p><details class="reward-rules"><summary>${t('How treasures work')}</summary><p>${t('Every new chest gives 20–50 XP. Chest XP does not count toward another chest.')}</p><p>${t('Correct quiz answers add 10 practice XP. A new speaking sentence adds 5 XP once per day.')}</p><p>${t('Avatar chance: 20%. After five chests without a style, the next guarantees one, while styles remain.')}</p><p>${t('Your first-ever chest includes a style. Choose one of up to three new looks.')}</p></details></section>`;
 }
 function dailyChestMarkup() {
-  const chest = state.game.chests.find(c => c.day === localDay()), opened = chest?.taps === 3;
-  return `<section class="daily-chest-card ${chest ? 'earned' : ''}"><span class="eyebrow">${t('DAILY TREASURE')}</span><button class="daily-chest-button" data-action="open-chest" aria-label="${t(opened ? 'Today’s treasure opened' : 'Open treasure')}" ${!chest || opened ? 'disabled' : ''}><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><h2>${t(opened ? 'Today’s treasure opened' : chest ? 'You earned this!' : 'A little treasure awaits')}</h2><p>${chest ? t(opened ? 'A new treasure awaits with tomorrow’s challenge.' : 'Tap the chest three times to discover your reward.') : t('Finish {count} exercises to earn your chest.', { count: state.settings.goal })}</p></section>`;
+  const chest = state.game.chests.find(c => c.id === `daily:${localDay()}`), opened = chest?.taps === 3;
+  const waiting = chest && pendingChests(state.game).some(c => c.id === chest.id);
+  return `<section class="daily-chest-card ${chest ? 'earned' : ''}"><span class="eyebrow">${t('DAILY TREASURE')}</span><button class="daily-chest-button" data-action="open-chest" aria-label="${t(waiting ? 'Open treasure' : opened ? 'Today’s treasure opened' : 'Open treasure')}" ${waiting ? '' : 'disabled'}><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><h2>${t(opened ? 'Today’s treasure opened' : chest ? 'You earned this!' : 'A little treasure awaits')}</h2><p>${chest ? t(opened ? 'Keep practising to find bonus treasures.' : 'Tap the chest three times to discover your reward.') : t('Finish {count} exercises to earn your chest.', { count: state.settings.goal })}</p></section>`;
 }
-function openChest(day = null) {
-  const chest = state.game.chests.find(c => c.day === day) || state.game.chests.find(c => c.taps < 3);
-  if (!chest) { toast('Complete your daily goal to earn a treasure.'); return; }
-  cancelRecording(); cancelSpeech(); chestDay = chest.day; offeredChests.add(chest.day); renderChest();
+function openChest() {
+  const pending = pendingChests(state.game);
+  const chest = pending[0];
+  if (!chest) { toast('Complete your daily goal or earn practice XP to find a treasure.'); return; }
+  cancelRecording(); cancelSpeech(); chestId = chest.id; offeredChests.add(chest.id); renderChest();
   const dialog = $('#chest-dialog'); if (!dialog.open) dialog.showModal();
 }
-function offerDailyChest() {
-  const chest = state.game.chests.find(c => c.day === localDay() && c.taps < 3);
-  if (chest && !offeredChests.has(chest.day)) openChest(chest.day);
+function offerReadyChest() {
+  const chest = pendingChests(state.game)[0];
+  if (chest && !offeredChests.has(chest.id)) openChest();
 }
 function renderChest() {
-  const chest = state.game.chests.find(c => c.day === chestDay); if (!chest) return;
+  const chest = state.game.chests.find(c => c.id === chestId); if (!chest) return;
   const opened = chest.taps === 3, item = REWARD_ITEMS.find(item => item.id === chest.itemId);
   const preview = item ? { ...state.game.profile, [item.field]: item.value } : state.game.profile;
-  $('#chest-dialog').innerHTML = `<div class="dialog-heading"><span class="eyebrow">${t('DAILY TREASURE')}</span><button class="icon-button" data-action="close-chest" aria-label="${t('Close treasure')}">${icon('close')}</button></div>${storageWarning ? noticeMarkup() : ''}<div class="chest-content"><h2 id="chest-title">${t(opened ? 'Treasure unlocked!' : 'You earned this!')}</h2><p>${opened ? t('A reward for showing up and learning.') : t('Tap the chest three times to discover your reward.')}</p><button id="chest-tap" class="treasure-tap taps-${chest.taps}" data-action="tap-chest" ${opened || chestBusy ? 'disabled' : ''} aria-label="${t('Tap chest. {count} taps left.', { count: 3 - chest.taps })}"><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><div class="chest-tap-progress" role="status">${opened ? `<strong class="reward-xp">+${chest.xp} XP</strong>` : `<span class="tap-pips" aria-hidden="true">${[1, 2, 3].map(n => `<i class="${n <= chest.taps ? 'filled' : ''}"></i>`).join('')}</span><span>${t('{count} of 3 taps', { count: chest.taps })}</span>`}</div>${opened ? `<div class="chest-prize">${avatarMarkup(preview, 'reward-avatar')}<div><span class="eyebrow">${t(item ? 'NEW AVATAR STYLE' : 'COLLECTION COMPLETE')}</span><h3>${t(item ? item.label : 'Extra treasure XP')}</h3><p>${t(item ? 'Yours to wear whenever you like.' : 'You have every style. Enjoy extra bonus points!')}</p></div></div><div class="dialog-actions">${item ? `<button class="secondary-button" data-action="wear-reward" ${state.game.profile[item.field] === item.value ? 'disabled' : ''}>${t(state.game.profile[item.field] === item.value ? 'Wearing it!' : 'Wear it')}</button>` : ''}<button class="primary-button" data-action="close-chest">${t('Keep going')}</button></div>` : `<p class="subtle chest-save-note">${t('Your taps are saved. You can finish opening it later.')}</p>`}</div>`;
+  const choosing = opened && chest.avatarPrize && !item && chest.choices.length;
+  const more = pendingChests(state.game).some(c => c.id !== chest.id);
+  const prize = choosing ? `<section class="treasure-style-picker"><span class="eyebrow">${t('NEW AVATAR STYLE')}</span><h3>${t('Choose one style')}</h3><p>${t('Pick your favorite. The other styles can appear in future treasures.')}</p><div class="treasure-style-choices">${chest.choices.map(id => { const choice = REWARD_ITEMS.find(candidate => candidate.id === id); return `<button class="treasure-style-option" data-reward-choice="${id}" ${chestBusy ? 'disabled' : ''}>${avatarMarkup({ ...state.game.profile, [choice.field]: choice.value }, 'reward-avatar')}<strong>${t(choice.label)}</strong><span>${t('Choose & wear')}</span></button>`; }).join('')}</div></section>` : `<div class="chest-prize">${item ? avatarMarkup(preview, 'reward-avatar') : `<span class="xp-prize-icon">${icon('star')}</span>`}<div><span class="eyebrow">${t(item ? 'NEW AVATAR STYLE' : 'BONUS POINTS')}</span><h3>${t(item ? item.label : 'A boost for your adventure')}</h3><p>${t(item ? 'Yours to wear whenever you like.' : 'Your XP is added. More treasures await as you practise.')}</p></div></div>`;
+  $('#chest-dialog').innerHTML = `<div class="dialog-heading"><span class="eyebrow">${t(chest.kind === 'bonus' ? 'BONUS TREASURE' : 'DAILY TREASURE')}</span><button class="icon-button" data-action="close-chest" aria-label="${t('Close treasure')}">${icon('close')}</button></div>${storageWarning ? noticeMarkup() : ''}<div class="chest-content"><h2 id="chest-title">${t(opened ? 'Treasure unlocked!' : 'You earned this!')}</h2><p>${opened ? t('A reward for showing up and learning.') : t('Tap the chest three times to discover your reward.')}</p><button id="chest-tap" class="treasure-tap taps-${chest.taps}" data-action="tap-chest" ${opened || chestBusy ? 'disabled' : ''} aria-label="${t('Tap chest. {count} taps left.', { count: 3 - chest.taps })}"><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><div class="chest-tap-progress" role="status">${opened ? `<strong class="reward-xp">+${chest.xp} XP</strong>` : `<span class="tap-pips" aria-hidden="true">${[1, 2, 3].map(n => `<i class="${n <= chest.taps ? 'filled' : ''}"></i>`).join('')}</span><span>${t('{count} of 3 taps', { count: chest.taps })}</span>`}</div>${opened ? `${prize}<div class="dialog-actions">${item ? `<button class="secondary-button" data-action="wear-reward" ${state.game.profile[item.field] === item.value ? 'disabled' : ''}>${t(state.game.profile[item.field] === item.value ? 'Wearing it!' : 'Wear it')}</button>` : ''}${more && !choosing ? `<button class="secondary-button" data-action="open-chest">${t('Next treasure')}</button>` : ''}<button class="primary-button" data-action="close-chest">${t(choosing ? 'Choose later' : 'Keep going')}</button></div>` : `<p class="subtle chest-save-note">${t('Your taps are saved. You can finish opening it later.')}</p>`}</div>`;
 }
 async function tapDailyTreasure() {
-  if (chestBusy || !chestDay || persistenceBlocked) return;
-  if (!state.game.chests.some(chest => chest.day === chestDay && chest.taps < 3)) return;
+  if (chestBusy || !chestId || persistenceBlocked) return;
+  if (!state.game.chests.some(chest => chest.id === chestId && chest.taps < 3)) return;
   answerSounds.prepare(state.settings.effects);
-  const day = chestDay; chestBusy = true; $('#chest-tap').disabled = true;
+  const id = chestId; chestBusy = true; $('#chest-tap').disabled = true;
   const apply = () => {
     syncLatestProgress();
-    const before = state.game, result = tapChest(before, day); state.game = result.game;
+    const before = state.game, result = tapChest(before, id); state.game = result.game;
     persist();
     if (result.game !== before) answerSounds.playTreasure(result.chest.taps, state.settings.effects);
     if (result.opened) confetti();
@@ -432,14 +449,29 @@ async function tapDailyTreasure() {
     if (globalThis.navigator?.locks) await navigator.locks.request(`${STORAGE_KEY}:treasure`, apply);
     else apply();
   } catch { toast('Your treasure could not be saved. Please try again.'); }
-  finally { chestBusy = false; if (chestDay === day) { renderChest(); const opened = state.game.chests.find(c => c.day === day)?.taps === 3; $(opened ? '#chest-dialog .primary-button' : '#chest-tap')?.focus({ preventScroll: true }); } }
+  finally { chestBusy = false; if (chestId === id) { renderChest(); const chest = state.game.chests.find(c => c.id === id); $(chest?.taps < 3 ? '#chest-tap' : chest.avatarPrize && !chest.itemId ? '#chest-dialog [data-reward-choice]' : '#chest-dialog .primary-button')?.focus({ preventScroll: true }); } }
+}
+async function claimTreasureStyle(itemId) {
+  if (chestBusy || !chestId || persistenceBlocked) return;
+  const id = chestId; chestBusy = true; renderChest();
+  const apply = () => {
+    syncLatestProgress();
+    const next = chooseChestStyle(state.game, id, itemId);
+    if (next !== state.game) state.game = equipItem(next, itemId);
+    persist(); header();
+  };
+  try {
+    if (globalThis.navigator?.locks) await navigator.locks.request(`${STORAGE_KEY}:treasure`, apply);
+    else apply();
+  } catch { toast('Your treasure could not be saved. Please try again.'); }
+  finally { chestBusy = false; if (chestId === id) { renderChest(); $('#chest-dialog .primary-button')?.focus({ preventScroll: true }); } }
 }
 function closeChest() {
-  $('#chest-dialog').close(); chestDay = null; render();
+  $('#chest-dialog').close(); chestId = null; render();
   if (view === 'lesson' && session && !session.current.answered) pronounceQuestion();
 }
 function wearReward() {
-  const chest = state.game.chests.find(c => c.day === chestDay && c.taps === 3);
+  const chest = state.game.chests.find(c => c.id === chestId && c.taps === 3);
   if (!chest?.itemId) return;
   state.game = equipItem(state.game, chest.itemId); persist(); header(); renderChest();
 }
@@ -486,7 +518,10 @@ const speechCapture = createSpeechCapture({
     const feedback = assessSpeech(currentSentence().en, transcript);
     speakingView = { phase: 'result', transcript, feedback, error: '' };
     const record = { sentenceId: currentSentence().id, ts: new Date().toISOString(), transcript };
-    state.speaking = mergeSpeaking(state.speaking, [record]); refreshRewards(); persist();
+    const before = state.speaking.length;
+    state.speaking = mergeSpeaking(state.speaking, [record]); refreshRewards();
+    if (state.speaking.length > before) state.game = creditPractice(state.game, `s:${localDay()}:${record.sentenceId}`, 5, localDay());
+    persist();
     answerSounds.play(feedback.score >= 80, state.settings.effects); header(); renderSpeaking();
   },
 }, window);
@@ -510,13 +545,13 @@ const actions = {
   'record-sentence': startRecording, 'stop-recording': () => speechCapture.stop(), 'cancel-recording': () => { cancelRecording(); renderSpeaking(); },
   'sentence-model': () => { cancelRecording(); speak(currentSentence().en, 'en-US', true); renderSpeaking(); },
   'sentence-slow': () => { cancelRecording(); speak(currentSentence().en, 'en-US', true, true); renderSpeaking(); },
-  'next-sentence': () => { selectSentence((sentenceIndex + 1) % SENTENCES.length); offerDailyChest(); },
+  'next-sentence': () => { selectSentence((sentenceIndex + 1) % SENTENCES.length); offerReadyChest(); },
   start: () => startLesson(), listen: () => startLesson('listen'), reverse: () => startLesson('reverse'), review: () => startLesson('translate', true),
   match: () => startMatch(), home: () => navigate('learn'), words: () => navigate('words'), leave: () => navigate('learn'),
   replay: () => { if (session) speak(session.mode === 'reverse' ? session.current.word.he : session.current.word.en, session.mode === 'reverse' ? 'he-IL' : 'en-US', true); },
   slow: () => { if (session) speak(session.current.word.en, 'en-US', true, true); },
   reveal: () => { if (session) { session.current.revealed = true; renderLesson(); } },
-  skip: () => answer(null), next: () => { nextQuestion(); offerDailyChest(); }, 'match-done': finishMatch, 'skip-match': finishMatch,
+  skip: () => answer(null), next: () => { nextQuestion(); offerReadyChest(); }, 'match-done': finishMatch, 'skip-match': finishMatch,
   'retry-missed': () => { const retry = summary.records.filter(r => !r.correct).map(r => words.find(w => w.id === r.wordId)).filter(Boolean); startLesson(summary.mode, false, retry); },
   'prev-page': () => { wordPage = Math.max(0, wordPage - 1); renderWordTable(); },
   'next-page': () => { wordPage++; renderWordTable(); },
@@ -538,6 +573,7 @@ document.addEventListener('click', event => {
   const nav = event.target.closest('[data-page]');
   if (nav && ready) { event.preventDefault(); navigate(nav.dataset.page); return; }
   const button = event.target.closest('button'); if (!button || button.disabled || !ready) return;
+  if (button.dataset.rewardChoice) { claimTreasureStyle(button.dataset.rewardChoice); return; }
   if (button.dataset.avatarField) { updateAvatar(button.dataset.avatarField, button.dataset.avatarValue, true); return; }
   if (button.dataset.speechWord) { cancelRecording(); speak(button.dataset.speechWord, 'en-US', true, true); return; }
   if (button.dataset.action) { actions[button.dataset.action]?.(); return; }
@@ -573,11 +609,13 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) { can
 window.addEventListener('storage', event => {
   if (event.key !== STORAGE_KEY || !event.newValue || persistenceBlocked) return;
   try {
-    const incoming = JSON.parse(event.newValue); if (incoming.version !== 1) return;
+    const incoming = JSON.parse(event.newValue); if (![1, 2].includes(incoming.version)) return;
     state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
     state.sessions = [...new Map([...state.sessions, ...cleanSessions(incoming.sessions)].map(s => [s.id, s])).values()];
     state.game = mergeGames(state.game, incoming.game); state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
-    refreshStats(); if (!session && view !== 'match' && !document.querySelector('dialog[open]')) render();
+    refreshStats(); const previousGame = state.game; refreshRewards(); if (state.game !== previousGame) persist();
+    if (chestId && !chestBusy) renderChest();
+    if (!session && view !== 'match' && !document.querySelector('dialog[open]')) render();
   } catch { /* Another tab's invalid data cannot replace the valid in-memory state. */ }
 });
 
@@ -597,6 +635,6 @@ async function init() {
   }
   if (!base.length || !stories.length) loadWarning = { pack: !base.length ? 'everyday' : 'stories' };
   if (!forPack(words, state.settings.pack).length) state.settings.pack = base.length ? 'everyday' : 'stories';
-  ready = true; const beforeChests = state.game.chests.length; refreshRewards(); if (state.game.chests.length !== beforeChests) persist(); view = ['words', 'progress', 'profile', 'speaking'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'learn'; render();
+  ready = true; const previousGame = state.game; refreshRewards(); if (saveUpgradeNeeded || state.game !== previousGame) persist(); view = ['words', 'progress', 'profile', 'speaking'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'learn'; render();
 }
 init();

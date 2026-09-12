@@ -34,12 +34,44 @@ async function boot(saved = new Map(), speechHost = {}, soundFactory = createAns
     setTimeout: () => 0, clearTimeout() {},
   });
   const app = source.replace(/^import .*;\n/gm, '').replaceAll('import.meta.url', JSON.stringify(new URL('../dist/app.js', import.meta.url).href));
-  vm.runInContext(`${app}\nglobalThis.api = { actions, answer, nextQuestion, startLesson, choosePair, render, navigate, showSettings, openChest, tapDailyTreasure, closeChest, wearReward, updateAvatar, renderProfile, renderSpeaking, get state() { return state; }, get session() { return session; }, get match() { return match; }, get view() { return view; }, whenReady: () => ready };`, context);
+  vm.runInContext(`${app}\nglobalThis.api = { actions, answer, nextQuestion, startLesson, choosePair, render, navigate, showSettings, openChest, tapDailyTreasure, closeChest, claimTreasureStyle, importFile, wearReward, updateAvatar, renderProfile, renderSpeaking, get state() { return state; }, get session() { return session; }, get match() { return match; }, get view() { return view; }, whenReady: () => ready };`, context);
   // Init awaits two fetches and normalization; settle it without timers or a server.
   for (let i = 0; i < 12 && !context.api.whenReady(); i++) await Promise.resolve();
   assert(context.api.whenReady());
   return { api: context.api, context, elements, saved, listeners };
 }
+
+test('version 1 saves and backups migrate without losing rewards, and future formats remain protected', async () => {
+  const word = core.normalizeDictionary(fixture, [])[0];
+  const legacy = { ...core.createState(), version: 1,
+    answers: [core.answerRecord(word, word.he, true, 'translate', 1000, '2025-01-01T12:00:00.000Z')],
+    game: { profile: { ...game.DEFAULT_PROFILE, name: 'Emma', accessories: 'sunglasses', updatedAt: 4 }, chests: [
+      { day: '2025-01-01', goal: 30, taps: 3, itemId: 'sunglasses', xp: 40, earnedAt: 1, openedAt: 2 },
+      { day: '2025-01-02', goal: 30, taps: 2, itemId: 'explorer-hat', xp: 40, earnedAt: 3, openedAt: 0 },
+    ] },
+  };
+  const backup = JSON.stringify(legacy);
+  let app = await boot(new Map([[core.STORAGE_KEY, backup]]));
+  assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).version, 2);
+  assert.equal(app.api.state.answers.length, 1);
+  assert.equal(app.api.state.game.profile.accessories, 'sunglasses');
+  assert.equal(game.bonusXP(app.api.state.game), 40);
+  assert.equal(game.bonusProgress(app.api.state.game).earned, 0);
+  assert.equal(app.api.state.game.chests[1].taps, 2);
+  app.api.openChest(); await app.api.tapDailyTreasure(); app.api.closeChest();
+  assert.equal(game.bonusXP(app.api.state.game), 80);
+  await app.api.importFile({ name: 'legacy-backup.json', size: backup.length, text: async () => backup });
+  assert.equal(app.api.state.answers.length, 1);
+  assert.equal(game.bonusXP(app.api.state.game), 80, 'Importing an old backup keeps newer chest claims');
+  assert.equal(app.api.state.game.chests.length, 2);
+  app = await boot(app.saved);
+  assert.equal(app.api.state.version, 2);
+  assert(game.inventory(app.api.state.game).has('explorer-hat'));
+  const future = JSON.stringify({ ...legacy, version: 3 });
+  const protectedApp = await boot(new Map([[core.STORAGE_KEY, future]]));
+  protectedApp.api.actions['toggle-language']();
+  assert.equal(protectedApp.saved.get(core.STORAGE_KEY), future);
+});
 
 test('treasure audio prepares before the lock, follows accepted taps, and wrong answers respect muting', async () => {
   const events = [];
@@ -114,8 +146,13 @@ test('completing a goal opens a three-tap chest, and the avatar reward persists 
   app.api.openChest();
   assert.equal(app.api.state.game.chests[0].taps, 2);
   await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure();
-  assert.equal(game.bonusXP(app.api.state.game), 40);
-  const reward = game.REWARD_ITEMS.find(item => item.id === app.api.state.game.chests[0].itemId);
+  const chest = app.api.state.game.chests[0];
+  assert(chest.xp >= 20 && chest.xp <= 50);
+  assert.equal(game.bonusXP(app.api.state.game), chest.xp);
+  assert.match(app.elements.get('#chest-dialog').innerHTML, /data-reward-choice=/);
+  assert.equal(game.inventory(app.api.state.game).size, 0);
+  const reward = game.REWARD_ITEMS.find(item => item.id === chest.choices[0]);
+  await app.api.claimTreasureStyle(reward.id);
   app.api.wearReward(); app.api.closeChest(); app.api.actions.profile();
   assert.equal(app.api.state.game.profile[reward.field], reward.value);
   app.api.updateAvatar('name', '<Emma>', false); app.api.updateAvatar('hairColor', 'ff0000', false);
@@ -144,9 +181,11 @@ test('speaking uses final transcripts, counts daily practice once, and cancels o
   assert.equal(api.state.speaking.length, 0);
   recognitions.at(-1).emit(speaking.SENTENCES[0].en);
   assert.equal(api.state.speaking.length, 1); assert.equal(api.state.speaking[0].score, 100);
+  assert.equal(game.bonusProgress(api.state.game).earned, 5);
   assert.match(elements.get('#main').innerHTML, /100%/);
   api.actions['record-sentence'](); recognitions.at(-1).emit(speaking.SENTENCES[0].en);
   assert.equal(api.state.speaking.length, 1);
+  assert.equal(game.bonusProgress(api.state.game).earned, 5, 'A speaking retry cannot farm bonus-chest progress');
   for (const error of ['not-allowed', 'audio-capture', 'network', 'no-speech']) {
     api.actions['record-sentence'](); recognitions.at(-1).onerror({ error });
     assert.match(elements.get('#main').innerHTML, /role="alert"/);
@@ -156,6 +195,47 @@ test('speaking uses final transcripts, counts daily practice once, and cancels o
   assert.equal(api.state.speaking.length, 1);
   const restored = await boot(saved);
   assert.equal(restored.api.state.speaking.length, 1); assert.equal(restored.api.state.speaking[0].score, 100);
+});
+
+test('extra practice earns an XP-only bonus chest and backups preserve its progress without crediting old CSV history', async () => {
+  let app = await boot();
+  app.api.state.game = game.initializeRewards(game.createGame(), 100, () => 2 / 4294967296);
+  app.api.state.settings = core.normalizeSettings({ questions: 30, goal: 30, language: 'he', bonus: false, sound: false });
+  const finishLesson = () => {
+    app.api.startLesson();
+    while (app.api.session) {
+      const q = app.api.session.current;
+      app.api.answer(q.options.indexOf(q.word.he)); app.api.actions.next();
+    }
+  };
+  finishLesson();
+  assert.equal(game.bonusProgress(app.api.state.game).earned, 300);
+  assert.equal(app.api.state.game.chests.length, 1);
+  await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure();
+  await app.api.claimTreasureStyle(app.api.state.game.chests[0].choices[0]);
+  app.api.closeChest();
+  assert.equal(game.bonusProgress(app.api.state.game).progress, 300, 'Daily reward XP does not advance or reset the counter');
+  app.api.state.settings.questions = 10; finishLesson();
+  assert.equal(app.api.state.game.chests.length, 2);
+  const bonus = app.api.state.game.chests.find(c => c.kind === 'bonus');
+  assert.equal(bonus.cost, 393); assert.equal(bonus.avatarPrize, false);
+  assert.match(app.elements.get('#chest-dialog').innerHTML, /אוצר בונוס/);
+  await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure();
+  app = await boot(app.saved); app.api.openChest(); await app.api.tapDailyTreasure();
+  assert.match(app.elements.get('#chest-dialog').innerHTML, /נקודות בונוס/);
+  assert.doesNotMatch(app.elements.get('#chest-dialog').innerHTML, /data-reward-choice=/);
+  assert.equal(game.inventory(app.api.state.game).size, 1);
+  const progress = game.bonusProgress(app.api.state.game);
+  assert.equal(progress.earned, 400); assert.equal(progress.progress, 7);
+  const xp = game.bonusXP(app.api.state.game); app.api.closeChest();
+  const backup = JSON.stringify(app.api.state);
+  await app.api.importFile({ name: 'backup.json', size: backup.length, text: async () => backup });
+  assert.equal(app.api.state.game.chests.length, 2); assert.equal(game.bonusXP(app.api.state.game), xp);
+  assert.deepEqual(game.bonusProgress(app.api.state.game), progress);
+  const csv = core.toCSV([{ ts: '2025-01-01T12:00:00Z', wordId: 'historic', en: 'historic', he: 'היסטורי', chosen: 'היסטורי', correct: true, mode: 'translate', responseMs: 1000 }]);
+  await app.api.importFile({ name: 'history.csv', size: csv.length, text: async () => csv });
+  assert.equal(app.api.state.answers.length, 41);
+  assert.deepEqual(game.bonusProgress(app.api.state.game), progress, 'Old history imports must not create a bonus chest backlog');
 });
 
 test('a 30-question lesson finishes, reloads, and all practice views render in Hebrew', async () => {

@@ -8,7 +8,9 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 - An English/Hebrew interface toggle in the top bar and settings. Hebrew mirrors the layout, translates feedback and progress, and localizes weekday labels while preserving the language of the vocabulary being practised. Switching languages retains the current question and selected answer.
 - Separate correct/incorrect feedback sounds for quiz answers and matching attempts, with a distinct descending two-note tone for mistakes. Each treasure tap plays a different, progressively higher chime, ending in a four-note opening flourish. Sounds are synthesized locally with Web Audio, enabled by default, and can be muted together using the sound toggle, independently of spoken pronunciation.
 - A default daily goal of 30 exercises, adjustable to 5/10/15/20/30. Each answered quiz question counts, including mistakes, plus one speaking attempt per distinct sentence per day; standalone matching remains unscored. Existing ten-exercise defaults upgrade once, other saved goals are preserved, and choosing ten again in the updated settings is retained.
-- Daily treasure: complete the goal and tap the illustrated chest three times to receive 40 bonus XP and one of 12 avatar collectibles. After all styles are collected, later chests give 80 XP. Each day earns at most one chest; unfinished taps and unopened chests survive reloads and remain available later. Duplicate backups do not award the same chest twice.
+- One guaranteed daily chest when the configured exercise goal is completed, plus additional bonus chests at random thresholds of 240–400 practice XP. Correct quiz answers contribute 10 XP; a first speaking attempt for each sentence that day contributes 5 XP. Only exercise-earned XP advances the bonus counter. Thresholds and leftover progress persist across days, reloads, and backups; opening a daily chest does not reset the bonus counter.
+- Every new chest gives 20–50 bonus XP after three taps. Avatar prizes have a 20% base chance, with a guaranteed prize after five consecutive chests without one, while unallocated styles remain. A learner's first-ever chest guarantees an avatar prize. Winners choose one of up to three unowned styles and can wear it immediately; unchosen styles remain available in future chests. Once all 12 styles are owned or promised in earned chests, further chests give XP only.
+- Chests open in earning order, preserving the avatar guarantee. An unfinished style selection remains available and is completed before the next chest opens. Each reward and practice credit has a stable ID so duplicate taps, reloads, or repeated backup imports do not award it twice.
 - A personal avatar with a nickname, hairstyles, head coverings, clothes, glasses, expressions, frames, and six custom color pickers. Free choices are available immediately; treasure rewards unlock extra hats, glasses, outfits, expressions, and glowing frames. The reward screen previews each new look and lets you wear it immediately.
 - Speaking practice with 30 English sentences, Hebrew meanings, normal/slow model speech, microphone recording, recognized text, and word-by-word feedback. A new sentence attempted each day earns 5 XP; retries keep the best result without duplicating XP or daily progress. Recognition errors do not count as attempts.
 - Short 5/10/15/20/30-question lessons (10 by default) instead of an endless random quiz. Four choices by default; the original seven-choice challenge remains available in settings.
@@ -47,7 +49,15 @@ npm test
 npm run check
 ```
 
-The tests cover vocabulary normalization, quiz choices, matching, review intervals, CSV and backup merging, local-day streaks, settings migration, bilingual copy, sound fallbacks, active language switching, and 30-question lesson completion. Reward tests check three-tap claiming, reloads, duplicate backup merging, collectible ownership, and profile persistence. Speaking tests check transcript alignment, daily deduplication, permission errors, timeouts, and cancellation with simulated recognition events. The static check validates local assets and modules and checks quiz options against every word in every word set. These are Node tests and static checks; they do not validate visual layout or real device microphone/voice behavior.
+The tests cover vocabulary normalization, quiz choices, matching, review intervals, CSV and backup merging, local-day streaks, settings migration, bilingual copy, sound fallbacks, active language switching, and 30-question lesson completion. Reward tests check three-tap claiming, random threshold stability, overflow across days, XP isolation, duplicate backup merging, the avatar guarantee, collectible choices, full collections, and legacy prize preservation. Speaking tests check transcript alignment, daily deduplication, permission errors, timeouts, and cancellation with simulated recognition events. The static check validates local assets and modules and checks quiz options against every word in every word set. These are Node tests and static checks; they do not validate visual layout or real device microphone/voice behavior.
+
+## Upgrading existing treasure progress
+
+Existing earned chests retain their original 40/80 XP, promised avatar item, and tap count. Existing XP and avatar styling are preserved. The new bonus counter starts with practice completed after the update; earlier answer history is not converted into a backlog of random chests. Importing an old CSV preserves quiz XP without creating bonus credits. New JSON backups include the practice-credit ledger, fixed random seed, chest claims, and pending style choices, so restoring one resumes the same reward progress.
+
+Saved data upgrades to format version 2; version 1 progress and backups still load. Tabs running an older app pause saving when they encounter the new format, protecting the new reward data. Refresh those tabs to continue with the updated app.
+
+The random seed fixes bonus thresholds and chest contents on the device; it is not rerolled on reload. Avatar eligibility is decided in chest earning order, including promised prizes in unopened chests. Slot reservations prevent more unique avatar prizes being promised than available items. The 20% base chance plus the sixth-chest guarantee averages one avatar prize per approximately 3.69 chests before the collection fills, excluding the first-chest guarantee.
 
 ## Speaking feedback
 
@@ -88,7 +98,7 @@ dist/index.html        App shell and metadata
 dist/styles.css        Responsive design and interaction states
 dist/app.js            Rendering, interactions, audio, and device storage
 dist/core.js           Pure vocabulary, learning, and import/export logic
-dist/game.js           Daily chest ledger, collectible ownership, avatar validation
+dist/game.js           Practice credit ledger, bonus thresholds, chest prizes and avatar choices
 dist/speaking.js       Practice sentences, transcript comparison, microphone lifecycle
 dist/i18n.js           English/Hebrew interface translations
 dist/sounds.js         Locally synthesized answer feedback
