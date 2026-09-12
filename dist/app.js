@@ -2,7 +2,7 @@ import { createGame, normalizeGame, mergeGames, inventory, bonusXP, earnDailyChe
 import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
 import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
 import { translate, locale, dayLabel } from './i18n.js?v=2.2.0';
-import { createAnswerSounds } from './sounds.js?v=2.2.0';
+import { createAnswerSounds } from './sounds.js?v=2.2.1';
 import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.2.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -417,12 +417,15 @@ function renderChest() {
 }
 async function tapDailyTreasure() {
   if (chestBusy || !chestDay || persistenceBlocked) return;
+  if (!state.game.chests.some(chest => chest.day === chestDay && chest.taps < 3)) return;
+  answerSounds.prepare(state.settings.effects);
   const day = chestDay; chestBusy = true; $('#chest-tap').disabled = true;
   const apply = () => {
     syncLatestProgress();
-    const result = tapChest(state.game, day); state.game = result.game;
+    const before = state.game, result = tapChest(before, day); state.game = result.game;
     persist();
-    if (result.opened) { answerSounds.play(true, state.settings.effects); confetti(); }
+    if (result.game !== before) answerSounds.playTreasure(result.chest.taps, state.settings.effects);
+    if (result.opened) confetti();
     header();
   };
   try {

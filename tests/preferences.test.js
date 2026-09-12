@@ -55,9 +55,17 @@ test('answer sounds are distinct, can be muted, and tolerate unavailable audio',
   sounds.play(true);
   assert.deepEqual(frequencies.splice(0), [523.25, 659.25, 783.99]);
   sounds.play(false);
-  assert.deepEqual(frequencies.splice(0), [233.08, 174.61]);
+  const wrong = frequencies.splice(0);
+  assert.equal(wrong.length, 2); assert(wrong[0] > wrong[1], 'Incorrect feedback descends in pitch');
+  assert(oscillators.slice(-2).every(o => o.type === 'triangle'), 'Incorrect feedback has a distinct timbre');
+  const chestNotes = [1, 2, 3].map(tap => { sounds.playTreasure(tap); return frequencies.splice(0); });
+  assert.deepEqual(chestNotes.map(notes => notes.length), [1, 2, 4]);
+  for (let tap = 1; tap < 3; tap++) assert(Math.min(...chestNotes[tap]) > Math.max(...chestNotes[tap - 1]), 'Each chest tap rises above the previous one');
+  sounds.play(false, false); sounds.playTreasure(1, false); sounds.playTreasure(4);
+  assert.equal(frequencies.length, 0, 'Muted or invalid feedback must remain silent');
   assert.equal(contexts, 1); assert.equal(resumes, 1);
   sounds.stop(); assert(oscillators.every(o => o.stopped));
   assert.doesNotThrow(() => createAnswerSounds({}).play(true));
+  assert.doesNotThrow(() => createAnswerSounds({}).playTreasure(1));
   assert.doesNotThrow(() => createAnswerSounds({ AudioContext: class { constructor() { throw new Error('blocked'); } } }).play(false));
 });

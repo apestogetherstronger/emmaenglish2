@@ -13,14 +13,14 @@ import { createAnswerSounds } from '../dist/sounds.js';
 // This is a state/markup smoke test, not browser or visual testing.
 const source = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
 const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}` }));
-async function boot(saved = new Map(), speechHost = {}) {
+async function boot(saved = new Map(), speechHost = {}, soundFactory = createAnswerSounds) {
   const elements = new Map(), listeners = new Map();
   const element = selector => {
     if (!elements.has(selector)) elements.set(selector, { innerHTML: '', dataset: {}, style: {}, attributes: {}, addEventListener() {}, setAttribute(k, v) { this.attributes[k] = v; }, removeAttribute(k) { delete this.attributes[k]; }, focus() {}, querySelectorAll() { return []; }, showModal() { this.open = true; }, close() { this.open = false; } });
     return elements.get(selector);
   };
   const context = vm.createContext({
-    ...core, ...i18n, ...game, ...speaking, avatarDataUri, createAnswerSounds, URL, performance, console,
+    ...core, ...i18n, ...game, ...speaking, avatarDataUri, createAnswerSounds: soundFactory, URL, performance, console,
     translate(language, key, values) {
       if (language === 'he' && /[A-Za-z]/.test(key) && !/[\u0590-\u05ff]/.test(key)) assert(Object.hasOwn(i18n.hebrew, key), `Missing dynamic translation: ${key}`);
       return i18n.translate(language, key, values);
@@ -40,6 +40,36 @@ async function boot(saved = new Map(), speechHost = {}) {
   assert(context.api.whenReady());
   return { api: context.api, context, elements, saved, listeners };
 }
+
+test('treasure audio prepares before the lock, follows accepted taps, and wrong answers respect muting', async () => {
+  const events = [];
+  const soundFactory = () => ({ prepare: enabled => events.push(['prepare', enabled]), playTreasure: (tap, enabled) => events.push(['treasure', tap, enabled]), play: (correct, enabled) => events.push(['answer', correct, enabled]), stop() {} });
+  const { api, context } = await boot(new Map(), {}, soundFactory);
+  context.navigator = { locks: { async request(_name, apply) { await Promise.resolve(); return apply(); } } };
+  api.state.game = game.earnDailyChest(api.state.game, core.localDay(), 30, 30);
+  api.openChest();
+  for (let tap = 1; tap <= 3; tap++) {
+    const pending = api.tapDailyTreasure();
+    assert.deepEqual(events.at(-1), ['prepare', true], 'Audio activation happens before awaiting the lock');
+    await api.tapDailyTreasure(); // A second click during the lock must be ignored.
+    await pending;
+    assert.deepEqual(events.at(-1), ['treasure', tap, true]);
+  }
+  const count = events.length; await api.tapDailyTreasure();
+  assert.equal(events.length, count, 'Opened chests cannot replay rewards');
+  api.closeChest(); events.length = 0;
+  api.startLesson();
+  const incorrect = () => api.session.current.options.findIndex(option => option !== api.session.current.word.he);
+  api.answer(incorrect()); api.answer(incorrect());
+  assert.deepEqual(events, [['answer', false, true]], 'A wrong answer plays exactly one error sound');
+  api.actions['toggle-effects'](); api.nextQuestion(); api.answer(incorrect());
+  assert.deepEqual(events.at(-1), ['answer', false, false]);
+  api.actions.match();
+  const [first, second] = api.match.pairs;
+  api.choosePair({ dataset: { side: 'en', word: first.id, pair: `en:${first.id}` } });
+  api.choosePair({ dataset: { side: 'he', word: second.id, pair: `he:${second.id}` } });
+  assert.deepEqual(events.at(-1), ['answer', false, false], 'A mismatched pair uses the same muted error feedback');
+});
 
 test('language switching preserves an active answer, progress and saved sound settings', async () => {
   const { api, context, elements, saved } = await boot();
