@@ -1,3 +1,4 @@
+import { createGame } from './game.js?v=2.2.0';
 // Pure learning and data functions. No browser or network dependencies.
 export const STORAGE_KEY = 'emmaenglish2:v1';
 export const DEFAULT_SETTINGS = Object.freeze({ pack: 'everyday', questions: 10, choices: 4, sound: true, effects: true, language: 'en', rate: 0.85, bonus: true, goal: 30, goalVersion: 2 });
@@ -7,7 +8,7 @@ export const localDay = (value = new Date()) => {
   const d = new Date(value);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
-export function createState() { return { version: 1, settings: { ...DEFAULT_SETTINGS }, answers: [], sessions: [], xp: 0 }; }
+export function createState() { return { version: 1, settings: { ...DEFAULT_SETTINGS }, answers: [], sessions: [], speaking: [], game: createGame(), xp: 0 }; }
 export function normalizeSettings(settings = {}) {
   if (!settings || typeof settings !== 'object') settings = {};
   // Upgrade the previous ten-exercise default once; later explicit choices are retained.

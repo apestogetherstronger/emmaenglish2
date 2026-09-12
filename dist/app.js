@@ -1,10 +1,16 @@
-import { translate, locale, dayLabel } from './i18n.js?v=2.1.0';
-import { createAnswerSounds } from './sounds.js?v=2.1.0';
-import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.1.0';
+import { createGame, normalizeGame, mergeGames, inventory, bonusXP, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.2.0';
+import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
+import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
+import { translate, locale, dayLabel } from './i18n.js?v=2.2.0';
+import { createAnswerSounds } from './sounds.js?v=2.2.0';
+import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.2.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const paths = {
+  mic: '<rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 22v-2a8 8 0 0 1 16 0v2"/>',
+  lock: '<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 6v2"/>',
   learn: '<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/>',
   book: '<path d="M12 5v16m0-16C9 3 5 3 2 4v15c3-1 7-1 10 2 3-3 7-3 10-2V4c-3-1-7-1-10 1Z"/>',
   chart: '<path d="M4 3v17h17M9 15v-4m5 4V7m5 8v-5"/>',
@@ -52,7 +58,7 @@ function loadState() {
     if (!raw) return;
     const data = JSON.parse(raw);
     if (data.version !== 1) throw new Error('Unknown data version');
-    state = { ...createState(), settings: normalizeSettings(data.settings), answers: cleanAnswers(data.answers), sessions: cleanSessions(data.sessions) };
+    state = { ...createState(), settings: normalizeSettings(data.settings), answers: cleanAnswers(data.answers), sessions: cleanSessions(data.sessions), speaking: mergeSpeaking([], cleanSpeaking(data.speaking)), game: normalizeGame(data.game) };
     state.answers = mergeAnswers([], state.answers);
   } catch {
     storageWarning = 'Saved progress could not be read and has not been overwritten. Download a recovery backup, then import a valid backup or reset progress.';
@@ -65,13 +71,25 @@ function cleanSessions(list) {
   return Array.isArray(list) ? list.filter(s => s && typeof s.id === 'string' && s.id.length < 100 && Number.isFinite(Date.parse(s.completedAt)) && Number.isInteger(s.total) && s.total > 0 && s.total <= 30 && Number.isInteger(s.correct) && s.correct >= 0 && s.correct <= s.total)
     .map(s => ({ id: s.id, completedAt: new Date(s.completedAt).toISOString(), total: s.total, correct: s.correct })) : [];
 }
-function persist() {
+function syncLatestProgress() {
+  const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return;
+  const incoming = JSON.parse(raw); if (incoming.version !== 1) throw new Error('Unknown data version');
+  state.game = mergeGames(state.game, incoming.game);
+  state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
+  state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
+  state.sessions = [...new Map([...state.sessions, ...cleanSessions(incoming.sessions)].map(s => [s.id, s])).values()];
+  refreshStats();
+}
+function persist(replace = false) {
   if (persistenceBlocked) { toast('Saving is paused because previous progress could not be read. See My progress.'); return false; }
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); storageWarning = ''; return true; }
+  try { if (!replace) syncLatestProgress(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); storageWarning = ''; return true; }
   catch { storageWarning = 'Your browser could not save the latest progress. Keep this tab open and download a backup from My progress.'; toast('Progress is only in this tab for now. Download a backup to keep it.'); return false; }
 }
 function refreshStats() { stats = summarizeWords(state.answers); }
-function todayCount() { return state.answers.filter(a => localDay(a.ts) === localDay()).length; }
+function activityRecords() { return [...state.answers, ...state.speaking]; }
+function todayCount() { return activityRecords().filter(a => localDay(a.ts) === localDay()).length; }
+function totalXP() { return state.answers.filter(a => a.correct).length * 10 + state.speaking.length * 5 + bonusXP(state.game); }
+function refreshRewards() { state.game = earnDailyChest(state.game, localDay(), todayCount(), state.settings.goal); }
 function currentPool() { return forPack(words, state.settings.pack); }
 function dueWords(pool = currentPool()) { return pool.filter(w => stats.has(w.id) && stats.get(w.id).due <= Date.now()); }
 function toast(message) {
@@ -122,10 +140,12 @@ function applyLanguage() {
 }
 function header() {
   applyLanguage();
-  const streak = streakDays(state.answers), xp = state.answers.filter(a => a.correct).length * 10;
+  const streak = streakDays(activityRecords()), xp = totalXP();
+  $('#avatar-nav').innerHTML = avatarMarkup(state.game.profile, 'avatar-small');
+  $('#avatar-nav').setAttribute('aria-label', t('My avatar'));
   $('#streak-pill').innerHTML = `${icon('fire')}<span>${streak}</span><span class="sr-only">${t('day streak')}</span>`;
   $('#xp-pill').innerHTML = `${icon('star')}<span>${xp.toLocaleString(locale(state.settings.language))}</span><span class="stat-unit">XP</span>`;
-  document.body.classList.toggle('in-practice', ['lesson', 'match'].includes(view));
+  document.body.classList.toggle('in-practice', ['lesson', 'match', 'speaking'].includes(view));
   document.querySelectorAll('[data-page]').forEach(a => {
     if (a.dataset.page === (['lesson', 'match', 'summary'].includes(view) ? 'learn' : view)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
@@ -138,12 +158,14 @@ function render(focus = false) {
   if (view === 'summary') renderSummary();
   if (view === 'words') renderWords();
   if (view === 'progress') renderProgress();
+  if (view === 'profile') renderProfile();
+  if (view === 'speaking') renderSpeaking();
   icons();
   if (focus) { main.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'instant' }); }
 }
 function navigate(page) {
-  const destination = ['learn', 'words', 'progress'].includes(page) ? page : 'learn';
-  const go = () => { cancelSpeech(); session = null; match = null; view = destination; history.replaceState(null, '', `#${destination}`); render(true); };
+  const destination = ['learn', 'words', 'progress', 'profile', 'speaking'].includes(page) ? page : 'learn';
+  const go = () => { cancelRecording(); cancelSpeech(); session = null; match = null; view = destination; history.replaceState(null, '', `#${destination}`); render(true); };
   if (session || (match && !match.complete)) confirmAction('Leave this practice?', 'The answers you have already given will stay in your progress.', 'Leave practice', go);
   else go();
 }
@@ -155,14 +177,15 @@ function renderHome() {
     { action: 'start', symbol: 'star', title: t(state.answers.length ? 'Continue learning' : 'Start a lesson'), detail: t('{count} questions', { count }), color: 'coral', current: true },
     { action: 'listen', symbol: 'headphones', title: t('Listen & learn'), detail: t(canSpeak ? 'Hear it. Know it.' : 'Audio unavailable here'), color: 'blue', disabled: !canSpeak },
     { action: 'reverse', symbol: 'swap', title: t('Flip the words'), detail: t('Hebrew to English'), color: 'coral' },
+    { action: 'speaking', symbol: 'mic', title: t('Speak a sentence'), detail: t('Say it. See what was heard.'), color: 'purple' },
     { action: 'match', symbol: 'match', title: t('Make a match'), detail: t('Find the word pairs'), color: 'gold' },
   ];
-  main.innerHTML = `${noticeMarkup()}<div class="learning-layout"><section class="path-panel" aria-label="${t('Your learning path')}">
+  main.innerHTML = `${noticeMarkup()}${pendingChestBanner()}<div class="learning-layout"><section class="path-panel" aria-label="${t('Your learning path')}">
     <div class="path-heading"><h1>${t('Your learning path')}</h1><label class="sr-only" for="home-pack">${t('Your word set')}</label><select id="home-pack" data-change="pack">${packOptions(state.settings.pack)}</select></div>
     <div class="unit-banner"><div><div class="eyebrow">${t('DAILY PRACTICE')}</div><h2>${t(today >= goal ? 'Goal complete! Keep exploring' : 'Let’s keep learning')}</h2></div><span class="unit-symbol">${icon('book')}</span></div>
     <div class="path-progress"><span>${t('{count} exercises today', { count: today })}</span><strong><bdi>${Math.min(today, goal)} / ${goal}</bdi></strong><div class="progress-track" role="progressbar" aria-label="${t('Daily goal')}" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${Math.min(today, goal)}"><span style="width:${percent * 100}%"></span></div></div>
     <div class="learning-path">${steps.map((step, i) => `<div class="path-stop stop-${i} ${step.color}">${step.current ? `<span class="start-bubble">${t('YOUR NEXT STEP')}</span>` : ''}<button class="path-node ${step.current ? 'current' : ''}" data-action="${step.action}" aria-label="${escape(step.title)}" ${step.disabled ? 'disabled' : ''}>${icon(step.symbol)}</button><div class="path-label"><strong>${step.title}</strong><span>${step.detail}</span></div></div>`).join('')}
-      <div class="path-finish ${today >= goal ? 'reached' : ''}"><div class="finish-icon">${icon('trophy')}</div><strong>${t(today >= goal ? 'Daily goal complete. Nice work!' : '{count} exercises per day', { count: goal })}</strong></div>
+      ${dailyChestMarkup()}
     </div>
     </section><aside class="learning-rail">
       <section class="goal-card"><div class="goal-label">${icon('target')}<h2>${t('Daily goal')}</h2><button class="text-button" data-action="settings">${t('Change goal')}</button></div><div class="goal-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="51"/><circle class="ring-fill" cx="60" cy="60" r="51" stroke-dasharray="320.44" stroke-dashoffset="${320.44 * (1 - percent)}"/></svg><div class="goal-value"><bdi>${today}<small> / ${goal}</small></bdi><span>${t('Exercises')}</span></div></div><p>${t(today >= goal ? 'Daily goal complete. Nice work!' : '{count} more to reach your goal', { count: Math.max(0, goal - today) })}</p></section>
@@ -171,6 +194,7 @@ function renderHome() {
     </aside></div>`;
 }
 function startLesson(mode = 'translate', reviewOnly = false, overrideWords = null) {
+  cancelRecording();
   const pool = currentPool();
   const queue = overrideWords || selectLesson(pool, stats, state.settings.questions, { reviewOnly });
   if (!queue.length) { toast('Nothing is due for review yet. Try a new lesson, or come back tomorrow.'); return; }
@@ -194,7 +218,7 @@ function renderLesson() {
   const { current: q, index, queue, mode, records } = session;
   const { word, answered, correct, options, chosen } = q, reverse = mode === 'reverse', listening = mode === 'listen';
   const target = reverse ? word.en : word.he, prompt = reverse ? word.he : word.en;
-  main.innerHTML = `<div class="lesson-shell">${lessonTop(t('Question {current} of {total}', { current: index + 1, total: queue.length }), records.length / queue.length * 100, records.filter(a => a.correct).length * 10)}
+  main.innerHTML = `${pendingChestBanner()}<div class="lesson-shell">${lessonTop(t('Question {current} of {total}', { current: index + 1, total: queue.length }), records.length / queue.length * 100, records.filter(a => a.correct).length * 10)}
     <section class="question-card" aria-labelledby="question-instruction"><span class="break-label">${icon(listening ? 'headphones' : 'star')}${t('DAILY PRACTICE')}</span><h1 id="question-instruction">${t(listening ? 'Listen. What does the word mean?' : reverse ? 'Choose the English meaning' : 'Choose the Hebrew meaning')}</h1>
       ${listening && !q.revealed && !answered ? `<div class="prompt-row"><button class="listen-button" data-action="replay" aria-label="${t('Play the English word')}">${icon('sound')}</button></div><div class="listen-label"><button class="text-button" data-action="slow">${t('Play slowly')}</button><span aria-hidden="true">·</span><button class="text-button" data-action="reveal">${t('Show word')}</button></div>` : `<div class="prompt-row"><div class="prompt-word" lang="${reverse ? 'he' : 'en'}" dir="${reverse ? 'rtl' : 'ltr'}">${escape(prompt)}</div><button class="icon-button" data-action="replay" aria-label="${escape(t('Hear {word}', { word: prompt }))}">${icon('sound')}</button></div>`}
       <div class="choices" role="group" aria-label="${t('Answer choices')}">${options.map((option, i) => {
@@ -210,7 +234,7 @@ function answer(index) {
   // Lock before any side effect so double taps and key repeats cannot score twice.
   q.answered = true; q.chosen = chosen; q.correct = chosen === (session.mode === 'reverse' ? q.word.en : q.word.he);
   const record = answerRecord(q.word, chosen, q.correct, session.mode, performance.now() - q.start);
-  session.records.push(record); state.answers.push(record); refreshStats(); persist(); cancelSpeech(); answerSounds.play(q.correct, state.settings.effects);
+  session.records.push(record); state.answers.push(record); refreshStats(); refreshRewards(); persist(); cancelSpeech(); answerSounds.play(q.correct, state.settings.effects);
   renderLesson(); header(); $('#continue-button')?.focus({ preventScroll: true });
 }
 function nextQuestion() {
@@ -229,7 +253,7 @@ function completeLesson() {
   persist(); session = null; match = null; view = 'summary'; render(true); confetti();
 }
 function startMatch(isBonus = false) {
-  let candidates = currentPool();
+  cancelRecording(); let candidates = currentPool();
   if (isBonus) candidates = [...session.records.map(r => words.find(w => w.id === r.wordId)).filter(Boolean), ...currentPool()];
   // For a lesson break, choose from the words just practised before filling spare slots.
   const selected = isBonus ? selectPairs(candidates, 4, () => 0.999999) : selectPairs(candidates, 4);
@@ -272,7 +296,7 @@ function finishMatch() {
 }
 function renderSummary() {
   const total = summary.records.length, correct = summary.records.filter(r => r.correct).length, missed = summary.records.filter(r => !r.correct);
-  main.innerHTML = `<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle">${t('LESSON COMPLETE')}</div><h1>${t(correct === total ? 'Perfect practice!' : 'One step stronger!')}</h1><p>${t(correct === total ? 'Every word, every time. Well done!' : 'Every try counts. Keep learning.')}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>${t('XP earned')}</span></div><div class="summary-stat"><strong><bdi>${correct}/${total}</bdi></strong><span>${t('correct answers')}</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>${t('accuracy')}</span></div></div>${missed.length ? `<div class="review-list"><h2>${t('Words to try again')}</h2>${missed.map(r => `<div class="review-row"><span lang="en" dir="ltr">${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : `<div class="notice">${t('Come back tomorrow to help these words stick.')}</div>`}<div class="summary-actions"><button class="primary-button" data-action="${missed.length ? 'retry-missed' : 'start'}">${t(missed.length ? 'Try those words again' : 'Another lesson')}</button><button class="secondary-button" data-action="home">${t('Back to learning')}</button></div></section>`;
+  main.innerHTML = `${pendingChestBanner()}<section class="summary-card"><div class="celebration">${icon('trophy')}</div><div class="eyebrow subtle">${t('LESSON COMPLETE')}</div><h1>${t(correct === total ? 'Perfect practice!' : 'One step stronger!')}</h1><p>${t(correct === total ? 'Every word, every time. Well done!' : 'Every try counts. Keep learning.')}</p><div class="summary-stats"><div class="summary-stat"><strong>${correct * 10}</strong><span>${t('XP earned')}</span></div><div class="summary-stat"><strong><bdi>${correct}/${total}</bdi></strong><span>${t('correct answers')}</span></div><div class="summary-stat"><strong>${Math.round(correct / total * 100)}%</strong><span>${t('accuracy')}</span></div></div>${missed.length ? `<div class="review-list"><h2>${t('Words to try again')}</h2>${missed.map(r => `<div class="review-row"><span lang="en" dir="ltr">${escape(r.en)}</span><span lang="he" dir="rtl">${escape(words.find(w => w.id === r.wordId)?.he || r.he)}</span></div>`).join('')}</div>` : `<div class="notice">${t('Come back tomorrow to help these words stick.')}</div>`}<div class="summary-actions"><button class="primary-button" data-action="${missed.length ? 'retry-missed' : 'start'}">${t(missed.length ? 'Try those words again' : 'Another lesson')}</button><button class="secondary-button" data-action="home">${t('Back to learning')}</button></div></section>`;
 }
 function renderWords() {
   main.innerHTML = `${noticeMarkup()}<div class="page-heading"><h1>${t('Your word collection')}</h1><p>${t('Listen, explore, and find the words that need another try.')}</p></div><div class="toolbar"><label class="search-box" for="word-search">${icon('search')}<input type="search" id="word-search" value="${escape(wordQuery)}" placeholder="${t('Find a word in English or Hebrew')}" aria-label="${t('Search English and Hebrew words')}" autocomplete="off"></label><select data-change="word-pack" aria-label="${t('Word set')}">${packOptions(state.settings.pack)}</select><select data-change="sort" aria-label="${t('Sort words')}">${[['practice', 'Needs practice first'], ['alpha', 'English A–Z'], ['accuracy', 'Lowest accuracy first'], ['recent', 'Recently practised']].map(([key, label]) => `<option value="${key}" ${wordSort === key ? 'selected' : ''}>${t(label)}</option>`).join('')}</select></div><div class="word-filters" role="group" aria-label="${t('Filter learning status')}">${[['all', 'All words'], ...Object.entries(statusNames)].map(([key, label]) => `<button class="filter-button ${wordFilter === key ? 'active' : ''}" data-filter="${key}" aria-pressed="${wordFilter === key}">${t(label)}</button>`).join('')}</div><div id="word-results"></div>`;
@@ -298,8 +322,8 @@ function renderProgress() {
   const counts = { learning: 0, confident: 0, review: 0 };
   for (const w of words) { const status = wordStatus(stats.get(w.id)); if (status !== 'new') counts[status]++; }
   const practiced = counts.learning + counts.confident + counts.review;
-  const week = weekActivity(state.answers).map(d => ({ ...d, label: dayLabel(d.day, state.settings.language) })), peak = Math.max(1, ...week.map(d => d.count));
-  const statCards = [['Words practised', practiced, t('Distinct English words'), 'book'], ['Accuracy', total ? `${Math.round(correct / total * 100)}%` : '—', t('{correct} correct of {total} answers', { correct, total }), 'target'], ['Current streak', streakDays(state.answers), t('Days with a little practice'), 'fire'], ['Total XP', correct * 10, t('10 XP for each correct answer'), 'star']];
+  const week = weekActivity(activityRecords()).map(d => ({ ...d, label: dayLabel(d.day, state.settings.language) })), peak = Math.max(1, ...week.map(d => d.count));
+  const statCards = [['Words practised', practiced, t('Distinct English words'), 'book'], ['Accuracy', total ? `${Math.round(correct / total * 100)}%` : '—', t('{correct} correct of {total} answers', { correct, total }), 'target'], ['Current streak', streakDays(activityRecords()), t('Days with a little practice'), 'fire'], ['Total XP', totalXP(), t('Quiz, speaking, and treasure XP'), 'star']];
   main.innerHTML = `${noticeMarkup()}<div class="page-heading"><h1>${t('Your progress')}</h1><p>${t('Every exercise moves you forward.')}</p></div><div class="stats-grid">${statCards.map(([label, value, foot, symbol]) => `<section class="stat-card"><div class="stat-top"><span>${t(label)}</span>${icon(symbol)}</div><div class="big-number"><bdi>${typeof value === 'number' ? value.toLocaleString(locale(state.settings.language)) : value}</bdi></div><p class="stat-foot">${foot}</p></section>`).join('')}</div>
     ${!total ? `<div class="empty-state"><h2>${t('Your story starts with one word.')}</h2><p>${t('Finish a few questions and watch your progress take shape.')}</p><button class="primary-button" data-action="start">${t('Start my first lesson')}</button></div>` : ''}
     <div class="progress-grid"><section class="panel"><h2>${t('Your week in words')}</h2><p>${t('Exercises over the last seven days')}</p><div class="week-chart" role="img" aria-label="${escape(week.map(d => t('{day}: {count} exercises', { day: d.label, count: d.count })).join(', '))}">${week.map((d, i) => `<div class="day-bar ${i === 6 ? 'today' : ''}" aria-hidden="true"><div class="bar-space"><span class="bar-count">${d.count || ''}</span><span class="bar" style="height:${Math.max(4, d.count / peak * 95)}px"></span></div><span class="bar-label">${d.label}</span></div>`).join('')}</div></section><section class="panel"><h2>${t('Words finding their place')}</h2><p>${t('“Confident” means 3 correct answers in a row.')}</p><div class="learning-breakdown" aria-hidden="true">${[['confident', '#58cc02'], ['learning', '#49c0f8'], ['review', '#ffc800']].map(([k, color]) => `<span style="width:${practiced ? counts[k] / practiced * 100 : 0}%;background:${color}"></span>`).join('')}</div>${[['confident', '#58cc02'], ['learning', '#49c0f8'], ['review', '#ffc800']].map(([k, color]) => `<div class="breakdown-row"><span class="breakdown-label"><i class="legend-square" style="background:${color}" aria-hidden="true"></i>${statusName(k)}</span><strong>${counts[k]}</strong></div>`).join('')}<p class="progress-badge">${t('{count} lessons completed', { count: state.sessions.length })}</p></section></div>
@@ -336,12 +360,12 @@ async function importFile(file) {
   if (!file) return;
   if (file.size > 8 * 1024 * 1024) { toast('Please choose a CSV or backup smaller than 8 MB.'); return; }
   try {
-    const text = await file.text(); let incoming, importedSettings = null, importedSessions = [];
+    const text = await file.text(); let incoming, importedSettings = null, importedSessions = [], importedSpeaking = [], importedGame = null;
     if (file.name.toLowerCase().endsWith('.csv')) incoming = parseCSV(text);
     else {
       const data = JSON.parse(text);
       if (data.version !== 1 || !Array.isArray(data.answers)) throw new Error('Choose an Emma English 2 backup or an original answer-history CSV.');
-      incoming = cleanAnswers(data.answers); importedSettings = normalizeSettings(data.settings); importedSessions = cleanSessions(data.sessions);
+      incoming = cleanAnswers(data.answers); importedSettings = normalizeSettings(data.settings); importedSessions = cleanSessions(data.sessions); importedSpeaking = cleanSpeaking(data.speaking); importedGame = normalizeGame(data.game);
     }
     if (!incoming.length && !importedSettings) throw new Error('No valid practice answers were found in that file.');
     // Original CSVs store the selected answer in “hebrew”; preserve it as chosen and restore the dictionary meaning.
@@ -351,35 +375,158 @@ async function importFile(file) {
       if (importedSettings) state.settings = importedSettings;
       if (!forPack(words, state.settings.pack).length) state.settings.pack = words[0].packs[0];
       state.sessions = [...new Map([...state.sessions, ...importedSessions].map(s => [s.id, s])).values()];
-      persistenceBlocked = false; refreshStats(); persist(); view = 'progress'; render(true);
+      state.speaking = mergeSpeaking(state.speaking, importedSpeaking);
+      if (importedGame) state.game = mergeGames(state.game, importedGame);
+      const replacing = persistenceBlocked; persistenceBlocked = false; refreshStats(); refreshRewards(); persist(replacing); view = 'progress'; render(true);
       toast(t('Imported {count} answers. Duplicate answers were skipped.', { count: state.answers.length - before }));
     };
     if (persistenceBlocked) confirmAction('Replace unreadable saved data?', 'Download the recovery backup first if you want to keep it. Importing will replace that unreadable copy.', 'Import and replace', apply, true);
     else apply();
   } catch (error) { const message = error.message || ''; toast(message && (state.settings.language === 'en' || t(message) !== message) ? message : 'That file could not be imported. Your progress has not changed.'); }
 }
+let chestDay = null, chestBusy = false, sentenceIndex = 0;
+const offeredChests = new Set();
+let speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' };
+const currentSentence = () => SENTENCES[sentenceIndex];
+function avatarMarkup(profile, className = 'avatar-portrait') {
+  return `<span class="${className} avatar-frame-${profile.frame}"><img src="${avatarDataUri(profile)}" width="280" height="280" alt="" draggable="false"></span>`;
+}
+function pendingChestBanner() {
+  const count = state.game.chests.filter(c => c.taps < 3).length;
+  return count ? `<div class="reward-banner"><span class="chest-sprite chest-mini" aria-hidden="true"></span><div><strong>${t('Your treasure is ready!')}</strong><span>${t('{count} unopened treasures', { count })}</span></div><button class="secondary-button" data-action="open-chest">${t('Open treasure')}</button></div>` : '';
+}
+function dailyChestMarkup() {
+  const chest = state.game.chests.find(c => c.day === localDay()), opened = chest?.taps === 3;
+  return `<section class="daily-chest-card ${chest ? 'earned' : ''}"><span class="eyebrow">${t('DAILY TREASURE')}</span><button class="daily-chest-button" data-action="open-chest" aria-label="${t(opened ? 'Today’s treasure opened' : 'Open treasure')}" ${!chest || opened ? 'disabled' : ''}><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><h2>${t(opened ? 'Today’s treasure opened' : chest ? 'You earned this!' : 'A little treasure awaits')}</h2><p>${chest ? t(opened ? 'A new treasure awaits with tomorrow’s challenge.' : 'Tap the chest three times to discover your reward.') : t('Finish {count} exercises to earn your chest.', { count: state.settings.goal })}</p></section>`;
+}
+function openChest(day = null) {
+  const chest = state.game.chests.find(c => c.day === day) || state.game.chests.find(c => c.taps < 3);
+  if (!chest) { toast('Complete your daily goal to earn a treasure.'); return; }
+  cancelRecording(); cancelSpeech(); chestDay = chest.day; offeredChests.add(chest.day); renderChest();
+  const dialog = $('#chest-dialog'); if (!dialog.open) dialog.showModal();
+}
+function offerDailyChest() {
+  const chest = state.game.chests.find(c => c.day === localDay() && c.taps < 3);
+  if (chest && !offeredChests.has(chest.day)) openChest(chest.day);
+}
+function renderChest() {
+  const chest = state.game.chests.find(c => c.day === chestDay); if (!chest) return;
+  const opened = chest.taps === 3, item = REWARD_ITEMS.find(item => item.id === chest.itemId);
+  const preview = item ? { ...state.game.profile, [item.field]: item.value } : state.game.profile;
+  $('#chest-dialog').innerHTML = `<div class="dialog-heading"><span class="eyebrow">${t('DAILY TREASURE')}</span><button class="icon-button" data-action="close-chest" aria-label="${t('Close treasure')}">${icon('close')}</button></div>${storageWarning ? noticeMarkup() : ''}<div class="chest-content"><h2 id="chest-title">${t(opened ? 'Treasure unlocked!' : 'You earned this!')}</h2><p>${opened ? t('A reward for showing up and learning.') : t('Tap the chest three times to discover your reward.')}</p><button id="chest-tap" class="treasure-tap taps-${chest.taps}" data-action="tap-chest" ${opened || chestBusy ? 'disabled' : ''} aria-label="${t('Tap chest. {count} taps left.', { count: 3 - chest.taps })}"><span class="chest-sprite ${opened ? 'chest-open' : ''}" aria-hidden="true"></span></button><div class="chest-tap-progress" role="status">${opened ? `<strong class="reward-xp">+${chest.xp} XP</strong>` : `<span class="tap-pips" aria-hidden="true">${[1, 2, 3].map(n => `<i class="${n <= chest.taps ? 'filled' : ''}"></i>`).join('')}</span><span>${t('{count} of 3 taps', { count: chest.taps })}</span>`}</div>${opened ? `<div class="chest-prize">${avatarMarkup(preview, 'reward-avatar')}<div><span class="eyebrow">${t(item ? 'NEW AVATAR STYLE' : 'COLLECTION COMPLETE')}</span><h3>${t(item ? item.label : 'Extra treasure XP')}</h3><p>${t(item ? 'Yours to wear whenever you like.' : 'You have every style. Enjoy extra bonus points!')}</p></div></div><div class="dialog-actions">${item ? `<button class="secondary-button" data-action="wear-reward" ${state.game.profile[item.field] === item.value ? 'disabled' : ''}>${t(state.game.profile[item.field] === item.value ? 'Wearing it!' : 'Wear it')}</button>` : ''}<button class="primary-button" data-action="close-chest">${t('Keep going')}</button></div>` : `<p class="subtle chest-save-note">${t('Your taps are saved. You can finish opening it later.')}</p>`}</div>`;
+}
+async function tapDailyTreasure() {
+  if (chestBusy || !chestDay || persistenceBlocked) return;
+  const day = chestDay; chestBusy = true; $('#chest-tap').disabled = true;
+  const apply = () => {
+    syncLatestProgress();
+    const result = tapChest(state.game, day); state.game = result.game;
+    persist();
+    if (result.opened) { answerSounds.play(true, state.settings.effects); confetti(); }
+    header();
+  };
+  try {
+    if (globalThis.navigator?.locks) await navigator.locks.request(`${STORAGE_KEY}:treasure`, apply);
+    else apply();
+  } catch { toast('Your treasure could not be saved. Please try again.'); }
+  finally { chestBusy = false; if (chestDay === day) { renderChest(); const opened = state.game.chests.find(c => c.day === day)?.taps === 3; $(opened ? '#chest-dialog .primary-button' : '#chest-tap')?.focus({ preventScroll: true }); } }
+}
+function closeChest() {
+  $('#chest-dialog').close(); chestDay = null; render();
+  if (view === 'lesson' && session && !session.current.answered) pronounceQuestion();
+}
+function wearReward() {
+  const chest = state.game.chests.find(c => c.day === chestDay && c.taps === 3);
+  if (!chest?.itemId) return;
+  state.game = equipItem(state.game, chest.itemId); persist(); header(); renderChest();
+}
+function renderProfile() {
+  const profile = state.game.profile, owned = inventory(state.game), opened = state.game.chests.filter(c => c.taps === 3).length;
+  main.innerHTML = `${noticeMarkup()}${pendingChestBanner()}<div class="page-heading"><h1>${t('Make your avatar yours')}</h1><p>${t('Mix your favorite looks. Treasures bring new styles.')}</p></div><div class="profile-layout"><section class="profile-preview panel"><div id="avatar-preview">${avatarMarkup(profile)}</div><h2 id="avatar-display-name">${escape(profile.name || t('English explorer'))}</h2><span class="profile-xp">${totalXP()} XP</span><label class="nickname-label" for="avatar-name">${t('Your nickname')}<input id="avatar-name" maxlength="24" value="${escape(profile.name)}" placeholder="${t('English explorer')}" autocomplete="off"></label><div class="profile-totals"><div><strong>${opened}</strong><span>${t('Treasures opened')}</span></div><div><strong>${owned.size} / ${REWARD_ITEMS.length}</strong><span>${t('Styles unlocked')}</span></div></div><p class="profile-save-note">${t('Saved on this device and included in your backup.')}</p></section><div class="avatar-controls"><section class="panel avatar-colors"><h2>${t('Your colors')}</h2><div class="color-grid">${Object.entries(AVATAR_COLORS).map(([field, label]) => `<label>${t(label)}<input type="color" data-avatar-color="${field}" value="#${profile[field]}"></label>`).join('')}</div></section>${Object.entries(AVATAR_GROUPS).map(([field, group]) => `<section class="panel avatar-options"><h2>${t(group.label)}</h2><div class="avatar-choice-grid" role="group" aria-label="${t(group.label)}">${profileChoices(field, owned).map(choice => `<button class="avatar-choice ${choice.value === profile[field] ? 'active' : ''}" data-avatar-field="${field}" data-avatar-value="${choice.value}" aria-pressed="${choice.value === profile[field]}" ${choice.locked ? 'disabled' : ''}>${choice.locked ? icon('lock') : choice.value === profile[field] ? icon('check') : ''}<span>${t(choice.label)}${choice.locked ? `<small>${t('Find in treasures')}</small>` : choice.itemId ? `<small>${t('Unlocked')}</small>` : ''}</span></button>`).join('')}</div></section>`).join('')}<p class="avatar-credit">${t('Avatar art')}: <a href="https://avataaars.com/" target="_blank" rel="noopener noreferrer">Avataaars</a> / Pablo Stanley · <a href="https://www.dicebear.com/" target="_blank" rel="noopener noreferrer">DiceBear</a></p></div></div>`;
+}
+function updateAvatar(field, value, fullRender) {
+  if (!(field === 'name' || Object.hasOwn(AVATAR_COLORS, field) || Object.hasOwn(AVATAR_GROUPS, field))) return;
+  state.game.profile = normalizeProfile({ ...state.game.profile, [field]: value, updatedAt: Date.now() }, inventory(state.game)); persist(); header();
+  if (fullRender) renderProfile();
+  else { $('#avatar-preview').innerHTML = avatarMarkup(state.game.profile); $('#avatar-display-name').textContent = state.game.profile.name || t('English explorer'); }
+}
+function cancelRecording() {
+  speechCapture.cancel();
+  if (['starting', 'listening', 'processing'].includes(speakingView.phase)) speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' };
+}
+function selectSentence(index) {
+  if (!Number.isInteger(index) || index < 0 || index >= SENTENCES.length) return;
+  cancelRecording(); cancelSpeech(); sentenceIndex = index; speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' }; renderSpeaking();
+}
+const speechErrors = {
+  unsupported: 'Speech checking is unavailable in this browser. Try Chrome, or listen and practise without a score.',
+  'not-allowed': 'Microphone access was not allowed. Enable it in your browser’s site settings, then try again.',
+  'service-not-allowed': 'Your browser’s speech service is unavailable. Try Chrome or use the listening buttons.',
+  'audio-capture': 'No microphone was found. Check your microphone connection and try again.',
+  network: 'The speech service could not connect. Check your connection and try again.',
+  'no-speech': 'No clear speech was received. Tap the microphone and try again in a quieter place.',
+  'language-not-supported': 'English speech recognition is not available on this device.',
+  aborted: 'Listening stopped. You can try again.',
+  unavailable: 'Speech checking could not start. Please try again or use another browser.',
+};
+const speechCapture = createSpeechCapture({
+  onState(phase, transcript) {
+    if (view !== 'speaking') return;
+    speakingView.phase = phase; if (transcript) speakingView.transcript = transcript; renderSpeaking();
+  },
+  onError(error) {
+    if (view !== 'speaking') return;
+    speakingView.phase = 'error'; speakingView.error = speechErrors[error] || speechErrors.unavailable; renderSpeaking();
+  },
+  onResult(transcript) {
+    if (view !== 'speaking') return;
+    const feedback = assessSpeech(currentSentence().en, transcript);
+    speakingView = { phase: 'result', transcript, feedback, error: '' };
+    const record = { sentenceId: currentSentence().id, ts: new Date().toISOString(), transcript };
+    state.speaking = mergeSpeaking(state.speaking, [record]); refreshRewards(); persist();
+    answerSounds.play(feedback.score >= 80, state.settings.effects); header(); renderSpeaking();
+  },
+}, window);
+function startRecording() {
+  cancelSpeech(); answerSounds.stop(); speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' }; speechCapture.start();
+}
+function renderSpeaking() {
+  const sentence = currentSentence(), { phase, feedback, transcript, error } = speakingView;
+  const active = ['starting', 'listening', 'processing'].includes(phase);
+  const previous = state.speaking.find(record => record.id === `${localDay()}:${sentence.id}`);
+  const focusId = document.activeElement?.id;
+  main.innerHTML = `${pendingChestBanner()}<div class="lesson-shell speaking-shell">${lessonTop(t('Today’s speaking practice'), state.speaking.filter(record => localDay(record.ts) === localDay()).length / SENTENCES.length * 100, state.speaking.length * 5)}<section class="question-card"><span class="break-label">${icon('mic')}${t('SPEAK & GROW')}</span><h1>${t('Say this sentence aloud')}</h1><label class="sentence-picker" for="sentence-select">${t('Choose a sentence')}<select id="sentence-select">${SENTENCES.map((s, i) => `<option value="${i}" ${i === sentenceIndex ? 'selected' : ''}>${i + 1}. ${escape(s.en)}</option>`).join('')}</select></label><div class="sentence-card"><p class="sentence-text" lang="en" dir="ltr">${escape(sentence.en)}</p><p class="sentence-translation" lang="he" dir="rtl">${escape(sentence.he)}</p><div class="sentence-listen"><button class="secondary-button" data-action="sentence-model" ${active ? 'disabled' : ''}>${icon('sound')}${t('Hear the sentence')}</button><button class="text-button" data-action="sentence-slow" ${active ? 'disabled' : ''}>${t('Play slowly')}</button></div></div><div class="microphone-area"><button id="record-button" class="microphone-button ${active ? 'recording' : ''}" data-action="${active ? 'stop-recording' : 'record-sentence'}" ${!speechCapture.supported || phase === 'starting' || phase === 'processing' ? 'disabled' : ''} aria-label="${t(active ? 'Stop listening' : 'Start speaking')}">${icon(active ? 'check' : 'mic')}</button><div role="status" class="microphone-status">${t(phase === 'starting' ? 'Allow microphone access…' : phase === 'listening' ? 'Listening… speak now' : phase === 'processing' ? 'Checking what was heard…' : phase === 'result' ? 'Try again whenever you like' : 'Tap the microphone when you’re ready')}</div>${active ? `<button class="text-button" data-action="cancel-recording">${t('Cancel')}</button>` : ''}</div>${!speechCapture.supported || error ? `<div class="notice" role="alert">${icon('info')}<span>${t(error || speechErrors.unsupported)}</span></div>` : ''}${transcript ? `<div class="heard-transcript"><span class="eyebrow">${t('YOUR BROWSER HEARD')}</span><p lang="en" dir="ltr">${escape(transcript)}</p></div>` : ''}${feedback ? `<section class="speech-feedback"><div class="speech-score-row"><strong>${feedback.score}%</strong><div><h2>${t('Words matched')}</h2><p>${t(feedback.score === 100 ? 'Every word was recognized!' : feedback.score >= 80 ? 'Almost there! Try the highlighted words.' : 'Listen once more, then try it in small groups.')}</p></div></div><div class="spoken-words" dir="ltr" lang="en">${feedback.words.map(word => `<button class="spoken-word ${word.correct ? 'recognized' : 'retry-word'}" data-speech-word="${escape(word.text)}" aria-label="${escape(t('Hear {word}', { word: word.text }))}">${escape(word.text)}${icon(word.correct ? 'check' : 'retry')}</button>`).join('')}</div><p>${t('Tap any word to hear it slowly.')}</p></section>` : ''}<p class="speech-explanation">${t('Feedback compares recognized words. It does not measure individual sounds or accent.')}</p><p class="speech-privacy">${t('Your browser may send audio to its speech service. Only the transcript and result are saved on this device.')}</p></section><div class="lesson-bottom"><span class="subtle">${t(previous ? 'Today’s practice XP for this sentence is already earned.' : '5 XP for trying a new sentence today.')}</span><button class="primary-button" data-action="next-sentence" ${active ? 'disabled' : ''}>${t('Next sentence')}${icon('arrow')}</button></div></div>`;
+  if (focusId === 'record-button') $('#record-button')?.focus({ preventScroll: true });
+}
+
 const actions = {
   'toggle-language': () => { state.settings.language = state.settings.language === 'en' ? 'he' : 'en'; persist(); render(); },
   'toggle-effects': () => { state.settings.effects = !state.settings.effects; if (!state.settings.effects) answerSounds.stop(); persist(); header(); },
+  profile: () => navigate('profile'), speaking: () => navigate('speaking'),
+  'open-chest': () => openChest(), 'tap-chest': () => tapDailyTreasure(), 'close-chest': closeChest, 'wear-reward': wearReward,
+  'record-sentence': startRecording, 'stop-recording': () => speechCapture.stop(), 'cancel-recording': () => { cancelRecording(); renderSpeaking(); },
+  'sentence-model': () => { cancelRecording(); speak(currentSentence().en, 'en-US', true); renderSpeaking(); },
+  'sentence-slow': () => { cancelRecording(); speak(currentSentence().en, 'en-US', true, true); renderSpeaking(); },
+  'next-sentence': () => { selectSentence((sentenceIndex + 1) % SENTENCES.length); offerDailyChest(); },
   start: () => startLesson(), listen: () => startLesson('listen'), reverse: () => startLesson('reverse'), review: () => startLesson('translate', true),
   match: () => startMatch(), home: () => navigate('learn'), words: () => navigate('words'), leave: () => navigate('learn'),
   replay: () => { if (session) speak(session.mode === 'reverse' ? session.current.word.he : session.current.word.en, session.mode === 'reverse' ? 'he-IL' : 'en-US', true); },
   slow: () => { if (session) speak(session.current.word.en, 'en-US', true, true); },
   reveal: () => { if (session) { session.current.revealed = true; renderLesson(); } },
-  skip: () => answer(null), next: nextQuestion, 'match-done': finishMatch, 'skip-match': finishMatch,
+  skip: () => answer(null), next: () => { nextQuestion(); offerDailyChest(); }, 'match-done': finishMatch, 'skip-match': finishMatch,
   'retry-missed': () => { const retry = summary.records.filter(r => !r.correct).map(r => words.find(w => w.id === r.wordId)).filter(Boolean); startLesson(summary.mode, false, retry); },
   'prev-page': () => { wordPage = Math.max(0, wordPage - 1); renderWordTable(); },
   'next-page': () => { wordPage++; renderWordTable(); },
   'clear-filters': () => { wordQuery = ''; wordFilter = 'all'; wordPage = 0; renderWords(); },
-  settings: showSettings, 'close-settings': () => $('#settings-dialog').close(),
+  settings: () => { cancelRecording(); if (view === 'speaking') renderSpeaking(); showSettings(); }, 'close-settings': () => $('#settings-dialog').close(),
   'cancel-confirm': () => { confirmCallback = null; $('#confirm-dialog').close(); },
   'accept-confirm': () => { const callback = confirmCallback; confirmCallback = null; $('#confirm-dialog').close(); callback?.(); },
   'export-csv': () => { if (state.answers.length) download(toCSV(state.answers), `quiz_answers_${localDay()}.csv`, 'text/csv;charset=utf-8'); },
   backup: exportBackup, import: () => $('#import-file').click(),
   reset: () => {
     $('#settings-dialog').close();
-    confirmAction('Start fresh on this device?', 'This deletes your saved answers, lesson history, and streak here. Download a backup from My progress first if you want to keep them.', 'Reset progress', () => {
-      cancelSpeech(); const settings = state.settings; state = createState(); state.settings = settings; persistenceBlocked = false; session = null; match = null; summary = null; refreshStats(); persist(); view = 'learn'; render(true); toast('A fresh start. Your practice settings were kept.');
+    confirmAction('Start fresh on this device?', 'This clears your answers, speaking practice, avatar, and treasures on this device. Download a backup first to keep them.', 'Reset progress', () => {
+      cancelRecording(); cancelSpeech(); const settings = state.settings; state = createState(); state.settings = settings; persistenceBlocked = false; session = null; match = null; summary = null; refreshStats(); persist(true); view = 'learn'; render(true); toast('A fresh start. Your practice settings were kept.');
     }, true);
   },
   reload: () => location.reload(),
@@ -388,15 +535,18 @@ document.addEventListener('click', event => {
   const nav = event.target.closest('[data-page]');
   if (nav && ready) { event.preventDefault(); navigate(nav.dataset.page); return; }
   const button = event.target.closest('button'); if (!button || button.disabled || !ready) return;
+  if (button.dataset.avatarField) { updateAvatar(button.dataset.avatarField, button.dataset.avatarValue, true); return; }
+  if (button.dataset.speechWord) { cancelRecording(); speak(button.dataset.speechWord, 'en-US', true, true); return; }
   if (button.dataset.action) { actions[button.dataset.action]?.(); return; }
   if ('choice' in button.dataset) { answer(Number(button.dataset.choice)); return; }
   if (button.dataset.pair) { choosePair(button); return; }
   if (button.dataset.speak) { const w = words.find(x => x.id === button.dataset.speak); if (w) speak(w.en, 'en-US', true); return; }
   if (button.dataset.filter) { wordFilter = button.dataset.filter; wordPage = 0; renderWords(); }
 });
-document.addEventListener('input', event => { if (event.target.id === 'word-search') { wordQuery = event.target.value; wordPage = 0; renderWordTable(); } });
+document.addEventListener('input', event => { if (event.target.dataset.avatarColor) updateAvatar(event.target.dataset.avatarColor, event.target.value.slice(1), false); if (event.target.id === 'avatar-name') updateAvatar('name', event.target.value, false); if (event.target.id === 'word-search') { wordQuery = event.target.value; wordPage = 0; renderWordTable(); } });
 document.addEventListener('change', event => {
   const el = event.target;
+  if (el.id === 'sentence-select') { selectSentence(Number(el.value)); return; }
   if (el.id === 'import-file') { importFile(el.files[0]); el.value = ''; return; }
   if (['pack', 'word-pack'].includes(el.dataset.change)) { state.settings.pack = el.value; wordPage = 0; persist(); render(); }
   if (el.dataset.change === 'sort') { wordSort = el.value; wordPage = 0; renderWordTable(); }
@@ -405,15 +555,17 @@ document.addEventListener('submit', event => {
   if (event.target.id !== 'settings-form') return;
   event.preventDefault(); const data = new FormData(event.target);
   state.settings = normalizeSettings({ ...Object.fromEntries(data), goalVersion: 2, effects: data.has('effects'), sound: data.has('sound'), bonus: data.has('bonus') });
-  if (!state.settings.effects) answerSounds.stop(); if (!state.settings.sound) cancelSpeech(); const saved = persist(); $('#settings-dialog').close(); render(); toast(saved ? 'Your practice settings are saved.' : 'Settings updated in this tab. Download a backup to keep them.');
+  if (!state.settings.effects) answerSounds.stop(); if (!state.settings.sound) cancelSpeech(); refreshRewards(); const saved = persist(); $('#settings-dialog').close(); render(); toast(saved ? 'Your practice settings are saved.' : 'Settings updated in this tab. Download a backup to keep them.');
 });
 document.addEventListener('keydown', event => {
   if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || document.querySelector('dialog[open]') || ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
   if (view === 'lesson' && session && /^[1-7]$/.test(event.key) && !session.current.answered) { event.preventDefault(); answer(Number(event.key) - 1); }
-  if (view === 'lesson' && session?.current.answered && event.key === 'Enter' && document.activeElement?.id !== 'continue-button' && document.activeElement?.tagName !== 'BUTTON') { event.preventDefault(); nextQuestion(); }
+  if (view === 'lesson' && session?.current.answered && event.key === 'Enter' && document.activeElement?.id !== 'continue-button' && document.activeElement?.tagName !== 'BUTTON') { event.preventDefault(); actions.next(); }
 });
 window.addEventListener('hashchange', () => { if (ready) navigate(location.hash.slice(1)); });
-window.addEventListener('pagehide', () => { cancelSpeech(); answerSounds.stop(); });
+window.addEventListener('pagehide', () => { cancelRecording(); cancelSpeech(); answerSounds.stop(); });
+$('#chest-dialog').addEventListener('cancel', event => { event.preventDefault(); closeChest(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelRecording(); if (view === 'speaking') renderSpeaking(); } });
 // Avoid silent cross-tab overwrites of saved learning history.
 window.addEventListener('storage', event => {
   if (event.key !== STORAGE_KEY || !event.newValue || persistenceBlocked) return;
@@ -421,6 +573,7 @@ window.addEventListener('storage', event => {
     const incoming = JSON.parse(event.newValue); if (incoming.version !== 1) return;
     state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
     state.sessions = [...new Map([...state.sessions, ...cleanSessions(incoming.sessions)].map(s => [s.id, s])).values()];
+    state.game = mergeGames(state.game, incoming.game); state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
     refreshStats(); if (!session && view !== 'match' && !document.querySelector('dialog[open]')) render();
   } catch { /* Another tab's invalid data cannot replace the valid in-memory state. */ }
 });
@@ -441,6 +594,6 @@ async function init() {
   }
   if (!base.length || !stories.length) loadWarning = { pack: !base.length ? 'everyday' : 'stories' };
   if (!forPack(words, state.settings.pack).length) state.settings.pack = base.length ? 'everyday' : 'stories';
-  ready = true; view = ['words', 'progress'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'learn'; render();
+  ready = true; const beforeChests = state.game.chests.length; refreshRewards(); if (state.game.chests.length !== beforeChests) persist(); view = ['words', 'progress', 'profile', 'speaking'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'learn'; render();
 }
 init();

@@ -1,13 +1,21 @@
 {
   "name": "emmaenglish2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "type": "module",
-  "description": "A playful, bilingual English–Hebrew vocabulary learning app.",
+  "description": "A playful, bilingual English\u2013Hebrew vocabulary learning app.",
   "scripts": {
     "test": "node --test tests/*.test.js",
     "check": "node scripts/validate.js",
-    "start": "node scripts/serve.js"
+    "start": "node scripts/serve.js",
+    "build:avatar": "node scripts/build-avatar.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@dicebear/core": "9.2.4",
+    "@dicebear/avataaars": "9.2.4",
+    "esbuild": "0.25.10"
+  }
 }

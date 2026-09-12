@@ -4,26 +4,29 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import * as core from '../dist/core.js';
 import * as i18n from '../dist/i18n.js';
+import * as game from '../dist/game.js';
+import * as speaking from '../dist/speaking.js';
+import { avatarDataUri } from '../dist/vendor/avatar.js';
 import { createAnswerSounds } from '../dist/sounds.js';
 
 // Exercise the actual application handlers with inert document/audio adapters.
 // This is a state/markup smoke test, not browser or visual testing.
 const source = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
 const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}` }));
-async function boot(saved = new Map()) {
+async function boot(saved = new Map(), speechHost = {}) {
   const elements = new Map(), listeners = new Map();
   const element = selector => {
-    if (!elements.has(selector)) elements.set(selector, { innerHTML: '', dataset: {}, style: {}, attributes: {}, setAttribute(k, v) { this.attributes[k] = v; }, removeAttribute(k) { delete this.attributes[k]; }, focus() {}, querySelectorAll() { return []; }, showModal() {}, close() {} });
+    if (!elements.has(selector)) elements.set(selector, { innerHTML: '', dataset: {}, style: {}, attributes: {}, addEventListener() {}, setAttribute(k, v) { this.attributes[k] = v; }, removeAttribute(k) { delete this.attributes[k]; }, focus() {}, querySelectorAll() { return []; }, showModal() { this.open = true; }, close() { this.open = false; } });
     return elements.get(selector);
   };
   const context = vm.createContext({
-    ...core, ...i18n, createAnswerSounds, URL, performance, console,
+    ...core, ...i18n, ...game, ...speaking, avatarDataUri, createAnswerSounds, URL, performance, console,
     translate(language, key, values) {
       if (language === 'he' && /[A-Za-z]/.test(key) && !/[\u0590-\u05ff]/.test(key)) assert(Object.hasOwn(i18n.hebrew, key), `Missing dynamic translation: ${key}`);
       return i18n.translate(language, key, values);
     },
     document: { querySelector: element, querySelectorAll: () => [], documentElement: {}, body: { classList: { toggle() {} } }, addEventListener: (name, fn) => listeners.set(name, fn) },
-    window: { addEventListener() {}, scrollTo() {}, matchMedia: () => ({ matches: true }), speechSynthesis: {}, SpeechSynthesisUtterance: class {} },
+    window: { addEventListener() {}, scrollTo() {}, matchMedia: () => ({ matches: true }), speechSynthesis: {}, SpeechSynthesisUtterance: class {}, setTimeout: () => 0, clearTimeout() {}, ...speechHost },
     speechSynthesis: { cancel() {}, getVoices: () => [], speak() {} }, SpeechSynthesisUtterance: class {},
     localStorage: { getItem: k => saved.get(k) ?? null, setItem: (k, v) => saved.set(k, v) },
     history: { replaceState() {} }, location: { hash: '', reload() {} },
@@ -31,7 +34,7 @@ async function boot(saved = new Map()) {
     setTimeout: () => 0, clearTimeout() {},
   });
   const app = source.replace(/^import .*;\n/gm, '').replaceAll('import.meta.url', JSON.stringify(new URL('../dist/app.js', import.meta.url).href));
-  vm.runInContext(`${app}\nglobalThis.api = { actions, answer, nextQuestion, startLesson, choosePair, render, navigate, showSettings, get state() { return state; }, get session() { return session; }, get match() { return match; }, get view() { return view; }, whenReady: () => ready };`, context);
+  vm.runInContext(`${app}\nglobalThis.api = { actions, answer, nextQuestion, startLesson, choosePair, render, navigate, showSettings, openChest, tapDailyTreasure, closeChest, wearReward, updateAvatar, renderProfile, renderSpeaking, get state() { return state; }, get session() { return session; }, get match() { return match; }, get view() { return view; }, whenReady: () => ready };`, context);
   // Init awaits two fetches and normalization; settle it without timers or a server.
   for (let i = 0; i < 12 && !context.api.whenReady(); i++) await Promise.resolve();
   assert(context.api.whenReady());
@@ -65,6 +68,66 @@ test('language switching preserves an active answer, progress and saved sound se
   assert.equal(restored.api.state.answers.length, 1);
 });
 
+test('completing a goal opens a three-tap chest, and the avatar reward persists in both interfaces', async () => {
+  let app = await boot();
+  app.api.state.settings = core.normalizeSettings({ questions: 5, goal: 5, language: 'he', bonus: false, sound: false });
+  app.api.startLesson();
+  while (app.api.session) {
+    const q = app.api.session.current;
+    app.api.answer(q.options.indexOf(q.word.he)); app.api.actions.next();
+  }
+  assert(app.elements.get('#chest-dialog').open, 'Continue at the daily goal offers the treasure');
+  assert.equal(app.api.state.game.chests.length, 1);
+  await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure();
+  assert.equal(game.bonusXP(app.api.state.game), 0);
+  app = await boot(app.saved);
+  app.api.openChest();
+  assert.equal(app.api.state.game.chests[0].taps, 2);
+  await app.api.tapDailyTreasure(); await app.api.tapDailyTreasure();
+  assert.equal(game.bonusXP(app.api.state.game), 40);
+  const reward = game.REWARD_ITEMS.find(item => item.id === app.api.state.game.chests[0].itemId);
+  app.api.wearReward(); app.api.closeChest(); app.api.actions.profile();
+  assert.equal(app.api.state.game.profile[reward.field], reward.value);
+  app.api.updateAvatar('name', '<Emma>', false); app.api.updateAvatar('hairColor', 'ff0000', false);
+  app.api.actions['toggle-language'](); app.api.actions['toggle-language']();
+  app.api.actions.speaking();
+  assert.match(app.elements.get('#main').innerHTML, /dir="ltr" lang="en"|lang="en" dir="ltr"/);
+  const restored = await boot(app.saved);
+  assert.equal(restored.api.state.game.profile.name, '<Emma>');
+  assert.equal(restored.api.state.game.profile.hairColor, 'ff0000');
+  assert.equal(restored.api.state.game.profile[reward.field], reward.value);
+  restored.api.actions.profile(); assert.match(restored.elements.get('#main').innerHTML, /&lt;Emma&gt;/);
+});
+
+test('speaking uses final transcripts, counts daily practice once, and cancels on navigation', async () => {
+  const recognitions = [];
+  class Recognition {
+    constructor() { recognitions.push(this); }
+    start() { this.onstart(); }
+    stop() {}
+    abort() { this.aborted = true; this.onend?.(); }
+    emit(transcript, isFinal = true) { this.onresult({ results: [Object.assign([{ transcript }], { isFinal })] }); }
+  }
+  const { api, elements, saved } = await boot(new Map(), { SpeechRecognition: Recognition, isSecureContext: true });
+  api.actions['toggle-language'](); api.actions.speaking();
+  api.actions['record-sentence'](); recognitions.at(-1).emit('hello', false);
+  assert.equal(api.state.speaking.length, 0);
+  recognitions.at(-1).emit(speaking.SENTENCES[0].en);
+  assert.equal(api.state.speaking.length, 1); assert.equal(api.state.speaking[0].score, 100);
+  assert.match(elements.get('#main').innerHTML, /100%/);
+  api.actions['record-sentence'](); recognitions.at(-1).emit(speaking.SENTENCES[0].en);
+  assert.equal(api.state.speaking.length, 1);
+  for (const error of ['not-allowed', 'audio-capture', 'network', 'no-speech']) {
+    api.actions['record-sentence'](); recognitions.at(-1).onerror({ error });
+    assert.match(elements.get('#main').innerHTML, /role="alert"/);
+  }
+  api.actions['record-sentence'](); const canceled = recognitions.at(-1); api.actions.profile();
+  assert(canceled.aborted); canceled.emit('a late result');
+  assert.equal(api.state.speaking.length, 1);
+  const restored = await boot(saved);
+  assert.equal(restored.api.state.speaking.length, 1); assert.equal(restored.api.state.speaking[0].score, 100);
+});
+
 test('a 30-question lesson finishes, reloads, and all practice views render in Hebrew', async () => {
   const { api, saved, elements } = await boot();
   api.state.settings = core.normalizeSettings({ questions: 30, goal: 30, language: 'he', bonus: false, sound: false });
@@ -77,7 +140,7 @@ test('a 30-question lesson finishes, reloads, and all practice views render in H
   assert.match(elements.get('#main').innerHTML, /השיעור הושלם/);
   assert.equal(api.state.sessions[0].total, 30);
   assert.equal(api.state.answers.length, 30);
-  api.actions.home(); api.actions.words(); api.navigate('progress'); assert.match(elements.get('#main').innerHTML, /השבוע שלך במילים/); api.actions.home();
+  api.closeChest(); api.actions.home(); api.actions.words(); api.navigate('progress'); assert.match(elements.get('#main').innerHTML, /השבוע שלך במילים/); api.actions.home();
   api.showSettings();
   assert.match(elements.get('#settings-dialog').innerHTML, /30 תרגילים ביום/);
   api.actions.reverse(); assert.match(elements.get('#main').innerHTML, /בוחרים את הפירוש באנגלית/);
