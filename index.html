@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#131f24">
   <meta name="description" content="Your daily English–Hebrew learning adventure. Practise words, listen, match pairs, and grow with a 30-exercise daily goal.">
   <title>Emma English · Your daily adventure</title>
-  <link rel="icon" href="./favicon.svg?v=2.1.0" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=2.1.0">
-  <script type="module" src="./app.js?v=2.1.0"></script>
+  <link rel="icon" href="./favicon.svg?v=2.2.0" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css?v=2.2.0">
+  <script type="module" src="./app.js?v=2.2.0"></script>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="Skip to practice">Skip to practice</a>
@@ -19,7 +19,9 @@
       <nav class="nav-links">
         <a href="#learn" data-page="learn"><span data-icon="learn"></span><span data-i18n="Learn">Learn</span></a>
         <a href="#words" data-page="words"><span data-icon="book"></span><span data-i18n="My words">My words</span></a>
+        <a href="#speaking" data-page="speaking"><span data-icon="mic"></span><span data-i18n="Speak">Speak</span></a>
         <a href="#progress" data-page="progress"><span data-icon="chart"></span><span data-i18n="My progress">My progress</span></a>
+        <a href="#profile" data-page="profile"><span data-icon="user"></span><span data-i18n="Avatar">Avatar</span></a>
       </nav>
       <div class="sidebar-note"><span data-icon="star"></span><strong data-i18n="Small steps. New words.">Small steps. New words.</strong><p data-i18n="Every try takes you forward.">Every try takes you forward.</p></div>
       <button class="settings-nav" data-action="settings"><span data-icon="settings"></span><span data-i18n="Practice settings">Practice settings</span></button>
@@ -30,6 +32,7 @@
         <a class="mobile-brand" href="#learn" data-page="learn" aria-label="Emma English" dir="ltr">ee<span>✦</span></a>
         <div class="top-stats"><span class="streak-pill" id="streak-pill"></span><span class="xp-pill" id="xp-pill"></span></div>
         <div class="topbar-right">
+          <button class="avatar-nav" id="avatar-nav" data-action="profile" aria-label="My avatar"></button>
           <button class="language-toggle" id="language-toggle" data-action="toggle-language" lang="he" dir="rtl" aria-label="Switch interface to Hebrew">עברית</button>
           <button class="icon-button sound-toggle" id="sound-toggle" data-action="toggle-effects" aria-label="Turn answer sounds off"></button>
           <button class="icon-button" data-action="settings" data-i18n-label="Practice settings" aria-label="Practice settings"><span data-icon="settings"></span></button>
@@ -40,6 +43,7 @@
     </div>
   </div>
   <dialog id="settings-dialog" aria-labelledby="settings-title"></dialog>
+  <dialog id="chest-dialog" aria-labelledby="chest-title"></dialog>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"></dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <noscript><p class="noscript">Please enable JavaScript to practise. <span lang="he" dir="rtl">יש להפעיל JavaScript כדי לתרגל.</span></p></noscript>

@@ -453,3 +453,141 @@ dialog::backdrop { background: #061015cc; backdrop-filter: blur(4px); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Treasure, avatar wardrobe, and speaking practice. */
+.avatar-nav { width: 46px; height: 46px; min-width: 46px; border: 0; padding: 0; border-radius: 50%; background: transparent; }
+.avatar-small { display: block; width: 46px; height: 46px; border-radius: 50%; }
+.avatar-small img, .avatar-portrait img, .reward-avatar img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.avatar-frame-blue { outline: 3px solid var(--blue); outline-offset: 3px; }
+.avatar-frame-gold { outline: 3px solid var(--gold); outline-offset: 3px; box-shadow: 0 0 24px #ffc80066; }
+.avatar-frame-aurora { outline: 3px solid #c17eff; outline-offset: 3px; box-shadow: -10px 0 26px #49c0f877, 10px 0 26px #ef7edf77; }
+.nav-links a:nth-child(4) svg { color: var(--gold); }
+.nav-links a:nth-child(5) svg { color: var(--coral); }
+.purple .path-node { background: #bd79ef; color: #2a123c; box-shadow: 0 9px 0 #7444a0, inset 0 8px 0 #ffffff25; }
+.stop-4 { --offset: 0px; }
+.chest-sprite { display: block; width: 100%; aspect-ratio: 1; background-image: url('./assets/treasure-chests.webp'); background-size: 200% 100%; background-position: left center; background-repeat: no-repeat; }
+.chest-sprite.chest-open { background-position: right center; }
+.reward-banner { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; padding: 12px 20px; background: #302a13; border: 2px solid #766226; border-radius: 20px; }
+.chest-mini { width: 70px; height: 70px; flex: none; }
+.reward-banner > div { flex: 1; }
+.reward-banner strong { display: block; color: var(--gold); font-size: 1.1rem; }
+.reward-banner > div > span { display: block; font-size: .875rem; color: #ddcd96; margin-top: 4px; }
+.reward-banner .secondary-button { color: var(--gold); border-color: #766226; box-shadow: 0 3px 0 #766226; }
+.daily-chest-card { width: min(100%, 340px); margin-top: 8px; text-align: center; border-top: 2px solid var(--line); padding: 28px 16px 14px; }
+.daily-chest-card .eyebrow { color: var(--gold); }
+.daily-chest-button { display: block; width: min(230px, 100%); margin: 0 auto; border: 0; background: transparent; padding: 0; }
+.daily-chest-card:not(.earned) .chest-sprite { filter: grayscale(.7); opacity: .65; }
+.daily-chest-card h2 { font-size: 1.2rem; }
+.daily-chest-card p { margin-top: 9px; color: var(--muted); font-size: .875rem; }
+.daily-chest-button:hover:enabled { transform: rotate(-3deg) scale(1.03); }
+#chest-dialog { width: min(560px, calc(100% - 28px)); }
+#chest-dialog .eyebrow { color: var(--gold); }
+.chest-content { text-align: center; }
+.chest-content h2 { font-size: 1.9rem; margin-top: 10px; }
+.chest-content > p { color: var(--muted); margin-top: 9px; }
+.treasure-tap { width: min(290px, 100%); border: 0; background: transparent; padding: 0; display: block; margin: 0 auto; border-radius: 30px; }
+.treasure-tap:active:enabled { transform: scale(.93); }
+.treasure-tap.taps-1 .chest-sprite { transform: rotate(-5deg); filter: drop-shadow(0 0 13px #49c0f855); }
+.treasure-tap.taps-2 .chest-sprite { transform: rotate(5deg); filter: drop-shadow(0 0 20px #ffc80088); }
+.treasure-tap.taps-3 .chest-sprite { animation: treasure-reveal .45s ease-out; }
+.chest-tap-progress { min-height: 46px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--gold); font-size: .95rem; font-weight: 900; }
+.tap-pips { display: flex; gap: 9px; }
+.tap-pips i { width: 28px; height: 10px; border-radius: 6px; background: var(--line); }
+.tap-pips i.filled { background: var(--gold); }
+.reward-xp { font-size: 2.2rem; font-weight: 900; }
+.chest-prize { margin-top: 18px; display: flex; align-items: center; gap: 18px; text-align: start; border: 2px solid var(--line); border-radius: 18px; padding: 14px; background: var(--surface); }
+.reward-avatar { display: block; width: 96px; height: 96px; flex: none; border-radius: 50%; }
+.chest-prize .eyebrow { font-size: .875rem; }
+.chest-prize h3 { margin-top: 4px; }
+.chest-prize p, .chest-save-note { font-size: .875rem; color: var(--muted); margin-top: 5px; }
+.chest-content .dialog-actions { justify-content: center; }
+.profile-layout { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 26px; align-items: start; }
+.profile-preview { position: sticky; top: 114px; text-align: center; padding: 30px 22px; }
+.avatar-portrait { display: block; width: 210px; max-width: 100%; aspect-ratio: 1; border-radius: 50%; margin: 0 auto 22px; }
+.profile-preview h2 { overflow-wrap: anywhere; }
+.profile-xp { display: inline-block; color: var(--gold); margin: 6px 0 20px; font-size: 1.2rem; font-weight: 900; }
+.nickname-label { text-align: start; display: block; font-size: .875rem; color: var(--muted); }
+.nickname-label input { display: block; width: 100%; border: 2px solid var(--line); border-radius: 12px; margin-top: 7px; padding: 10px; background: var(--bg); }
+.profile-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; border-top: 1px solid var(--line); margin-top: 22px; padding-top: 22px; }
+.profile-totals strong { display: block; color: var(--blue); font-size: 1.3rem; }
+.profile-totals span { display: block; color: var(--muted); font-size: .875rem; margin-top: 6px; }
+.profile-preview .profile-save-note { font-size: .875rem; color: var(--muted); margin-top: 23px; }
+.avatar-controls { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.avatar-controls h2 { font-size: 1.15rem; }
+.color-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.color-grid label { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; font-size: .875rem; color: var(--muted); }
+.color-grid input { display: block; width: 60px; height: 48px; border: 2px solid var(--line-light); border-radius: 12px; padding: 4px; background: var(--surface); cursor: pointer; }
+.avatar-choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.avatar-choice { display: flex; align-items: center; gap: 9px; min-height: 58px; text-align: start; border: 2px solid var(--line); border-radius: 13px; padding: 10px 13px; background: transparent; font-size: .95rem; }
+.avatar-choice.active { background: #123345; border-color: var(--blue); color: var(--blue); }
+.avatar-choice:disabled { color: var(--muted); background: #172329; }
+.avatar-choice svg { width: 20px; height: 20px; }
+.avatar-choice small { display: block; font-size: .875rem; color: var(--muted); margin-top: 4px; }
+.avatar-choice:hover:enabled { border-color: var(--blue); }
+.avatar-credit { color: var(--muted); font-size: .875rem; text-align: center; }
+.sentence-picker { display: block; margin-top: 25px; font-size: .875rem; color: var(--muted); }
+.sentence-picker select { display: block; width: 100%; margin-top: 8px; font-size: 1rem; }
+.sentence-card { padding: 26px; border: 2px solid var(--line); border-radius: 23px; margin-top: 24px; background: var(--surface); text-align: center; }
+.sentence-text { font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 900; line-height: 1.6; }
+.sentence-translation { margin-top: 12px; color: var(--muted); font-size: 1rem; }
+.sentence-listen { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 22px; }
+.microphone-area { display: flex; flex-direction: column; align-items: center; margin: 34px 0 22px; }
+.microphone-button { width: 88px; height: 82px; border-radius: 25px; display: grid; place-items: center; border: 0; background: var(--blue); box-shadow: 0 6px 0 var(--blue-shadow); color: #123342; }
+.microphone-button svg { width: 40px; height: 40px; stroke-width: 2.5; }
+.microphone-button.recording { background: var(--coral); box-shadow: 0 6px 0 var(--coral-shadow); color: white; animation: mic-pulse 1.2s infinite; }
+.microphone-button:disabled:not(.recording) { color: var(--muted); background: var(--line); box-shadow: 0 6px 0 #24353d; }
+.microphone-status { color: var(--muted); text-align: center; margin-top: 18px; font-size: .95rem; }
+.heard-transcript { padding: 20px; border-radius: 17px; background: var(--surface); margin: 24px 0; }
+.heard-transcript .eyebrow { color: var(--muted); }
+.heard-transcript p { margin-top: 9px; font-size: 1.2rem; overflow-wrap: anywhere; }
+.speech-feedback { padding: 22px; border: 2px solid var(--line); border-radius: 19px; margin-bottom: 24px; }
+.speech-score-row { display: flex; align-items: center; gap: 20px; }
+.speech-score-row > strong { color: var(--blue); font-size: 2.35rem; }
+.speech-score-row h2 { font-size: 1.1rem; }
+.speech-score-row p, .speech-feedback > p { color: var(--muted); font-size: .875rem; margin-top: 6px; }
+.spoken-words { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.spoken-word { display: flex; align-items: center; gap: 7px; padding: 7px 11px; font-size: 1rem; border-radius: 11px; border: 1px solid; }
+.spoken-word svg { width: 16px; height: 16px; }
+.spoken-word.recognized { background: #203816; color: var(--green); border-color: #446b31; }
+.spoken-word.retry-word { background: #3b3014; color: var(--gold); border-color: #796a36; }
+.speech-explanation, .speech-privacy { font-size: .875rem; color: var(--muted); margin: 14px 0; line-height: 1.6; }
+.speaking-shell .lesson-bottom { flex-wrap: wrap; }
+.speaking-shell .lesson-bottom > span { font-size: .875rem; flex: 1; min-width: 180px; }
+@keyframes treasure-reveal { from { transform: scale(.85); opacity: .5; } to { transform: scale(1); opacity: 1; } }
+@keyframes mic-pulse { 50% { outline: 9px solid #ff4b5522; outline-offset: 2px; } }
+@media (max-width: 1100px) { .profile-layout { grid-template-columns: 250px minmax(0, 1fr); gap: 20px; } .avatar-portrait { width: 180px; } }
+@media (max-width: 980px) { .profile-layout { grid-template-columns: 1fr; } .profile-preview { position: static; } .profile-preview .nickname-label { max-width: 320px; margin: auto; } .profile-totals { max-width: 340px; margin-inline: auto; } }
+@media (max-width: 760px) {
+  .mobile-brand { display: none; }
+  .nav-links { gap: 3px; padding-inline: 8px; }
+  .nav-links a { min-width: 0; padding-inline: 2px; }
+  .nav-links a > span { overflow-wrap: anywhere; text-align: center; }
+  .avatar-nav, .avatar-small { width: 40px; min-width: 40px; height: 40px; }
+  .top-stats { gap: 12px; }
+  .topbar-right { gap: 5px; }
+  .reward-banner { gap: 10px; padding: 12px; flex-wrap: wrap; }
+  .chest-mini { width: 54px; height: 54px; }
+  .reward-banner .secondary-button { flex: 1 1 100%; min-height: 44px; }
+  .reward-banner strong { font-size: 1rem; }
+  .treasure-tap { width: 220px; }
+  .chest-content h2 { font-size: 1.6rem; }
+  .chest-prize { gap: 12px; }
+  .reward-avatar { width: 74px; height: 74px; }
+  .profile-preview { padding: 24px; }
+  .profile-preview .avatar-portrait { width: 200px; }
+  .color-grid { gap: 18px 12px; }
+  .avatar-options, .avatar-colors { padding: 20px 16px; }
+  .avatar-choice { font-size: .875rem; padding: 10px; }
+  .sentence-card { padding: 22px 16px; }
+  .sentence-text { font-size: 1.5rem; }
+  .speech-feedback { padding: 18px 14px; }
+  .speech-score-row { gap: 14px; }
+}
+@media (max-width: 390px) {
+  .topbar-right { gap: 3px; }
+  .topbar .icon-button { width: 40px; min-width: 40px; }
+  .language-toggle { padding-inline: 8px; }
+  .top-stats { gap: 8px; }
+  .color-grid { grid-template-columns: 1fr 1fr; }
+  .avatar-choice-grid { grid-template-columns: 1fr; }
+}
