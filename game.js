@@ -6,6 +6,7 @@ export const AVATAR_GROUPS = {
   eyes: { label: 'Eyes', choices: [['default', 'Bright eyes'], ['happy', 'Happy'], ['wink', 'Wink'], ['surprised', 'Surprised']] },
   mouth: { label: 'Smile', choices: [['smile', 'Big smile'], ['default', 'Relaxed'], ['twinkle', 'Little smile'], ['tongue', 'Playful']] },
   frame: { label: 'Avatar frame', choices: [['plain', 'Classic'], ['blue', 'Blue outline']] },
+  backdrop: { label: 'Avatar background', choices: [['solid', 'Solid color']] },
 };
 export const AVATAR_COLORS = { skinColor: 'Skin tone', hairColor: 'Hair color', clothesColor: 'Clothes color', hatColor: 'Hat color', accessoriesColor: 'Glasses color', backgroundColor: 'Background color' };
 export const REWARD_ITEMS = [
@@ -21,8 +22,32 @@ export const REWARD_ITEMS = [
   { id: 'wayfarers', field: 'accessories', value: 'wayfarers', label: 'Weekend shades' },
   { id: 'sweater', field: 'clothing', value: 'collarAndSweater', label: 'Cozy sweater' },
   { id: 'frida', field: 'top', value: 'frida', label: 'Flower crown' },
+  { id: 'snow-day-beanie', field: 'top', value: 'winterHat1', label: 'Snow day beanie' },
+  { id: 'striped-beanie', field: 'top', value: 'winterHat03', label: 'Striped beanie' },
+  { id: 'pom-pom-beanie', field: 'top', value: 'winterHat04', label: 'Pom-pom beanie' },
+  { id: 'headband-afro', field: 'top', value: 'froBand', label: 'Headband afro' },
+  { id: 'adventure-locs', field: 'top', value: 'dreads01', label: 'Adventure locs' },
+  { id: 'wavy-hair', field: 'top', value: 'longButNotTooLong', label: 'Wavy hair' },
+  { id: 'v-neck-shirt', field: 'clothing', value: 'shirtVNeck', label: 'V-neck shirt' },
+  { id: 'smart-sweater', field: 'clothing', value: 'blazerAndSweater', label: 'Smart sweater' },
+  { id: 'bold-glasses', field: 'accessories', value: 'prescription02', label: 'Bold glasses' },
+  { id: 'cheeky-wink', field: 'eyes', value: 'winkWacky', label: 'Cheeky wink' },
+  { id: 'sunset-frame', field: 'frame', value: 'sunset', label: 'Sunset glow' },
+  { id: 'ocean-frame', field: 'frame', value: 'ocean', label: 'Ocean glow' },
+  { id: 'mint-frame', field: 'frame', value: 'mint', label: 'Mint sparkle' },
+  { id: 'candy-frame', field: 'frame', value: 'candy', label: 'Candy swirl' },
+  { id: 'galaxy-frame', field: 'frame', value: 'galaxy', label: 'Galaxy glow' },
+  { id: 'rainbow-frame', field: 'frame', value: 'rainbow', label: 'Rainbow halo' },
+  { id: 'starfield-background', field: 'backdrop', value: 'starfield', label: 'Starry sky' },
+  { id: 'bubbles-background', field: 'backdrop', value: 'bubbles', label: 'Bubble party' },
+  { id: 'confetti-background', field: 'backdrop', value: 'confetti', label: 'Confetti party' },
+  { id: 'sunset-background', field: 'backdrop', value: 'sunset', label: 'Golden sunset' },
+  { id: 'waves-background', field: 'backdrop', value: 'waves', label: 'Ocean waves' },
+  { id: 'meadow-background', field: 'backdrop', value: 'meadow', label: 'Flower meadow' },
+  { id: 'diamonds-background', field: 'backdrop', value: 'diamonds', label: 'Lavender diamonds' },
+  { id: 'clouds-background', field: 'backdrop', value: 'clouds', label: 'Cloud nine' },
 ];
-export const DEFAULT_PROFILE = Object.freeze({ name: '', top: 'shortCurly', clothing: 'hoodie', accessories: 'none', eyes: 'happy', mouth: 'smile', frame: 'plain', skinColor: 'edb98a', hairColor: '4a312c', clothesColor: '49c0f8', hatColor: 'ff4b55', accessoriesColor: '262e33', backgroundColor: '183c4a', updatedAt: 0 });
+export const DEFAULT_PROFILE = Object.freeze({ name: '', top: 'shortCurly', clothing: 'hoodie', accessories: 'none', eyes: 'happy', mouth: 'smile', frame: 'plain', backdrop: 'solid', skinColor: 'edb98a', hairColor: '4a312c', clothesColor: '49c0f8', hatColor: 'ff4b55', accessoriesColor: '262e33', backgroundColor: '183c4a', updatedAt: 0 });
 export function createGame() { return { profile: { ...DEFAULT_PROFILE }, chests: [], rewards: null }; }
 export const isDay = day => typeof day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day) && Number.isFinite(Date.parse(day)) && new Date(day).toISOString().slice(0, 10) === day;
 const safeTime = value => Number.isFinite(value) && value >= 0 && value <= 8640000000000000 ? value : 0;

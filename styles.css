@@ -486,10 +486,26 @@ dialog::backdrop { background: #061015cc; backdrop-filter: blur(4px); }
 }
 .avatar-nav { width: 46px; height: 46px; min-width: 46px; border: 0; padding: 0; border-radius: 50%; background: transparent; }
 .avatar-small { display: block; width: 46px; height: 46px; border-radius: 50%; }
-.avatar-small img, .avatar-portrait img, .reward-avatar img { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.avatar-art { position: relative; isolation: isolate; flex: none; }
+.avatar-art img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: contain; border-radius: inherit; }
+.avatar-art:not(.avatar-backdrop-solid)::before { content: ''; position: absolute; inset: 14.2857% 7.1429% 0; border-radius: 50%; background: var(--avatar-backdrop); pointer-events: none; }
 .avatar-frame-blue { outline: 3px solid var(--blue); outline-offset: 3px; }
 .avatar-frame-gold { outline: 3px solid var(--gold); outline-offset: 3px; box-shadow: 0 0 24px #ffc80066; }
 .avatar-frame-aurora { outline: 3px solid #c17eff; outline-offset: 3px; box-shadow: -10px 0 26px #49c0f877, 10px 0 26px #ef7edf77; }
+.avatar-frame-sunset { outline: 3px solid #ff9866; outline-offset: 3px; box-shadow: 0 5px 0 5px #ff4b5577, 0 0 24px #ff986644; }
+.avatar-frame-ocean { outline: 3px solid #49c0f8; outline-offset: 3px; box-shadow: 0 0 0 8px #225ab188, 0 0 24px #49c0f866; }
+.avatar-frame-mint { outline: 3px dashed #aaffc2; outline-offset: 4px; box-shadow: 0 0 20px #58cc0266; }
+.avatar-frame-candy { outline: 3px dashed #ff96da; outline-offset: 4px; box-shadow: 0 0 0 8px #9563d766; }
+.avatar-frame-galaxy { outline: 3px dotted #e3c8ff; outline-offset: 4px; box-shadow: -6px -3px 16px #7759eb99, 6px 3px 16px #ff7cce99; }
+.avatar-frame-rainbow { box-shadow: 0 0 0 3px #ff7979, 0 0 0 5px #ffd45f, 0 0 0 7px #7de3bb, 0 0 0 9px #9381ff; }
+.avatar-backdrop-starfield { --avatar-backdrop: radial-gradient(circle, #fff5c4 0 4%, transparent 5%) 10% 10% / 29% 31%, radial-gradient(circle, #92d4ff 0 3%, transparent 4%) 45% 55% / 41% 37%, linear-gradient(140deg, #141939, #432567); }
+.avatar-backdrop-bubbles { --avatar-backdrop: radial-gradient(circle, #d0fffa22 0 30%, #d0fffa99 31% 35%, transparent 36%) 0 0 / 45% 47%, radial-gradient(circle, #e8f8ff22 0 20%, #e8f8ff88 21% 24%, transparent 25%) 30% 20% / 59% 61%, linear-gradient(135deg, #064c78, #20aab1); }
+.avatar-backdrop-confetti { --avatar-backdrop: radial-gradient(ellipse, #ffd45f 0 9%, transparent 10%) 0 0 / 27% 23%, radial-gradient(ellipse, #ff8ad8 0 8%, transparent 9%) 30% 30% / 31% 29%, radial-gradient(circle, #69dec4 0 6%, transparent 7%) 50% 0 / 37% 35%, #30255f; }
+.avatar-backdrop-sunset { --avatar-backdrop: radial-gradient(circle at 25% 30%, #ffe899 0 16%, transparent 17%), linear-gradient(#7f61a1 0%, #ef8691 42%, #ffc47d 68%, #6f78b7 69%, #394e87 100%); }
+.avatar-backdrop-waves { --avatar-backdrop: repeating-radial-gradient(ellipse at 20% 115%, #c3fff044 0 4%, transparent 5% 12%), linear-gradient(145deg, #07759a, #4acdd5); }
+.avatar-backdrop-meadow { --avatar-backdrop: radial-gradient(circle, #fff4a0 0 6%, #ffadcd 7% 14%, transparent 15%) 0 0 / 37% 39%, radial-gradient(circle, #ffe76b 0 5%, #ffffff 6% 12%, transparent 13%) 40% 20% / 43% 41%, linear-gradient(145deg, #80b867, #286853); }
+.avatar-backdrop-diamonds { --avatar-backdrop: repeating-conic-gradient(from 45deg, #bfa7ed 0% 25%, #7d66ac 0% 50%) 0 0 / 35% 35%; }
+.avatar-backdrop-clouds { --avatar-backdrop: radial-gradient(ellipse at 20% 24%, #fff9 0 13%, transparent 14%), radial-gradient(ellipse at 37% 20%, #fff9 0 16%, transparent 17%), radial-gradient(ellipse at 86% 43%, #fff9 0 19%, transparent 20%), linear-gradient(#70b7e8, #c8ebff); }
 .nav-links a:nth-child(4) svg { color: var(--gold); }
 .nav-links a:nth-child(5) svg { color: var(--coral); }
 .purple .path-node { background: #bd79ef; color: #2a123c; box-shadow: 0 9px 0 #7444a0, inset 0 8px 0 #ffffff25; }
@@ -552,7 +568,12 @@ dialog::backdrop { background: #061015cc; backdrop-filter: blur(4px); }
 .avatar-choice:disabled { color: var(--muted); background: #172329; }
 .avatar-choice svg { width: 20px; height: 20px; }
 .avatar-choice small { display: block; font-size: .875rem; color: var(--muted); margin-top: 4px; }
+.avatar-choice small svg { width: 13px; height: 13px; vertical-align: middle; }
 .avatar-choice:hover:enabled { border-color: var(--blue); }
+.avatar-choice-preview { display: block; width: 46px; height: 46px; border-radius: 50%; margin: 5px 7px 5px 2px; }
+.avatar-choice > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.avatar-choice:disabled .avatar-choice-preview { opacity: .75; }
+.avatar-background-note, .collection-note { color: var(--muted); font-size: .875rem; line-height: 1.6; margin-top: 12px; }
 .avatar-credit { color: var(--muted); font-size: .875rem; text-align: center; }
 .sentence-picker { display: block; margin-top: 25px; font-size: .875rem; color: var(--muted); }
 .sentence-picker select { display: block; width: 100%; margin-top: 8px; font-size: 1rem; }

@@ -1,9 +1,9 @@
-import { createGame, normalizeGame, mergeGames, inventory, bonusXP, initializeRewards, creditPractice, earnBonusChests, bonusProgress, pendingChests, chooseChestStyle, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.3.0';
+import { createGame, normalizeGame, mergeGames, inventory, bonusXP, initializeRewards, creditPractice, earnBonusChests, bonusProgress, pendingChests, chooseChestStyle, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.4.0';
 import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
 import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
-import { translate, locale, dayLabel } from './i18n.js?v=2.3.0';
+import { translate, locale, dayLabel } from './i18n.js?v=2.4.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
-import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.3.0';
+import { STORAGE_KEY, DEFAULT_SETTINGS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.4.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -57,8 +57,8 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
-    if (![1, 2].includes(data.version)) throw new Error('Unknown data version');
-    saveUpgradeNeeded = data.version === 1;
+    if (![1, 2, 3].includes(data.version)) throw new Error('Unknown data version');
+    saveUpgradeNeeded = data.version < 3;
     state = { ...createState(), settings: normalizeSettings(data.settings), answers: cleanAnswers(data.answers), sessions: cleanSessions(data.sessions), speaking: mergeSpeaking([], cleanSpeaking(data.speaking)), game: normalizeGame(data.game) };
     state.answers = mergeAnswers([], state.answers);
   } catch {
@@ -74,7 +74,7 @@ function cleanSessions(list) {
 }
 function syncLatestProgress() {
   const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return;
-  const incoming = JSON.parse(raw); if (![1, 2].includes(incoming.version)) throw new Error('Unknown data version');
+  const incoming = JSON.parse(raw); if (![1, 2, 3].includes(incoming.version)) throw new Error('Unknown data version');
   state.game = mergeGames(state.game, incoming.game);
   state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
   state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
@@ -372,7 +372,7 @@ async function importFile(file) {
     if (file.name.toLowerCase().endsWith('.csv')) incoming = parseCSV(text);
     else {
       const data = JSON.parse(text);
-      if (![1, 2].includes(data.version) || !Array.isArray(data.answers)) throw new Error('Choose an Emma English 2 backup or an original answer-history CSV.');
+      if (![1, 2, 3].includes(data.version) || !Array.isArray(data.answers)) throw new Error('Choose an Emma English 2 backup or an original answer-history CSV.');
       incoming = cleanAnswers(data.answers); importedSettings = normalizeSettings(data.settings); importedSessions = cleanSessions(data.sessions); importedSpeaking = cleanSpeaking(data.speaking); importedGame = normalizeGame(data.game);
     }
     if (!incoming.length && !importedSettings) throw new Error('No valid practice answers were found in that file.');
@@ -397,7 +397,10 @@ const offeredChests = new Set();
 let speakingView = { phase: 'idle', transcript: '', feedback: null, error: '' };
 const currentSentence = () => SENTENCES[sentenceIndex];
 function avatarMarkup(profile, className = 'avatar-portrait') {
-  return `<span class="${className} avatar-frame-${profile.frame}"><img src="${avatarDataUri(profile)}" width="280" height="280" alt="" draggable="false"></span>`;
+  const backdrop = profile.backdrop || 'solid';
+  // Keep DiceBear's silhouette; the patterned circle sits behind its transparent background.
+  const portrait = backdrop === 'solid' ? profile : { ...profile, backgroundColor: 'transparent' };
+  return `<span class="avatar-art ${className} avatar-frame-${profile.frame} avatar-backdrop-${backdrop}" aria-hidden="true"><img src="${avatarDataUri(portrait)}" width="280" height="280" alt="" draggable="false"></span>`;
 }
 function pendingChestBanner() {
   const count = pendingChests(state.game).length;
@@ -475,9 +478,14 @@ function wearReward() {
   if (!chest?.itemId) return;
   state.game = equipItem(state.game, chest.itemId); persist(); header(); renderChest();
 }
+function avatarChoiceMarkup(field, choice, profile) {
+  const active = choice.value === profile[field];
+  const preview = choice.itemId ? avatarMarkup({ ...profile, [field]: choice.value }, 'avatar-choice-preview') : active ? icon('check') : '';
+  return `<button class="avatar-choice ${active ? 'active' : ''}" data-avatar-field="${field}" data-avatar-value="${choice.value}" aria-pressed="${active}" ${choice.locked ? 'disabled' : ''}>${preview}<span>${t(choice.label)}${choice.locked ? `<small>${icon('lock')} ${t('Find in treasures')}</small>` : choice.itemId ? `<small>${t('Unlocked')}</small>` : ''}</span></button>`;
+}
 function renderProfile() {
   const profile = state.game.profile, owned = inventory(state.game), opened = state.game.chests.filter(c => c.taps === 3).length;
-  main.innerHTML = `${noticeMarkup()}${pendingChestBanner()}<div class="page-heading"><h1>${t('Make your avatar yours')}</h1><p>${t('Mix your favorite looks. Treasures bring new styles.')}</p></div><div class="profile-layout"><section class="profile-preview panel"><div id="avatar-preview">${avatarMarkup(profile)}</div><h2 id="avatar-display-name">${escape(profile.name || t('English explorer'))}</h2><span class="profile-xp">${totalXP()} XP</span><label class="nickname-label" for="avatar-name">${t('Your nickname')}<input id="avatar-name" maxlength="24" value="${escape(profile.name)}" placeholder="${t('English explorer')}" autocomplete="off"></label><div class="profile-totals"><div><strong>${opened}</strong><span>${t('Treasures opened')}</span></div><div><strong>${owned.size} / ${REWARD_ITEMS.length}</strong><span>${t('Styles unlocked')}</span></div></div><p class="profile-save-note">${t('Saved on this device and included in your backup.')}</p></section><div class="avatar-controls"><section class="panel avatar-colors"><h2>${t('Your colors')}</h2><div class="color-grid">${Object.entries(AVATAR_COLORS).map(([field, label]) => `<label>${t(label)}<input type="color" data-avatar-color="${field}" value="#${profile[field]}"></label>`).join('')}</div></section>${Object.entries(AVATAR_GROUPS).map(([field, group]) => `<section class="panel avatar-options"><h2>${t(group.label)}</h2><div class="avatar-choice-grid" role="group" aria-label="${t(group.label)}">${profileChoices(field, owned).map(choice => `<button class="avatar-choice ${choice.value === profile[field] ? 'active' : ''}" data-avatar-field="${field}" data-avatar-value="${choice.value}" aria-pressed="${choice.value === profile[field]}" ${choice.locked ? 'disabled' : ''}>${choice.locked ? icon('lock') : choice.value === profile[field] ? icon('check') : ''}<span>${t(choice.label)}${choice.locked ? `<small>${t('Find in treasures')}</small>` : choice.itemId ? `<small>${t('Unlocked')}</small>` : ''}</span></button>`).join('')}</div></section>`).join('')}<p class="avatar-credit">${t('Avatar art')}: <a href="https://avataaars.com/" target="_blank" rel="noopener noreferrer">Avataaars</a> / Pablo Stanley · <a href="https://www.dicebear.com/" target="_blank" rel="noopener noreferrer">DiceBear</a></p></div></div>`;
+  main.innerHTML = `${noticeMarkup()}${pendingChestBanner()}<div class="page-heading"><h1>${t('Make your avatar yours')}</h1><p>${t('Mix your favorite looks. Treasures bring new styles.')}</p><p class="collection-note">${t('Collect {count} styles: hats, outfits, glasses, expressions, frames and backgrounds.', { count: REWARD_ITEMS.length })}</p></div><div class="profile-layout"><section class="profile-preview panel"><div id="avatar-preview">${avatarMarkup(profile)}</div><h2 id="avatar-display-name">${escape(profile.name || t('English explorer'))}</h2><span class="profile-xp">${totalXP()} XP</span><label class="nickname-label" for="avatar-name">${t('Your nickname')}<input id="avatar-name" maxlength="24" value="${escape(profile.name)}" placeholder="${t('English explorer')}" autocomplete="off"></label><div class="profile-totals"><div><strong>${opened}</strong><span>${t('Treasures opened')}</span></div><div><strong>${owned.size} / ${REWARD_ITEMS.length}</strong><span>${t('Styles unlocked')}</span></div></div><p class="profile-save-note">${t('Saved on this device and included in your backup.')}</p></section><div class="avatar-controls"><section class="panel avatar-colors"><h2>${t('Your colors')}</h2><div class="color-grid">${Object.entries(AVATAR_COLORS).map(([field, label]) => `<label>${t(label)}<input type="color" data-avatar-color="${field}" value="#${profile[field]}"></label>`).join('')}</div></section>${Object.entries(AVATAR_GROUPS).map(([field, group]) => `<section class="panel avatar-options"><h2>${t(group.label)}</h2>${field === 'backdrop' ? `<p class="avatar-background-note">${t('Patterns replace your background color. Choose Solid color to use it again.')}</p>` : ''}<div class="avatar-choice-grid" role="group" aria-label="${t(group.label)}">${profileChoices(field, owned).map(choice => avatarChoiceMarkup(field, choice, profile)).join('')}</div></section>`).join('')}<p class="avatar-credit">${t('Avatar art')}: <a href="https://avataaars.com/" target="_blank" rel="noopener noreferrer">Avataaars</a> / Pablo Stanley · <a href="https://www.dicebear.com/" target="_blank" rel="noopener noreferrer">DiceBear</a></p></div></div>`;
 }
 function updateAvatar(field, value, fullRender) {
   if (!(field === 'name' || Object.hasOwn(AVATAR_COLORS, field) || Object.hasOwn(AVATAR_GROUPS, field))) return;
@@ -609,7 +617,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) { can
 window.addEventListener('storage', event => {
   if (event.key !== STORAGE_KEY || !event.newValue || persistenceBlocked) return;
   try {
-    const incoming = JSON.parse(event.newValue); if (![1, 2].includes(incoming.version)) return;
+    const incoming = JSON.parse(event.newValue); if (![1, 2, 3].includes(incoming.version)) return;
     state.answers = mergeAnswers(state.answers, cleanAnswers(incoming.answers));
     state.sessions = [...new Map([...state.sessions, ...cleanSessions(incoming.sessions)].map(s => [s.id, s])).values()];
     state.game = mergeGames(state.game, incoming.game); state.speaking = mergeSpeaking(state.speaking, cleanSpeaking(incoming.speaking));
