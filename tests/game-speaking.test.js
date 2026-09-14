@@ -99,7 +99,7 @@ test('five missed avatar prizes guarantee the sixth, including across reloads an
 
 test('unselected styles can return later, duplicate items stay excluded, and a full collection earns XP-only chests', () => {
   let game = fixedGame(4), firstUnselected = [];
-  for (let i = 0; i < 100 && inventory(game).size < REWARD_ITEMS.length; i++) {
+  for (let i = 0; i < REWARD_ITEMS.length * 6 && inventory(game).size < REWARD_ITEMS.length; i++) {
     const day = new Date(Date.UTC(2026, 0, i + 1)).toISOString().slice(0, 10);
     game = earnDailyChest(game, day, 30, 30, 101 + i);
     const id = game.chests.at(-1).id; const owned = inventory(game);
@@ -130,6 +130,30 @@ test('legacy chests keep their original prizes and tap count when upgraded or re
   game = open(game, 'daily:2026-09-12', 300);
   assert.equal(bonusXP(mergeGames(old, game)), 160);
   assert.deepEqual([...inventory(mergeGames(game, old))].sort(), ['explorer-hat', 'sunglasses']);
+});
+
+test('a completed original collection can earn new prizes without losing old unlocks', () => {
+  const originalIds = ['sunglasses', 'explorer-hat', 'star-shirt', 'gold-frame', 'winter-hat', 'heart-eyes', 'round-glasses', 'overalls', 'aurora-frame', 'wayfarers', 'sweater', 'frida'];
+  assert.equal(REWARD_ITEMS.length, 36);
+  assert.equal(new Set(REWARD_ITEMS.map(item => item.id)).size, REWARD_ITEMS.length);
+  assert.equal(new Set(REWARD_ITEMS.map(item => `${item.field}:${item.value}`)).size, REWARD_ITEMS.length);
+  let game = initializeRewards(normalizeGame({ profile: DEFAULT_PROFILE, chests: originalIds.map((itemId, i) => ({ day: `2026-01-${String(i + 1).padStart(2, '0')}`, goal: 30, taps: 3, itemId, earnedAt: i + 1, openedAt: i + 2 })) }), 100, () => 0);
+  const old = structuredClone(game), oldXP = bonusXP(game);
+  let awarded = false;
+  for (let i = 13; i <= 18 && !awarded; i++) {
+    game = earnDailyChest(game, `2026-01-${i}`, 30, 30, 100 + i);
+    const id = game.chests.at(-1).id; game = open(game, id, 200 + i);
+    const chest = game.chests.at(-1);
+    if (chest.avatarPrize) {
+      assert(chest.choices.every(choice => !originalIds.includes(choice)));
+      game = chooseChestStyle(game, id, chest.choices[0], 300 + i); awarded = true;
+    }
+  }
+  assert(awarded, 'The guarantee resumes once more styles are available');
+  game = normalizeGame(mergeGames(game, old));
+  assert.equal(inventory(game).size, 13);
+  assert(originalIds.every(id => inventory(game).has(id)));
+  assert(bonusXP(game) > oldXP);
 });
 
 test('older and malformed game data cannot equip locked styles or inject arbitrary avatar values', () => {

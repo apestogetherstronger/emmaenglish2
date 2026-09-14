@@ -52,7 +52,7 @@ test('version 1 saves and backups migrate without losing rewards, and future for
   };
   const backup = JSON.stringify(legacy);
   let app = await boot(new Map([[core.STORAGE_KEY, backup]]));
-  assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).version, 2);
+  assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).version, 3);
   assert.equal(app.api.state.answers.length, 1);
   assert.equal(app.api.state.game.profile.accessories, 'sunglasses');
   assert.equal(game.bonusXP(app.api.state.game), 40);
@@ -65,12 +65,70 @@ test('version 1 saves and backups migrate without losing rewards, and future for
   assert.equal(game.bonusXP(app.api.state.game), 80, 'Importing an old backup keeps newer chest claims');
   assert.equal(app.api.state.game.chests.length, 2);
   app = await boot(app.saved);
-  assert.equal(app.api.state.version, 2);
+  assert.equal(app.api.state.version, 3);
   assert(game.inventory(app.api.state.game).has('explorer-hat'));
-  const future = JSON.stringify({ ...legacy, version: 3 });
+  const future = JSON.stringify({ ...legacy, version: 4 });
   const protectedApp = await boot(new Map([[core.STORAGE_KEY, future]]));
   protectedApp.api.actions['toggle-language']();
   assert.equal(protectedApp.saved.get(core.STORAGE_KEY), future);
+});
+
+test('version 2 reward progress and pending choices survive the larger collection', async () => {
+  const prior = { ...core.createState(), version: 2 };
+  prior.game = game.initializeRewards(prior.game, 100, () => 4 / 4294967296);
+  prior.game = game.creditPractice(prior.game, 'q:old-practice', 10, '2026-01-01', 101);
+  prior.game = game.earnDailyChest(prior.game, '2026-01-01', 30, 30, 102);
+  for (let i = 0; i < 3; i++) prior.game = game.tapChest(prior.game, 'daily:2026-01-01', 103 + i).game;
+  prior.game.chests[0].choices = ['sunglasses', 'frida', 'star-shirt'];
+  delete prior.game.profile.backdrop;
+  const backup = JSON.stringify(prior), progress = game.bonusProgress(prior.game);
+  const app = await boot(new Map([[core.STORAGE_KEY, backup]]));
+  assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).version, 3);
+  assert.equal(app.api.state.game.profile.backdrop, 'solid');
+  assert.deepEqual(game.bonusProgress(app.api.state.game), progress);
+  assert.deepEqual(app.api.state.game.chests[0].choices, prior.game.chests[0].choices);
+  app.api.openChest(); await app.api.claimTreasureStyle('sunglasses'); app.api.closeChest();
+  await app.api.importFile({ name: 'version-2.json', size: backup.length, text: async () => backup });
+  assert(game.inventory(app.api.state.game).has('sunglasses'));
+  assert.equal(app.api.state.game.chests.length, 1);
+  assert.deepEqual(game.bonusProgress(app.api.state.game), progress);
+});
+
+test('new background rewards combine with frames, stay locked until claimed, and survive backups', async () => {
+  const savedState = core.createState();
+  savedState.game = game.initializeRewards(savedState.game, 100, () => 190 / 4294967296);
+  savedState.game = game.earnDailyChest(savedState.game, '2026-01-01', 30, 30, 101);
+  for (let i = 0; i < 3; i++) savedState.game = game.tapChest(savedState.game, 'daily:2026-01-01', 102 + i).game;
+  savedState.game = game.equipItem(game.chooseChestStyle(savedState.game, 'daily:2026-01-01', 'rainbow-frame', 110), 'rainbow-frame', 111);
+  savedState.game = game.earnDailyChest(savedState.game, '2026-01-02', 30, 30, 112);
+  for (let i = 0; i < 2; i++) savedState.game = game.tapChest(savedState.game, 'daily:2026-01-02', 113 + i).game;
+  let app = await boot(new Map([[core.STORAGE_KEY, JSON.stringify(savedState)]]));
+  app.api.updateAvatar('backdrop', 'starfield', false);
+  assert.equal(app.api.state.game.profile.backdrop, 'solid', 'Locked backgrounds cannot be equipped');
+  app.api.openChest(); await app.api.tapDailyTreasure();
+  const chest = app.api.state.game.chests[1];
+  const decoration = chest.choices.map(id => game.REWARD_ITEMS.find(item => item.id === id)).find(item => item.field === 'backdrop');
+  assert(decoration, 'Fixture should offer a background');
+  await app.api.claimTreasureStyle(decoration.id); app.api.closeChest(); app.api.actions.profile();
+  const profile = app.api.state.game.profile;
+  assert.equal(profile.backdrop, decoration.value); assert.equal(profile.frame, 'rainbow');
+  const markup = app.elements.get('#main').innerHTML;
+  assert.match(markup, new RegExp(`avatar-frame-rainbow avatar-backdrop-${decoration.value}`));
+  assert.match(decodeURIComponent(markup), /<circle cx="132" cy="160" r="120" fill="transparent"/);
+  app.api.actions['toggle-language']();
+  assert.match(app.elements.get('#main').innerHTML, /רקע לדמות/);
+  assert.match(app.elements.get('#main').innerHTML, /אוספים 36 סגנונות/);
+  const backup = JSON.stringify(app.api.state);
+  app = await boot();
+  await app.api.importFile({ name: 'expanded-collection.json', size: backup.length, text: async () => backup });
+  assert.equal(app.api.state.game.profile.backdrop, decoration.value);
+  assert.equal(app.api.state.game.profile.frame, 'rainbow');
+  assert.equal(game.inventory(app.api.state.game).size, 2);
+  app.api.actions.profile(); app.api.updateAvatar('backdrop', 'solid', false);
+  assert.match(decodeURIComponent(app.elements.get('#avatar-preview').innerHTML), /<circle cx="132" cy="160" r="120" fill="#183c4a"/);
+  app = await boot(app.saved);
+  assert.equal(app.api.state.game.profile.backdrop, 'solid');
+  assert(game.inventory(app.api.state.game).has(decoration.id));
 });
 
 test('treasure audio prepares before the lock, follows accepted taps, and wrong answers respect muting', async () => {
