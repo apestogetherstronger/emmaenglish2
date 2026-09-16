@@ -15,7 +15,7 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 - A personal avatar with a nickname, hairstyles, head coverings, clothes, glasses, expressions, frames, and six custom color pickers. Free choices are available immediately; treasure rewards unlock extra hats, glasses, outfits, expressions, and glowing frames. The reward screen previews each new look and lets you wear it immediately.
 - Speaking practice with 30 English sentences, Hebrew meanings, normal/slow model speech, microphone recording, recognized text, and word-by-word feedback. A new sentence attempted each day earns 5 XP; retries keep the best result without duplicating XP or daily progress. Recognition errors do not count as attempts.
 - Short 5/10/15/20/30-question lessons (10 by default) instead of an endless random quiz. Four choices by default; the original seven-choice challenge remains available in settings.
-- Separate Everyday and Story vocabulary sets, plus a combined set. Both source dictionaries are retained verbatim. Duplicate English entries are grouped while retaining alternate translations.
+- Separate Everyday and Story vocabulary sets, plus a combined set and a tagged Whenever, Wherever collection. All words is the default so the song vocabulary is mixed into ordinary practice. Existing dictionary entries and translations are retained, with 28 new English–Hebrew pairs added. Duplicate English entries are grouped while retaining alternate translations and tags.
 - A simple spaced-review schedule prioritizes words due for another look, interleaved with new words. Errors make a word due immediately; successive correct answers extend the interval to 1, 2, 4, 7, 14, then 30 days. “Confident” means three consecutive correct answers, not an externally assessed proficiency level.
 - English → Hebrew, Hebrew → English, and listening practice. Replay, slower pronunciation, and a text fallback for unavailable audio.
 - Word matching as a standalone activity or an optional break after five questions. Lesson breaks reuse the words just practised. The original app's active matching game is preserved and refined; unreachable sprite/minigame code and unused media are not carried forward.
@@ -23,6 +23,14 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 - A searchable word collection with status filters, accuracy sorting, alternate meanings, and pronunciation.
 - Real progress: daily goals, local-day streaks, accuracy, completed lessons, and seven-day activity. No sample progress or invented scores.
 - CSV exports, original-app CSV imports, JSON backups, duplicate-safe history merging, and explicit confirmation before resetting progress.
+
+## Word collections
+
+The **Word collection** dropdown appears on the learning screen, in My words, and in settings. **All words** mixes the available vocabulary by default. The original Everyday default upgrades once to All words; explicitly choosing Everyday again, Story words, or a tagged collection is remembered.
+
+**Whenever, Wherever** contains all 74 words requested for the song. A case-insensitive comparison against both original lists found 46 existing words and 28 missing ones. Only those 28 were added to `dictionary.json`; matching entries in both dictionaries carry the `whenever-wherever` tag. Existing translations are unchanged. Tags merge onto the same English word ID, so switching collections shares review history and does not duplicate vocabulary or XP. Inflected forms such as *way/ways*, *feet* and *legs* remain distinct entries.
+
+The additions are: distance, foreign, existence, climb, solely, freckles, ways, feet, whenever, wherever, near, hereunder, always, ear, lips, mumble, spill, kisses, fountain, breasts, small, humble, confuse, mountains, legs, cry, again and heels. The uncommon *hereunder* has both the below-this sense and its document usage; see [Collins](https://www.collinsdictionary.com/dictionary/english/hereunder) and [Cambridge](https://dictionary.cambridge.org/us/dictionary/english/hereunder). The collection contains vocabulary only.
 
 ## Run locally
 
@@ -105,7 +113,7 @@ dist/i18n.js           English/Hebrew interface translations
 dist/sounds.js         Locally synthesized answer feedback
 dist/assets/           Generated closed/open treasure chest graphic
 dist/vendor/           Bundled avatar renderer and its licenses
-dist/data/             Original vocabulary JSON files
+dist/data/             Vocabulary JSON files with collection tags
 scripts/               Local server, validation, avatar source and bundle build
 tests/                 Learning, game, speaking, and application behavior tests
 ```

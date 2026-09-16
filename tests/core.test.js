@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { normalizeDictionary, forPack, buildChoices, selectPairs, selectLesson, summarizeWords, wordStatus, cleanAnswers, mergeAnswers, parseCSV, toCSV, answerRecord, streakDays, weekActivity, localDay, normalizeSettings } from '../dist/core.js';
 
 const base = [
@@ -16,6 +17,33 @@ test('merges duplicate English words, retains alternate translations and source 
   assert.deepEqual(find('talk').packs, ['everyday', 'stories']);
   assert.equal(forPack(words, 'stories').length, 2);
   assert.equal(words.filter(w => w.id === 'talk').length, 1);
+});
+test('collection tags merge across existing words without duplicating their learning identity', () => {
+  const tagged = normalizeDictionary([
+    { en: ' Talk ', he: 'לדבר', tags: ['whenever-wherever', 'whenever-wherever', 'unknown'] },
+    { en: 'apple', he: 'תפוח' },
+  ], [{ en: 'TALK', he: 'לשוחח', tags: ['whenever-wherever'] }, { en: 'word', he: 'מילה', tags: 'whenever-wherever' }]);
+  const focused = forPack(tagged, 'whenever-wherever');
+  assert.equal(focused.length, 1);
+  assert.equal(focused[0], forPack(tagged, 'all')[0]);
+  assert.deepEqual(focused[0].tags, ['whenever-wherever']);
+  assert.deepEqual(focused[0].translations, ['לדבר', 'לשוחח']);
+  assert.deepEqual(focused[0].packs, ['everyday', 'stories']);
+  const stats = summarizeWords([rec('talk', true, '2026-09-08T12:00:00Z')]);
+  assert.equal(stats.get(focused[0].id).correct, 1);
+});
+
+test('the song collection contains all 74 requested words, with Hebrew, in mixed practice too', async () => {
+  const lists = await Promise.all(['dictionary.json', 'StrangerThings.json'].map(async name => JSON.parse(await readFile(new URL(`../dist/data/${name}`, import.meta.url), 'utf8'))));
+  const all = normalizeDictionary(...lists), tagged = forPack(all, 'whenever-wherever');
+  const requested = 'lucky born far away make fun distance love foreign land fact existence baby climb solely count freckles body imagine million ways somebody see feet whenever wherever meant together near deal dear hereunder wonder always play ear lips mumble spill kisses fountain breasts small humble confuse mountains strong legs mother run cover need eyes day leave cry river above think loud say again tell time live lost head heels nothing left fear really feel way'.split(' ');
+  assert.deepEqual(tagged.map(word => word.id).sort(), requested.sort());
+  assert.equal(all.length, new Set(all.map(word => word.id)).size);
+  assert(tagged.every(word => /[\u0590-\u05ff]/.test(word.he)));
+  assert(tagged.every(word => forPack(all, 'all').includes(word)));
+  assert.equal(tagged.find(word => word.id === 'feet').he, 'כפות רגליים');
+  assert.equal(tagged.find(word => word.id === 'legs').he, 'רגליים');
+  assert.notEqual(tagged.find(word => word.id === 'way'), tagged.find(word => word.id === 'ways'));
 });
 test('choices are unique and exclude synonyms in both directions', () => {
   for (const reverse of [true, false]) {
@@ -84,5 +112,5 @@ test('daily streak survives until the following day and stops at gaps', () => {
 });
 test('untrusted settings cannot create empty or oversized lessons', () => {
   const settings = normalizeSettings({ questions: 0, choices: 900, rate: -1, goal: NaN, pack: 'missing', sound: 'true' });
-  assert.equal(settings.questions, 10); assert.equal(settings.choices, 4); assert.equal(settings.pack, 'everyday'); assert.equal(settings.sound, true);
+  assert.equal(settings.questions, 10); assert.equal(settings.choices, 4); assert.equal(settings.pack, 'all'); assert.equal(settings.sound, true);
 });

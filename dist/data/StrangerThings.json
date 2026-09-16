@@ -313,7 +313,10 @@
   },
   {
     "en": "away",
-    "he": "הרחק"
+    "he": "הרחק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "axe",
@@ -325,7 +328,10 @@
   },
   {
     "en": "baby",
-    "he": "תינוק / מאמי"
+    "he": "תינוק / מאמי",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "backstage",
@@ -493,7 +499,10 @@
   },
   {
     "en": "body",
-    "he": "גוף"
+    "he": "גוף",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "bomb",
@@ -1133,7 +1142,10 @@
   },
   {
     "en": "count",
-    "he": "לספור"
+    "he": "לספור",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "countdown",
@@ -1165,7 +1177,10 @@
   },
   {
     "en": "cover",
-    "he": "לכסות"
+    "he": "לכסות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "cow",
@@ -1321,7 +1336,10 @@
   },
   {
     "en": "day",
-    "he": "יום"
+    "he": "יום",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "dead",
@@ -1329,11 +1347,17 @@
   },
   {
     "en": "deal",
-    "he": "עסקה"
+    "he": "עסקה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "dear",
-    "he": "יקר"
+    "he": "יקר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "death",
@@ -1865,7 +1889,10 @@
   },
   {
     "en": "fact",
-    "he": "עובדה"
+    "he": "עובדה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "fair",
@@ -1909,7 +1936,10 @@
   },
   {
     "en": "far",
-    "he": "רחוק"
+    "he": "רחוק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "farther",
@@ -1933,7 +1963,10 @@
   },
   {
     "en": "fear",
-    "he": "פחד"
+    "he": "פחד",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "fears",
@@ -1945,7 +1978,10 @@
   },
   {
     "en": "feel",
-    "he": "להרגיש"
+    "he": "להרגיש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "feeling",
@@ -2153,7 +2189,10 @@
   },
   {
     "en": "fun",
-    "he": "כיף"
+    "he": "כיף",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "funeral",
@@ -2473,7 +2512,10 @@
   },
   {
     "en": "head",
-    "he": "ראש"
+    "he": "ראש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "hear",
@@ -2705,7 +2747,10 @@
   },
   {
     "en": "imagine",
-    "he": "לדמיין"
+    "he": "לדמיין",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "imagined",
@@ -3001,7 +3046,10 @@
   },
   {
     "en": "land",
-    "he": "אדמה"
+    "he": "אדמה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "late",
@@ -3037,7 +3085,10 @@
   },
   {
     "en": "leave",
-    "he": "לעזוב"
+    "he": "לעזוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "leaving",
@@ -3045,7 +3096,10 @@
   },
   {
     "en": "left",
-    "he": "שמאל"
+    "he": "שמאל",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "leg",
@@ -3153,7 +3207,10 @@
   },
   {
     "en": "live",
-    "he": "לחיות"
+    "he": "לחיות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "lives",
@@ -3225,7 +3282,10 @@
   },
   {
     "en": "lost",
-    "he": "אבוד"
+    "he": "אבוד",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "lot",
@@ -3233,11 +3293,17 @@
   },
   {
     "en": "loud",
-    "he": "רועש"
+    "he": "רועש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "love",
-    "he": "אהבה"
+    "he": "אהבה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "loved",
@@ -3257,7 +3323,10 @@
   },
   {
     "en": "lucky",
-    "he": "בר מזל"
+    "he": "בר מזל",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "lunatic",
@@ -3305,7 +3374,10 @@
   },
   {
     "en": "make",
-    "he": "לעשות"
+    "he": "לעשות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "makes",
@@ -3477,7 +3549,10 @@
   },
   {
     "en": "million",
-    "he": "מיליון"
+    "he": "מיליון",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "mind",
@@ -3573,7 +3648,10 @@
   },
   {
     "en": "mother",
-    "he": "אמא"
+    "he": "אמא",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "mountain",
@@ -3661,7 +3739,10 @@
   },
   {
     "en": "need",
-    "he": "צריך"
+    "he": "צריך",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "needed",
@@ -3997,7 +4078,10 @@
   },
   {
     "en": "play",
-    "he": "מחזה"
+    "he": "מחזה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "playbook",
@@ -4305,7 +4389,10 @@
   },
   {
     "en": "really",
-    "he": "באמת"
+    "he": "באמת",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "reap",
@@ -4501,7 +4588,10 @@
   },
   {
     "en": "run",
-    "he": "לרוץ"
+    "he": "לרוץ",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "running",
@@ -4565,7 +4655,10 @@
   },
   {
     "en": "say",
-    "he": "לומר"
+    "he": "לומר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "sayin",
@@ -5173,7 +5266,10 @@
   },
   {
     "en": "strong",
-    "he": "חזק"
+    "he": "חזק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "stronger",
@@ -5365,7 +5461,10 @@
   },
   {
     "en": "tell",
-    "he": "לספר"
+    "he": "לספר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "telling",
@@ -5441,7 +5540,10 @@
   },
   {
     "en": "think",
-    "he": "לחשוב"
+    "he": "לחשוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "thinking",
@@ -5505,7 +5607,10 @@
   },
   {
     "en": "time",
-    "he": "זמן"
+    "he": "זמן",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "timeline",
@@ -5877,7 +5982,10 @@
   },
   {
     "en": "way",
-    "he": "דרך"
+    "he": "דרך",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "weak",
@@ -5985,7 +6093,10 @@
   },
   {
     "en": "wonder",
-    "he": "לתהות"
+    "he": "לתהות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "wonderful",
@@ -6084,4 +6195,3 @@
     "he": "הצעיר ביותר"
   }
 ]
-

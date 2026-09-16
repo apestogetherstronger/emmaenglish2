@@ -12,7 +12,7 @@ import { createAnswerSounds } from '../dist/sounds.js';
 // Exercise the actual application handlers with inert document/audio adapters.
 // This is a state/markup smoke test, not browser or visual testing.
 const source = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
-const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}` }));
+const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}`, tags: i < 15 ? ['whenever-wherever'] : [] }));
 async function boot(saved = new Map(), speechHost = {}, soundFactory = createAnswerSounds) {
   const elements = new Map(), listeners = new Map();
   const element = selector => {
@@ -40,6 +40,37 @@ async function boot(saved = new Map(), speechHost = {}, soundFactory = createAns
   assert(context.api.whenReady());
   return { api: context.api, context, elements, saved, listeners };
 }
+
+test('the song collection filters practice, persists in both interfaces, and defaults to mixed words', async () => {
+  let app = await boot();
+  assert.equal(app.api.state.settings.pack, 'all');
+  assert.match(app.elements.get('#main').innerHTML, /<label for="home-pack">Word collection<\/label>/);
+  assert.match(app.elements.get('#main').innerHTML, /value="whenever-wherever"[^>]*>Whenever, Wherever/);
+  const select = value => app.listeners.get('change')({ target: { dataset: { change: 'pack' }, value } });
+  select('whenever-wherever'); app.api.actions['toggle-language']();
+  assert.match(app.elements.get('#main').innerHTML, /Whenever, Wherever — השיר/);
+  app.api.startLesson();
+  assert.equal(app.api.session.pool.length, 15);
+  assert(app.api.session.queue.every(word => word.tags.includes('whenever-wherever')));
+  const first = app.api.session.current;
+  app.api.answer(first.options.indexOf(first.word.he));
+  app = await boot(app.saved);
+  assert.equal(app.api.state.settings.pack, 'whenever-wherever');
+  assert.equal(app.api.state.answers.length, 1);
+  app.api.actions.words(); assert.match(app.elements.get('#word-results').innerHTML, /word-tag/);
+  select('all'); app.api.startLesson();
+  assert.equal(app.api.session.pool.length, 40);
+  assert(app.api.session.pool.some(word => word.tags.length));
+  assert(app.api.session.pool.some(word => !word.tags.length));
+  assert.equal(app.api.state.answers[0].wordId, first.word.id);
+  const old = { ...core.createState(), settings: { ...core.DEFAULT_SETTINGS, pack: 'everyday' } };
+  delete old.settings.packVersion;
+  app = await boot(new Map([[core.STORAGE_KEY, JSON.stringify(old)]]));
+  assert.equal(app.api.state.settings.pack, 'all');
+  assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).settings.pack, 'all');
+  select('everyday'); app = await boot(app.saved);
+  assert.equal(app.api.state.settings.pack, 'everyday');
+});
 
 test('version 1 saves and backups migrate without losing rewards, and future formats remain protected', async () => {
   const word = core.normalizeDictionary(fixture, [])[0];

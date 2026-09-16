@@ -89,9 +89,12 @@ select { max-width: 100%; border: 2px solid var(--line); background: var(--bg); 
 select:hover { border-color: var(--line-light); }
 .learning-layout { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 34px; align-items: start; }
 .path-panel { min-width: 0; }
-.path-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+.path-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
 .path-heading h1 { font-size: 1.4rem; }
 .path-heading select { max-width: 47%; }
+.collection-picker { display: grid; gap: 6px; width: 240px; max-width: 100%; }
+.collection-picker label { font-size: .8rem; color: var(--muted); }
+.path-heading .collection-picker select { width: 100%; max-width: 100%; }
 .unit-banner { display: flex; align-items: stretch; justify-content: space-between; background: var(--coral); border-radius: 22px; box-shadow: 0 7px 0 var(--coral-shadow); overflow: hidden; color: white; }
 .unit-banner > div { padding: 22px 24px; }
 .unit-banner .eyebrow { color: #46121a; margin-bottom: 4px; }
@@ -251,6 +254,7 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .word-table tr:hover td { background: var(--surface); }
 .word-and-sound { display: flex; align-items: center; gap: 10px; }
 .word-and-sound .icon-button { color: var(--blue); }
+.word-tag { display: inline-block; font-size: .72rem; line-height: 1.5; padding: 2px 8px; margin-top: 5px; border: 1px solid #655189; border-radius: 12px; color: #d9b6ff; background: #292039; }
 .badge { display: inline-block; border-radius: 9px; padding: 6px 10px; font-size: .875rem; font-weight: 800; white-space: nowrap; }
 .badge.new { background: var(--line); color: var(--ink); }
 .badge.learning { background: #123345; color: var(--blue); }

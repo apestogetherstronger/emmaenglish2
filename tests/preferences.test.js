@@ -20,6 +20,17 @@ test('the 30-exercise default upgrades old defaults and preserves later choices'
   assert.equal(normalizeSettings({ language: '<script>', effects: 'false', goal: 300 }).language, 'en');
 });
 
+test('mixed vocabulary is the default and an explicit collection choice survives reload', () => {
+  assert.equal(createState().settings.pack, 'all');
+  assert.equal(normalizeSettings({ pack: 'everyday' }).pack, 'all');
+  assert.equal(normalizeSettings({ pack: 'stories' }).pack, 'stories');
+  for (const pack of ['all', 'everyday', 'stories', 'whenever-wherever']) {
+    const settings = normalizeSettings({ pack, packVersion: 1 });
+    assert.equal(settings.pack, pack);
+    assert.deepEqual(normalizeSettings(JSON.parse(JSON.stringify(settings))), settings);
+  }
+});
+
 test('interface translations retain all parameters and cover literal UI labels', async () => {
   for (const [english, translation] of Object.entries(hebrew)) {
     const tokens = text => [...text.matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();

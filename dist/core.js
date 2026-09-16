@@ -1,7 +1,9 @@
 import { createGame } from './game.js?v=2.4.0';
 // Pure learning and data functions. No browser or network dependencies.
 export const STORAGE_KEY = 'emmaenglish2:v1';
-export const DEFAULT_SETTINGS = Object.freeze({ pack: 'everyday', questions: 10, choices: 4, sound: true, effects: true, language: 'en', rate: 0.85, bonus: true, goal: 30, goalVersion: 2 });
+export const WORD_COLLECTIONS = Object.freeze({ all: 'All words', everyday: 'Everyday words', stories: 'Story words', 'whenever-wherever': 'Whenever, Wherever' });
+export const WORD_TAGS = Object.freeze(['whenever-wherever']);
+export const DEFAULT_SETTINGS = Object.freeze({ pack: 'all', packVersion: 1, questions: 10, choices: 4, sound: true, effects: true, language: 'en', rate: 0.85, bonus: true, goal: 30, goalVersion: 2 });
 const DAY = 86400000;
 export const wordId = value => String(value).trim().toLocaleLowerCase('en-US');
 export const localDay = (value = new Date()) => {
@@ -13,8 +15,11 @@ export function normalizeSettings(settings = {}) {
   if (!settings || typeof settings !== 'object') settings = {};
   // Upgrade the previous ten-exercise default once; later explicit choices are retained.
   const goal = settings.goalVersion !== 2 && Number(settings.goal) === 10 ? 30 : Number(settings.goal);
+  // Move the former default to mixed practice once; keep subsequent collection choices.
+  const pack = settings.packVersion !== 1 && settings.pack === 'everyday' ? 'all' : settings.pack;
   return {
-    pack: ['everyday', 'stories', 'all'].includes(settings.pack) ? settings.pack : 'everyday',
+    pack: Object.hasOwn(WORD_COLLECTIONS, pack) ? pack : 'all',
+    packVersion: 1,
     questions: [5, 10, 15, 20, 30].includes(Number(settings.questions)) ? Number(settings.questions) : 10,
     choices: [4, 7].includes(Number(settings.choices)) ? Number(settings.choices) : 4,
     sound: typeof settings.sound === 'boolean' ? settings.sound : true,
@@ -34,15 +39,16 @@ export function normalizeDictionary(base, stories) {
       if (typeof item?.en !== 'string' || typeof item?.he !== 'string') continue;
       const en = item.en.trim(), he = item.he.trim(), id = wordId(en);
       if (!en || !he || en.length > 150 || he.length > 300) continue;
-      if (!map.has(id)) map.set(id, { id, en, he, translations: [], packs: [] });
+      if (!map.has(id)) map.set(id, { id, en, he, translations: [], packs: [], tags: [] });
       const word = map.get(id);
       if (!word.translations.includes(he)) word.translations.push(he);
       if (!word.packs.includes(pack)) word.packs.push(pack);
+      for (const tag of Array.isArray(item.tags) ? item.tags : []) if (WORD_TAGS.includes(tag) && !word.tags.includes(tag)) word.tags.push(tag);
     }
   }
   return [...map.values()];
 }
-export const forPack = (words, pack) => pack === 'all' ? words : words.filter(w => w.packs.includes(pack));
+export const forPack = (words, pack) => pack === 'all' ? words : words.filter(w => w.packs.includes(pack) || w.tags?.includes(pack));
 export function shuffled(values, random = Math.random) {
   const copy = [...values];
   for (let i = copy.length - 1; i > 0; i--) { const j = Math.floor(random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; }
