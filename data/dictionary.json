@@ -121,7 +121,10 @@
   },
   {
     "en": "head",
-    "he": "ראש"
+    "he": "ראש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "kid",
@@ -209,7 +212,10 @@
   },
   {
     "en": "eyes",
-    "he": "עיניים"
+    "he": "עיניים",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "me",
@@ -233,7 +239,10 @@
   },
   {
     "en": "run",
-    "he": "לרוץ"
+    "he": "לרוץ",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "up",
@@ -773,7 +782,10 @@
   },
   {
     "en": "body",
-    "he": "גוף"
+    "he": "גוף",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "face",
@@ -793,7 +805,10 @@
   },
   {
     "en": "head",
-    "he": "ראש"
+    "he": "ראש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "leg",
@@ -861,7 +876,10 @@
   },
   {
     "en": "leave",
-    "he": "לעזוב"
+    "he": "לעזוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "meeting",
@@ -885,7 +903,10 @@
   },
   {
     "en": "somebody",
-    "he": "מישהו"
+    "he": "מישהו",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "watching",
@@ -957,7 +978,10 @@
   },
   {
     "en": "eyes",
-    "he": "עיניים"
+    "he": "עיניים",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "life",
@@ -1073,7 +1097,10 @@
   },
   {
     "en": "need",
-    "he": "צריך"
+    "he": "צריך",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "want",
@@ -1085,11 +1112,17 @@
   },
   {
     "en": "say",
-    "he": "לומר"
+    "he": "לומר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "tell",
-    "he": "לספר"
+    "he": "לספר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "try",
@@ -1137,7 +1170,10 @@
   },
   {
     "en": "baby",
-    "he": "מותק"
+    "he": "מותק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "bird",
@@ -1153,7 +1189,10 @@
   },
   {
     "en": "love",
-    "he": "אהבה"
+    "he": "אהבה",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "tears",
@@ -1165,11 +1204,17 @@
   },
   {
     "en": "time",
-    "he": "זמן"
+    "he": "זמן",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "day",
-    "he": "יום"
+    "he": "יום",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "years",
@@ -1201,7 +1246,10 @@
   },
   {
     "en": "away",
-    "he": "הרחק"
+    "he": "הרחק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "only",
@@ -1241,11 +1289,17 @@
   },
   {
     "en": "leave",
-    "he": "לעזוב"
+    "he": "לעזוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "say",
-    "he": "לומר"
+    "he": "לומר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "give",
@@ -1273,7 +1327,10 @@
   },
   {
     "en": "way",
-    "he": "דרך"
+    "he": "דרך",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "bottle",
@@ -1313,7 +1370,10 @@
   },
   {
     "en": "river",
-    "he": "נהר"
+    "he": "נהר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "sight",
@@ -1405,7 +1465,10 @@
   },
   {
     "en": "count",
-    "he": "לספור"
+    "he": "לספור",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "crack",
@@ -1453,7 +1516,10 @@
   },
   {
     "en": "head",
-    "he": "ראש"
+    "he": "ראש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "hug",
@@ -1473,7 +1539,10 @@
   },
   {
     "en": "million",
-    "he": "מיליון"
+    "he": "מיליון",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "planet",
@@ -1533,7 +1602,10 @@
   },
   {
     "en": "feel",
-    "he": "להרגיש"
+    "he": "להרגיש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "fill",
@@ -1569,7 +1641,10 @@
   },
   {
     "en": "leave",
-    "he": "לעזוב"
+    "he": "לעזוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "like",
@@ -1581,7 +1656,10 @@
   },
   {
     "en": "make",
-    "he": "לעשות"
+    "he": "לעשות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "open",
@@ -1589,7 +1667,10 @@
   },
   {
     "en": "say",
-    "he": "לומר"
+    "he": "לומר",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "save",
@@ -1597,7 +1678,10 @@
   },
   {
     "en": "see",
-    "he": "לראות"
+    "he": "לראות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "seem",
@@ -1621,7 +1705,10 @@
   },
   {
     "en": "think",
-    "he": "לחשוב"
+    "he": "לחשוב",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "try",
@@ -1641,7 +1728,10 @@
   },
   {
     "en": "above",
-    "he": "מעל"
+    "he": "מעל",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "asleep",
@@ -1653,7 +1743,10 @@
   },
   {
     "en": "far",
-    "he": "רחוק"
+    "he": "רחוק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "hard",
@@ -1685,7 +1778,10 @@
   },
   {
     "en": "away",
-    "he": "הרחק"
+    "he": "הרחק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "beneath",
@@ -1789,7 +1885,10 @@
   },
   {
     "en": "born",
-    "he": "להיוולד"
+    "he": "להיוולד",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "break",
@@ -1817,7 +1916,10 @@
   },
   {
     "en": "far",
-    "he": "רחוק"
+    "he": "רחוק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "fears",
@@ -1825,7 +1927,10 @@
   },
   {
     "en": "feel",
-    "he": "להרגיש"
+    "he": "להרגיש",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "finally",
@@ -1893,7 +1998,10 @@
   },
   {
     "en": "live",
-    "he": "לחיות"
+    "he": "לחיות",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "lives",
@@ -1901,7 +2009,10 @@
   },
   {
     "en": "meant",
-    "he": "נועד"
+    "he": "נועד",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "moment",
@@ -1925,7 +2036,10 @@
   },
   {
     "en": "play",
-    "he": "לשחק"
+    "he": "לשחק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "problem",
@@ -1953,7 +2067,10 @@
   },
   {
     "en": "strong",
-    "he": "חזק"
+    "he": "חזק",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "throne",
@@ -1961,11 +2078,17 @@
   },
   {
     "en": "time",
-    "he": "זמן"
+    "he": "זמן",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "together",
-    "he": "ביחד"
+    "he": "ביחד",
+    "tags": [
+      "whenever-wherever"
+    ]
   },
   {
     "en": "tried",
@@ -2137,7 +2260,205 @@
   },
   {
     "en": "nothing",
-    "he": "כלום"
+    "he": "כלום",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "distance",
+    "he": "מרחק",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "foreign",
+    "he": "זר",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "existence",
+    "he": "קיום",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "climb",
+    "he": "לטפס",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "solely",
+    "he": "אך ורק / בלבד",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "freckles",
+    "he": "נמשים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "ways",
+    "he": "דרכים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "feet",
+    "he": "כפות רגליים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "whenever",
+    "he": "בכל פעם / בכל זמן",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "wherever",
+    "he": "בכל מקום",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "near",
+    "he": "קרוב",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "hereunder",
+    "he": "כאן למטה / להלן",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "always",
+    "he": "תמיד",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "ear",
+    "he": "אוזן",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "lips",
+    "he": "שפתיים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "mumble",
+    "he": "למלמל",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "spill",
+    "he": "לשפוך",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "kisses",
+    "he": "נשיקות",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "fountain",
+    "he": "מזרקה",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "breasts",
+    "he": "שדיים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "small",
+    "he": "קטן",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "humble",
+    "he": "צנוע / עניו",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "confuse",
+    "he": "לבלבל",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "mountains",
+    "he": "הרים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "legs",
+    "he": "רגליים",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "cry",
+    "he": "לבכות",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "again",
+    "he": "שוב",
+    "tags": [
+      "whenever-wherever"
+    ]
+  },
+  {
+    "en": "heels",
+    "he": "עקבים",
+    "tags": [
+      "whenever-wherever"
+    ]
   }
 ]
-

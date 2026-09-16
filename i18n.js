@@ -199,6 +199,8 @@ export const hebrew = {
   'Everyday words': 'מילים ליום־יום',
   'Story words': 'מילים מסיפורים',
   'All words': 'כל המילים',
+  'Whenever, Wherever': 'Whenever, Wherever — השיר',
+  'Word collection': 'אוסף מילים',
   'DAILY PRACTICE': 'תרגול יומי',
   'Let’s keep learning': 'ממשיכים ללמוד',
   'Goal complete! Keep exploring': 'היעד הושלם! ממשיכים לגלות',
