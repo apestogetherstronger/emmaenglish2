@@ -1,7 +1,7 @@
 import { createGame, normalizeGame, mergeGames, inventory, bonusXP, initializeRewards, creditPractice, earnBonusChests, bonusProgress, pendingChests, chooseChestStyle, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.4.0';
 import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
 import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
-import { translate, locale, dayLabel } from './i18n.js?v=2.5.0';
+import { translate, locale, dayLabel } from './i18n.js?v=2.6.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
 import { STORAGE_KEY, DEFAULT_SETTINGS, WORD_COLLECTIONS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.5.0';
 
@@ -185,7 +185,7 @@ function renderHome() {
     { action: 'speaking', symbol: 'mic', title: t('Speak a sentence'), detail: t('Say it. See what was heard.'), color: 'purple' },
     { action: 'match', symbol: 'match', title: t('Make a match'), detail: t('Find the word pairs'), color: 'gold' },
   ];
-  main.innerHTML = `${noticeMarkup()}${pendingChestBanner()}<div class="learning-layout"><section class="path-panel" aria-label="${t('Your learning path')}">
+  main.innerHTML = `${noticeMarkup()}<a class="picture-mode-link" href="./pictures.html"><span><strong>${t('Picture mode')}</strong><small>${t('Learn with images. No Hebrew needed.')}</small></span><span aria-hidden="true">↗</span></a>${pendingChestBanner()}<div class="learning-layout"><section class="path-panel" aria-label="${t('Your learning path')}">
     <div class="path-heading"><h1>${t('Your learning path')}</h1><div class="collection-picker"><label for="home-pack">${t('Word collection')}</label><select id="home-pack" data-change="pack">${packOptions(state.settings.pack)}</select></div></div>
     <div class="unit-banner"><div><div class="eyebrow">${t('DAILY PRACTICE')}</div><h2>${t(today >= goal ? 'Goal complete! Keep exploring' : 'Let’s keep learning')}</h2></div><span class="unit-symbol">${icon('book')}</span></div>
     <div class="path-progress"><span>${t('{count} exercises today', { count: today })}</span><strong><bdi>${Math.min(today, goal)} / ${goal}</bdi></strong><div class="progress-track" role="progressbar" aria-label="${t('Daily goal')}" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${Math.min(today, goal)}"><span style="width:${percent * 100}%"></span></div></div>

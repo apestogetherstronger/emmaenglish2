@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#131f24">
+  <meta name="description" content="Learn English with pictures and spoken words. A separate practice space with its own daily goal and saved progress.">
+  <title>Picture practice · Emma English</title>
+  <link rel="icon" href="./favicon.svg?v=2.2.0" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css?v=2.6.0">
+  <link rel="stylesheet" href="./pictures.css?v=2.6.0">
+  <script type="module" src="./pictures.js?v=2.6.0"></script>
+</head>
+<body class="picture-app">
+  <a class="skip-link" href="#picture-main">Skip to practice</a>
+  <header class="picture-topbar">
+    <a class="picture-brand" href="./pictures.html" aria-label="Picture practice home">emma<span>english</span><small>PICTURE MODE</small></a>
+    <div class="picture-toolbar"><strong id="picture-xp">0 XP</strong><button id="picture-sound" class="secondary-button" data-action="sound" aria-pressed="true">Sounds on</button></div>
+  </header>
+  <nav class="picture-nav" aria-label="Picture mode navigation">
+    <button data-action="home" aria-current="page">Practice</button>
+    <button data-action="words">Picture words</button>
+    <a href="./index.html">English–Hebrew mode ↗</a>
+  </nav>
+  <div id="picture-notice" class="picture-notice" role="status" hidden></div>
+  <main id="picture-main" tabindex="-1"><p>Getting your pictures ready…</p></main>
+  <footer class="picture-footer">Picture mode has its own progress, saved on this device.</footer>
+  <div id="picture-status" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Please enable JavaScript to practise with pictures.</p></noscript>
+</body>
+</html>
