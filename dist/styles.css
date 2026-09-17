@@ -69,6 +69,10 @@ bdi { unicode-bidi: isolate; }
 .settings-nav:hover { color: var(--ink); }
 .sidebar-bottom { border-top: 2px solid var(--line); font-size: .875rem; color: var(--muted); margin-top: 14px; padding: 20px 10px 0; }
 .workspace { min-width: 0; display: flex; flex-direction: column; }
+.picture-mode-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 18px; margin-bottom: 24px; border: 2px solid #3c7895; border-radius: 16px; background: #142e3c; color: var(--blue); text-decoration: none; }
+.picture-mode-link strong, .picture-mode-link small { display: block; }
+.picture-mode-link small { color: var(--muted); margin-top: 4px; font-size: .875rem; }
+.picture-mode-link:hover { border-color: var(--blue); }
 .topbar { position: sticky; top: 0; z-index: 20; min-height: 86px; padding: 18px 36px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; background: var(--bg); border-bottom: 2px solid var(--line); }
 .top-stats, .topbar-right { display: flex; align-items: center; gap: 24px; }
 .topbar-right { gap: 10px; }

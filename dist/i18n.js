@@ -195,6 +195,8 @@ export const hebrew = {
   'day streak': 'ימים ברצף',
   'Daily goal': 'יעד יומי',
   'Your learning path': 'מסלול הלמידה שלך',
+  'Picture mode': 'מצב תמונות',
+  'Learn with images. No Hebrew needed.': 'לומדים בעזרת תמונות, ללא צורך בעברית.',
   'Your word set': 'מאגר המילים שלך',
   'Everyday words': 'מילים ליום־יום',
   'Story words': 'מילים מסיפורים',

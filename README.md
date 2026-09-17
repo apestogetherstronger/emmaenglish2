@@ -24,6 +24,16 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 - Real progress: daily goals, local-day streaks, accuracy, completed lessons, and seven-day activity. No sample progress or invented scores.
 - CSV exports, original-app CSV imports, JSON backups, duplicate-safe history merging, and explicit confirmation before resetting progress.
 
+## Picture mode
+
+Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The starter collection contains 48 concrete words: 16 animals, 16 foods, and 16 everyday objects, illustrated with three original locally bundled image atlases. Abstract words from the bilingual dictionary are not automatically mapped to ambiguous pictures.
+
+Ten-question lessons offer word-to-picture, picture-to-word, and listening-to-picture questions. Learners can browse the picture cards and hear each word, replay prompts slowly, retry mistakes, and review due words with the same spaced-review schedule. Spoken audio uses available English browser voices; text and pictures remain usable without speech support. All three atlases load before scored practice is enabled.
+
+The daily goal defaults to 30, with 5/10/15/20/30 options. Each answered question counts towards the goal, and correct answers earn 10 XP. Picture mode uses **`emmaenglish2:pictures:v1`** exclusively for its settings, answer history, XP, and review progress; it never reads, resets, imports, or writes the bilingual app's **`emmaenglish2:v1`** data. Corrupt or unsupported picture saves are preserved with saving paused, and storage failures are shown to the learner. This is device-local progress, not a separate online account.
+
+The picture images were generated for this app with the built-in image-generation tool, checked against their word labels, and encoded as WebP. The four-by-four cells in each atlas follow the order declared in `dist/picture-core.js`; the UI crops cells with CSS and needs no external image service.
+
 ## Word collections
 
 The **Word collection** dropdown appears on the learning screen, in My words, and in settings. **All words** mixes the available vocabulary by default. The original Everyday default upgrades once to All words; explicitly choosing Everyday again, Story words, or a tagged collection is remembered.
