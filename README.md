@@ -26,13 +26,21 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 
 ## Picture mode
 
-Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The starter collection contains 48 concrete words: 16 animals, 16 foods, and 16 everyday objects, illustrated with three original locally bundled image atlases. Abstract words from the bilingual dictionary are not automatically mapped to ambiguous pictures.
+Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The collection contains **96 concrete beginner words**, with familiar subjects for a five-year-old, illustrated with six original locally bundled image atlases. The original animals, food, and everyday objects remain. Three more 16-word collections are included in **All pictures** by default and can also be selected separately:
 
-Ten-question lessons offer word-to-picture, picture-to-word, and listening-to-picture questions. Learners can browse the picture cards and hear each word, replay prompts slowly, retry mistakes, and review due words with the same spaced-review schedule. Spoken audio uses available English browser voices; text and pictures remain usable without speech support. All three atlases load before scored practice is enabled.
+- **At home:** door, window, lamp, sofa, pillow, blanket, towel, toothbrush, soap, bath, toilet, mirror, plate, fork, bowl, bottle.
+- **Outside:** sun, moon, star, cloud, rain, snow, rainbow, tree, flower, leaf, grass, rock, beach, mountain, river, sea.
+- **Toys & transport:** car, bus, train, truck, plane, boat, bike, helicopter, teddy bear, doll, kite, balloon, robot, puzzle, drum, crayon.
+
+These are introductory word choices, not an assessed age or proficiency standard. Abstract words from the bilingual dictionary are not automatically mapped to pictures. Quiz distractors exclude overlapping meanings such as bird/penguin, cloud/rain, and beach/sea so a valid interpretation is not marked wrong.
+
+Ten-question lessons offer word-to-picture, picture-to-word, and listening-to-picture questions. **Listen + pictures** works without reading English answer choices. Learners can browse the picture cards and hear each word, replay prompts slowly, retry mistakes, and review due words with the same spaced-review schedule. Spoken audio uses available English browser voices; text and pictures remain usable without speech support. All six atlases load before scored practice is enabled.
 
 The daily goal defaults to 30, with 5/10/15/20/30 options. Each answered question counts towards the goal, and correct answers earn 10 XP. Picture mode uses **`emmaenglish2:pictures:v1`** exclusively for its settings, answer history, XP, and review progress; it never reads, resets, imports, or writes the bilingual app's **`emmaenglish2:v1`** data. Corrupt or unsupported picture saves are preserved with saving paused, and storage failures are shown to the learner. This is device-local progress, not a separate online account.
 
-The picture images were generated for this app with the built-in image-generation tool, checked against their word labels, and encoded as WebP. The four-by-four cells in each atlas follow the order declared in `dist/picture-core.js`; the UI crops cells with CSS and needs no external image service.
+The expanded vocabulary upgrades picture saves from format 1 to 2 on the next save without changing word IDs, earlier answers, settings, or XP. Older tabs pause saving when they see the new format, protecting results for words they do not know. Refresh an older tab to continue with the expanded collection.
+
+The picture images were generated for this app with the built-in image-generation tool, checked against their word labels, and encoded as WebP. The four-by-four cells in each atlas follow the order declared in `dist/picture-core.js`; the UI crops cells with CSS and needs no external image service. Four home words have explicit square crop bounds to keep the fork and bottle fully visible without bleeding into the row above.
 
 ## Word collections
 

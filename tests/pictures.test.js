@@ -19,7 +19,7 @@ test('picture storage is independent, merges another tab, and protects unreadabl
   assert.equal(pictures.pictureTotals(restored.state, new Date('2026-09-17T13:00:00Z')).xp, 20);
   assert.equal(saved.get(STORAGE_KEY), bilingual);
   assert(keys.every(key => key === pictures.PICTURE_STORAGE_KEY));
-  for (const bad of ['not json', '{"version":2,"answers":[]}']) {
+  for (const bad of ['not json', '{"version":3,"answers":[]}']) {
     saved.set(pictures.PICTURE_STORAGE_KEY, bad);
     const locked = pictures.createPictureStore(storage);
     locked.update(s => ({ ...s, answers: [answer('c', 'bird')] }));
@@ -65,7 +65,7 @@ async function boot({ saved = new Map(), speech = false, failedImage = false } =
     window: { addEventListener() {}, scrollTo() {}, ...(speech ? { speechSynthesis: { cancel() {}, getVoices: () => [], speak: u => spoken.push(u) }, SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } } } : {}) },
     localStorage: { getItem: key => saved.get(key) ?? null, setItem: (key, value) => saved.set(key, value) },
     createAnswerSounds: () => ({ play: (...args) => sounds.push(args), stop() {} }),
-    Image: class { set src(value) { assert.match(value, /\/assets\/picture-(animals|food|objects)\.webp/); if (failedImage) this.onerror(); else this.onload(); } },
+    Image: class { set src(value) { assert.match(value, /\/assets\/picture-(animals|food|objects|home|nature|play)\.webp/); if (failedImage) this.onerror(); else this.onload(); } },
   });
   const app = source.replace(/^import .*;\n/gm, '').replaceAll('import.meta.url', JSON.stringify(new URL('../dist/pictures.js', import.meta.url).href));
   vm.runInContext(`${app}\nglobalThis.api = { actions, answer, startLesson, render, get state() { return store.state; }, get session() { return session; }, get page() { return page; }, get ready() { return picturesReady; } };`, context);
@@ -104,7 +104,7 @@ test('picture page scores one answer once, reaches 30, restores progress, and re
   assert.equal(reloaded.api.state.answers.length, 30);
   assert.match(reloaded.elements.get('#picture-main').innerHTML, /Daily goal complete!/);
   reloaded.api.actions.words();
-  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 48);
+  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 96);
   assert.equal(app.saved.get(STORAGE_KEY), original);
 });
 
@@ -128,4 +128,51 @@ test('listening has slow/reveal/error fallbacks, and missing images prevent scor
   assert.equal(missing.api.session, null);
   assert.equal(missing.api.state.answers.length, 0);
   assert.match(missing.elements.get('#picture-notice').textContent, /pictures could not load/);
+});
+
+test('new beginner collections retain earlier progress and work in lessons, listening, and review', async () => {
+  const legacy = {
+    version: 1,
+    settings: { category: 'animals', mode: 'listen', goal: 20, effects: false, voice: true },
+    answers: [{ id: 'old-answer', wordId: 'cat', chosen: 'cat', correct: true, ts: '2026-09-01T12:00:00Z' }],
+  };
+  const app = await boot({ saved: new Map([[pictures.PICTURE_STORAGE_KEY, JSON.stringify(legacy)]]), speech: true });
+  assert.equal(app.api.state.version, 2);
+  assert.equal(app.api.state.settings.goal, 20);
+  assert.equal(app.api.state.settings.effects, false);
+  assert.equal(app.api.state.answers[0].wordId, 'cat');
+  assert.equal(pictures.pictureTotals(app.api.state).xp, 10);
+  for (const category of ['home', 'nature', 'play']) {
+    app.listeners.get('change')({ target: { dataset: { setting: 'category' }, value: category } });
+    app.api.actions.words();
+    const markup = app.elements.get('#picture-main').innerHTML;
+    assert.equal((markup.match(/class="picture-word-card"/g) || []).length, 16);
+    assert.equal((markup.match(new RegExp(`data-category="${category}"`, 'g')) || []).length, 16);
+    app.api.startLesson();
+    assert.equal(app.api.session.queue.length, 10);
+    assert(app.api.session.queue.every(w => w.category === category));
+    assert.equal(app.api.session.question.kind, 'listen');
+    assert.equal(app.spoken.at(-1).text, app.api.session.question.word.en);
+    app.api.answer(app.api.session.question.word.id);
+    app.api.actions.home();
+  }
+  const restored = await boot({ saved: app.saved });
+  assert.equal(restored.api.state.answers.length, 4);
+  assert.equal(pictures.pictureTotals(restored.api.state).xp, 40);
+  assert.equal(restored.api.state.settings.category, 'play');
+  assert.equal(restored.api.state.settings.goal, 20);
+  assert.equal(JSON.parse(app.saved.get(pictures.PICTURE_STORAGE_KEY)).version, 2);
+});
+
+test('pictures with overlapping meanings do not compete as quiz answers', () => {
+  const pairs = [['cloud', 'rain'], ['cloud', 'snow'], ['snow', 'mountain'], ['beach', 'sea'], ['beach', 'river'], ['river', 'sea'], ['blanket', 'towel'], ['plate', 'bowl'], ['sofa', 'pillow'], ['tree', 'leaf'], ['flower', 'leaf']];
+  for (const [first, second] of pairs) for (const [id, other] of [[first, second], [second, first]]) {
+    const word = pictures.PICTURE_WORDS.find(w => w.id === id);
+    assert(word, `Missing beginner word: ${id}`);
+    for (let seed = 0; seed < 16; seed++) {
+      const choices = pictures.pictureChoices(word, () => seed / 16);
+      assert.equal(choices.length, 4);
+      assert(!choices.some(w => w.id === other), `${id} must not compete with ${other}`);
+    }
+  }
 });
