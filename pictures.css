@@ -24,9 +24,12 @@
 .picture-start .primary-button { margin-top: 22px; width: 100%; }
 .picture-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: center; }
 .picture-sprite { display: block; width: 100%; aspect-ratio: 1; background-color: #fff9ed; background-repeat: no-repeat; background-size: 400% 400%; border-radius: 14px; }
-.picture-sprite[data-category=animals] { background-image: url('./assets/picture-animals.webp?v=2.6.0'); }
-.picture-sprite[data-category=food] { background-image: url('./assets/picture-food.webp?v=2.6.0'); }
-.picture-sprite[data-category=objects] { background-image: url('./assets/picture-objects.webp?v=2.6.0'); }
+.picture-sprite[data-category=animals] { background-image: url('./assets/picture-animals.webp?v=2.7.0'); }
+.picture-sprite[data-category=food] { background-image: url('./assets/picture-food.webp?v=2.7.0'); }
+.picture-sprite[data-category=objects] { background-image: url('./assets/picture-objects.webp?v=2.7.0'); }
+.picture-sprite[data-category=home] { background-image: url('./assets/picture-home.webp?v=2.7.0'); }
+.picture-sprite[data-category=nature] { background-image: url('./assets/picture-nature.webp?v=2.7.0'); }
+.picture-sprite[data-category=play] { background-image: url('./assets/picture-play.webp?v=2.7.0'); }
 .picture-goal { margin: 24px 0; padding: 22px; border: 2px solid var(--line); border-radius: 20px; }
 .picture-goal-head { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin-bottom: 14px; }
 .picture-goal-head label { font-size: .875rem; color: var(--muted); }

@@ -1,4 +1,4 @@
-import { PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.6.0';
+import { PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_ATLASES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.7.0';
 import { summarizeWords, wordStatus } from './core.js?v=2.5.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
 
@@ -12,7 +12,9 @@ const escape = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;',
 const wordById = id => PICTURE_WORDS.find(w => w.id === id);
 function sprite(word, label = word.en) {
   const x = (word.cell % 4) * 100 / 3, y = Math.floor(word.cell / 4) * 100 / 3;
-  return `<span class="picture-sprite" data-category="${word.category}" role="img" aria-label="${escape(label)}" style="background-position:${x}% ${y}%"></span>`;
+  const crop = word.crop;
+  const style = crop ? `background-size:${1254 / crop[2] * 100}% ${1254 / crop[2] * 100}%;background-position:${crop[0] / (1254 - crop[2]) * 100}% ${crop[1] / (1254 - crop[2]) * 100}%` : `background-position:${x}% ${y}%`;
+  return `<span class="picture-sprite" data-category="${word.category}" role="img" aria-label="${escape(label)}" style="${style}"></span>`;
 }
 const options = (values, selected) => Object.entries(values).map(([value, label]) => `<option value="${value}" ${value === selected ? 'selected' : ''}>${label}</option>`).join('');
 function stopAudio() { if (canSpeak) window.speechSynthesis.cancel(); sounds.stop(); }
@@ -64,7 +66,7 @@ function categoryPicker() {
 }
 function renderHome() {
   const state = store.state, totals = pictureTotals(state), goal = state.settings.goal;
-  const preview = [wordById('cat'), wordById('apple'), wordById('ball'), wordById('butterfly')];
+  const preview = state.settings.category === 'all' ? [wordById('cat'), wordById('apple'), wordById('sun'), wordById('teddy-bear')] : picturePool(state.settings.category).slice(0, 4);
   main.innerHTML = `<div class="picture-heading"><div><h1>Learn English with pictures</h1><p>Look, listen, and choose.</p></div></div>
     <section class="picture-start"><div><div class="eyebrow">YOUR NEXT 10 WORDS</div><h2>A little practice, every day.</h2><p>Match everyday words to their pictures.</p>
       <div class="picture-controls">${categoryPicker()}<label>Practice type<select data-setting="mode">${options(canSpeak ? PICTURE_MODES : { mixed: PICTURE_MODES.mixed, read: PICTURE_MODES.read }, canSpeak ? state.settings.mode : state.settings.mode === 'listen' ? 'read' : state.settings.mode)}</select></label></div>
@@ -168,7 +170,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) stopA
 window.addEventListener('pagehide', stopAudio);
 render();
 // Preload every atlas before a scored exercise can start; blank images never become questions.
-Promise.all(['animals', 'food', 'objects'].map(category => new Promise((resolve, reject) => {
+Promise.all(PICTURE_ATLASES.map(category => new Promise((resolve, reject) => {
   const image = new Image(); image.onload = resolve; image.onerror = reject;
-  image.src = new URL(`./assets/picture-${category}.webp?v=2.6.0`, import.meta.url).href;
+  image.src = new URL(`./assets/picture-${category}.webp?v=2.7.0`, import.meta.url).href;
 }))).then(() => { picturesReady = true; render(); }).catch(() => { pictureError = true; render(); });
