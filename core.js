@@ -1,8 +1,8 @@
 import { createGame } from './game.js?v=2.4.0';
 // Pure learning and data functions. No browser or network dependencies.
 export const STORAGE_KEY = 'emmaenglish2:v1';
-export const WORD_COLLECTIONS = Object.freeze({ all: 'All words', everyday: 'Everyday words', stories: 'Story words', song: 'Song', 'whenever-wherever': 'Whenever, Wherever', aeroplane: 'Aeroplane' });
-export const WORD_TAGS = Object.freeze(['whenever-wherever', 'aeroplane', 'song']);
+export const WORD_COLLECTIONS = Object.freeze({ all: 'All words', everyday: 'Everyday words', stories: 'Story words', song: 'Songs', 'whenever-wherever': 'Whenever, Wherever', aeroplane: 'Aeroplane', 'shake-it-off': 'Shake It Off' });
+export const WORD_TAGS = Object.freeze(['whenever-wherever', 'aeroplane', 'shake-it-off', 'song']);
 export const DEFAULT_SETTINGS = Object.freeze({ pack: 'all', packVersion: 1, questions: 10, choices: 4, sound: true, effects: true, language: 'en', rate: 0.85, bonus: true, goal: 30, goalVersion: 2 });
 const DAY = 86400000;
 export const wordId = value => String(value).trim().toLocaleLowerCase('en-US');

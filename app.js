@@ -1,9 +1,9 @@
 import { createGame, normalizeGame, mergeGames, inventory, bonusXP, initializeRewards, creditPractice, earnBonusChests, bonusProgress, pendingChests, chooseChestStyle, earnDailyChest, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.4.0';
 import { SENTENCES, assessSpeech, cleanSpeaking, mergeSpeaking, createSpeechCapture } from './speaking.js?v=2.2.0';
 import { avatarDataUri } from './vendor/avatar.js?v=2.2.0';
-import { translate, locale, dayLabel } from './i18n.js?v=2.8.0';
+import { translate, locale, dayLabel } from './i18n.js?v=2.9.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
-import { STORAGE_KEY, DEFAULT_SETTINGS, WORD_COLLECTIONS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.8.0';
+import { STORAGE_KEY, DEFAULT_SETTINGS, WORD_COLLECTIONS, createState, normalizeSettings, normalizeDictionary, forPack, shuffled, summarizeWords, wordStatus, selectLesson, buildChoices, selectPairs, answerRecord, cleanAnswers, mergeAnswers, parseCSV, toCSV, streakDays, weekActivity, localDay, wordId } from './core.js?v=2.9.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -630,7 +630,7 @@ window.addEventListener('storage', event => {
 async function init() {
   loadState(); refreshStats(); icons(); header();
   const results = await Promise.allSettled(['dictionary.json', 'StrangerThings.json'].map(async name => {
-    const response = await fetch(new URL(`./data/${name}?v=2.8.0`, import.meta.url));
+    const response = await fetch(new URL(`./data/${name}?v=2.9.0`, import.meta.url));
     if (!response.ok) throw new Error(`Vocabulary request failed: ${response.status}`);
     const list = await response.json(); if (!Array.isArray(list)) throw new Error('Invalid vocabulary format'); return list;
   }));
