@@ -315,7 +315,9 @@
     "en": "away",
     "he": "הרחק",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song",
+      "aeroplane"
     ]
   },
   {
@@ -330,7 +332,9 @@
     "en": "baby",
     "he": "תינוק / מאמי",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song",
+      "aeroplane"
     ]
   },
   {
@@ -427,7 +431,11 @@
   },
   {
     "en": "better",
-    "he": "טוב יותר"
+    "he": "טוב יותר",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "beware",
@@ -501,7 +509,8 @@
     "en": "body",
     "he": "גוף",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1144,7 +1153,8 @@
     "en": "count",
     "he": "לספור",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1179,7 +1189,8 @@
     "en": "cover",
     "he": "לכסות",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1264,7 +1275,11 @@
   },
   {
     "en": "cut",
-    "he": "לחתוך"
+    "he": "לחתוך",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "cute",
@@ -1338,7 +1353,8 @@
     "en": "day",
     "he": "יום",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1349,14 +1365,16 @@
     "en": "deal",
     "he": "עסקה",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
     "en": "dear",
     "he": "יקר",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1469,7 +1487,11 @@
   },
   {
     "en": "die",
-    "he": "למות"
+    "he": "למות",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "died",
@@ -1697,7 +1719,11 @@
   },
   {
     "en": "easy",
-    "he": "קל"
+    "he": "קל",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "eat",
@@ -1891,7 +1917,8 @@
     "en": "fact",
     "he": "עובדה",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1938,7 +1965,8 @@
     "en": "far",
     "he": "רחוק",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -1965,7 +1993,9 @@
     "en": "fear",
     "he": "פחד",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song",
+      "aeroplane"
     ]
   },
   {
@@ -1980,7 +2010,8 @@
     "en": "feel",
     "he": "להרגיש",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -2191,7 +2222,8 @@
     "en": "fun",
     "he": "כיף",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -2272,7 +2304,11 @@
   },
   {
     "en": "girl",
-    "he": "ילדה"
+    "he": "ילדה",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "girlfriend",
@@ -2514,7 +2550,8 @@
     "en": "head",
     "he": "ראש",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -2749,7 +2786,8 @@
     "en": "imagine",
     "he": "לדמיין",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -2810,7 +2848,11 @@
   },
   {
     "en": "inside",
-    "he": "בפנים"
+    "he": "בפנים",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "inspired",
@@ -3048,7 +3090,8 @@
     "en": "land",
     "he": "אדמה",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3087,7 +3130,8 @@
     "en": "leave",
     "he": "לעזוב",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3098,7 +3142,8 @@
     "en": "left",
     "he": "שמאל",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3127,7 +3172,11 @@
   },
   {
     "en": "lie",
-    "he": "לשקר"
+    "he": "לשקר",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "lied",
@@ -3151,7 +3200,11 @@
   },
   {
     "en": "like",
-    "he": "לאהוב"
+    "he": "לאהוב",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "liked",
@@ -3209,7 +3262,8 @@
     "en": "live",
     "he": "לחיות",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3262,7 +3316,11 @@
   },
   {
     "en": "looking",
-    "he": "מחפש"
+    "he": "מחפש",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "looks",
@@ -3284,7 +3342,8 @@
     "en": "lost",
     "he": "אבוד",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3295,14 +3354,17 @@
     "en": "loud",
     "he": "רועש",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
     "en": "love",
     "he": "אהבה",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song",
+      "aeroplane"
     ]
   },
   {
@@ -3325,7 +3387,8 @@
     "en": "lucky",
     "he": "בר מזל",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3376,7 +3439,9 @@
     "en": "make",
     "he": "לעשות",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song",
+      "aeroplane"
     ]
   },
   {
@@ -3551,7 +3616,8 @@
     "en": "million",
     "he": "מיליון",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3650,7 +3716,8 @@
     "en": "mother",
     "he": "אמא",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3695,7 +3762,11 @@
   },
   {
     "en": "music",
-    "he": "מוזיקה"
+    "he": "מוזיקה",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "musical",
@@ -3741,7 +3812,8 @@
     "en": "need",
     "he": "צריך",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -3946,7 +4018,11 @@
   },
   {
     "en": "pain",
-    "he": "כאב"
+    "he": "כאב",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "pair",
@@ -4080,7 +4156,8 @@
     "en": "play",
     "he": "מחזה",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -4391,7 +4468,8 @@
     "en": "really",
     "he": "באמת",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -4590,7 +4668,8 @@
     "en": "run",
     "he": "לרוץ",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -4615,7 +4694,11 @@
   },
   {
     "en": "sad",
-    "he": "עצוב"
+    "he": "עצוב",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "safe",
@@ -4657,7 +4740,8 @@
     "en": "say",
     "he": "לומר",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -5042,7 +5126,11 @@
   },
   {
     "en": "song",
-    "he": "שיר"
+    "he": "שיר",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "soon",
@@ -5154,7 +5242,11 @@
   },
   {
     "en": "star",
-    "he": "כוכב"
+    "he": "כוכב",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "stardust",
@@ -5162,7 +5254,11 @@
   },
   {
     "en": "start",
-    "he": "להתחיל"
+    "he": "להתחיל",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "started",
@@ -5268,7 +5364,8 @@
     "en": "strong",
     "he": "חזק",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -5373,7 +5470,11 @@
   },
   {
     "en": "sweet",
-    "he": "מתוק"
+    "he": "מתוק",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "sweetcheeks",
@@ -5463,7 +5564,8 @@
     "en": "tell",
     "he": "לספר",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -5542,7 +5644,8 @@
     "en": "think",
     "he": "לחשוב",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -5609,7 +5712,8 @@
     "en": "time",
     "he": "זמן",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -5754,7 +5858,11 @@
   },
   {
     "en": "turning",
-    "he": "פונה"
+    "he": "פונה",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "turns",
@@ -5882,7 +5990,11 @@
   },
   {
     "en": "voice",
-    "he": "קול"
+    "he": "קול",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "voluntarily",
@@ -5922,7 +6034,11 @@
   },
   {
     "en": "want",
-    "he": "לרצות"
+    "he": "לרצות",
+    "tags": [
+      "aeroplane",
+      "song"
+    ]
   },
   {
     "en": "wanted",
@@ -5984,7 +6100,8 @@
     "en": "way",
     "he": "דרך",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
@@ -6095,7 +6212,8 @@
     "en": "wonder",
     "he": "לתהות",
     "tags": [
-      "whenever-wherever"
+      "whenever-wherever",
+      "song"
     ]
   },
   {
