@@ -810,7 +810,11 @@
   },
   {
     "en": "hair",
-    "he": "שיער"
+    "he": "שיער",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "hand",
@@ -930,7 +934,11 @@
   },
   {
     "en": "know",
-    "he": "לדעת"
+    "he": "לדעת",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "sharing",
@@ -1111,7 +1119,11 @@
   },
   {
     "en": "know",
-    "he": "לדעת"
+    "he": "לדעת",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "need",
@@ -1138,7 +1150,8 @@
     "he": "לומר",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1199,7 +1212,8 @@
     "tags": [
       "whenever-wherever",
       "song",
-      "aeroplane"
+      "aeroplane",
+      "shake-it-off"
     ]
   },
   {
@@ -1294,7 +1308,11 @@
   },
   {
     "en": "never",
-    "he": "אף פעם"
+    "he": "אף פעם",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "so",
@@ -1318,7 +1336,11 @@
   },
   {
     "en": "miss",
-    "he": "להתגעגע"
+    "he": "להתגעגע",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "leave",
@@ -1333,7 +1355,8 @@
     "he": "לומר",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1345,7 +1368,8 @@
     "he": "לאהוב",
     "tags": [
       "aeroplane",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1390,7 +1414,11 @@
   },
   {
     "en": "hair",
-    "he": "שיער"
+    "he": "שיער",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "walk",
@@ -1578,7 +1606,11 @@
   },
   {
     "en": "lightning",
-    "he": "ברק"
+    "he": "ברק",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "misty",
@@ -1634,7 +1666,11 @@
   },
   {
     "en": "world",
-    "he": "עולם"
+    "he": "עולם",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "believe",
@@ -1670,7 +1706,11 @@
   },
   {
     "en": "hate",
-    "he": "לשנוא"
+    "he": "לשנוא",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "hang",
@@ -1682,11 +1722,19 @@
   },
   {
     "en": "keep",
-    "he": "לשמור"
+    "he": "לשמור",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "know",
-    "he": "לדעת"
+    "he": "לדעת",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "leave",
@@ -1701,7 +1749,8 @@
     "he": "לאהוב / כמו",
     "tags": [
       "aeroplane",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1714,7 +1763,8 @@
     "tags": [
       "whenever-wherever",
       "song",
-      "aeroplane"
+      "aeroplane",
+      "shake-it-off"
     ]
   },
   {
@@ -1726,7 +1776,8 @@
     "he": "לומר",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1738,7 +1789,8 @@
     "he": "לראות",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1751,7 +1803,11 @@
   },
   {
     "en": "stay",
-    "he": "להישאר"
+    "he": "להישאר",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "take",
@@ -1766,7 +1822,8 @@
     "he": "לחשוב",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -1815,7 +1872,11 @@
   },
   {
     "en": "never",
-    "he": "לעולם לא"
+    "he": "לעולם לא",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "rude",
@@ -1956,7 +2017,11 @@
   },
   {
     "en": "break",
-    "he": "לשבור"
+    "he": "לשבור",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "called",
@@ -2012,7 +2077,11 @@
   },
   {
     "en": "getting",
-    "he": "לקבל"
+    "he": "לקבל",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "ghost",
@@ -2064,7 +2133,11 @@
   },
   {
     "en": "know",
-    "he": "לדעת"
+    "he": "לדעת",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "lived",
@@ -2115,7 +2188,8 @@
     "he": "לשחק",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -2204,7 +2278,11 @@
   },
   {
     "en": "late",
-    "he": "מאוחר"
+    "he": "מאוחר",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
   },
   {
     "en": "show",
@@ -2343,7 +2421,8 @@
     "he": "כלום",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -2407,7 +2486,8 @@
     "he": "כפות רגליים",
     "tags": [
       "whenever-wherever",
-      "song"
+      "song",
+      "shake-it-off"
     ]
   },
   {
@@ -2769,6 +2849,158 @@
     "he": "גרון",
     "tags": [
       "aeroplane",
+      "song"
+    ]
+  },
+  {
+    "en": "go",
+    "he": "ללכת",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "dates",
+    "he": "דייטים / פגישות רומנטיות",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "at least",
+    "he": "לפחות",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "cruising",
+    "he": "מתקדם בקלילות / משייט",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "moving",
+    "he": "זז / נע",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "players",
+    "he": "שחקנים / מי שמשחקים ברגשות",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "haters",
+    "he": "שונאים / משמיצים",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "shake",
+    "he": "לנער / לרעוד",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "shake it off",
+    "he": "להתנער מזה / לא לתת לזה להפריע",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "heartbreakers",
+    "he": "שוברי לבבות",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "fakers",
+    "he": "מתחזים / מעמידי פנים",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "on my own",
+    "he": "לבדי / בכוחות עצמי",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "moves",
+    "he": "תנועות (ריקוד) / מהלכים",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "grooving",
+    "he": "רוקד לפי הקצב",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "down and out",
+    "he": "מדוכדך / במצב קשה",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "liars",
+    "he": "שקרנים",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "cheats",
+    "he": "רמאים / בוגדים",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "ex-man",
+    "he": "בן זוג לשעבר (סלנג)",
+    "tags": [
+      "shake-it-off",
+      "song"
+    ]
+  },
+  {
+    "en": "fella",
+    "he": "בחור (סלנג)",
+    "tags": [
+      "shake-it-off",
       "song"
     ]
   }

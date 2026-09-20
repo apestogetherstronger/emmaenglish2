@@ -24,7 +24,7 @@ test('mixed vocabulary is the default and an explicit collection choice survives
   assert.equal(createState().settings.pack, 'all');
   assert.equal(normalizeSettings({ pack: 'everyday' }).pack, 'all');
   assert.equal(normalizeSettings({ pack: 'stories' }).pack, 'stories');
-  for (const pack of ['all', 'everyday', 'stories', 'song', 'whenever-wherever', 'aeroplane']) {
+  for (const pack of ['all', 'everyday', 'stories', 'song', 'whenever-wherever', 'aeroplane', 'shake-it-off']) {
     const settings = normalizeSettings({ pack, packVersion: 1 });
     assert.equal(settings.pack, pack);
     assert.deepEqual(normalizeSettings(JSON.parse(JSON.stringify(settings))), settings);

@@ -46,15 +46,18 @@ test('the song collection contains all 74 requested words, with Hebrew, in mixed
   assert.equal(tagged.find(word => word.id === 'legs').he, 'רגליים');
   assert.notEqual(tagged.find(word => word.id === 'way'), tagged.find(word => word.id === 'ways'));
 });
-test('Aeroplane adds the curated vocabulary and Song is the deduplicated union of both songs', async () => {
+test('song collections retain their vocabulary and Songs is the deduplicated union of all three', async () => {
   const lists = await Promise.all(['dictionary.json', 'StrangerThings.json'].map(async name => JSON.parse(await readFile(new URL(`../dist/data/${name}`, import.meta.url), 'utf8'))));
-  const all = normalizeDictionary(...lists), aeroplane = forPack(all, 'aeroplane'), firstSong = forPack(all, 'whenever-wherever'), songs = forPack(all, 'song');
+  const all = normalizeDictionary(...lists), aeroplane = forPack(all, 'aeroplane'), firstSong = forPack(all, 'whenever-wherever'), shakeItOff = forPack(all, 'shake-it-off'), songs = forPack(all, 'song');
   const expected = 'like|pleasure|spiked|pain|music|aeroplane|songbird|sweet|sour|always|looking|eyes|find|love|want|someone|better|slap|start|rust|decompose|rear-view mirror|mirror|make|disappear|fear|sitting|kitchen|girl|turning|dust|again|melancholy|baby|star|push|voice|inside|overcoming|gravity|easy|sad|note|float|away|song|wrote|lay|choke|lie|cut|throat|die'.split('|');
   assert.deepEqual(aeroplane.map(w => w.id).sort(), expected.sort());
   assert(aeroplane.every(w => w.tags.includes('song') && /[\u0590-\u05ff]/.test(w.he)));
   const union = new Set([...aeroplane, ...firstSong].map(w => w.id));
   assert.equal(union.size, 119);
-  assert.equal(songs.length, 119);
+  assert.equal(shakeItOff.length, 57);
+  assert(shakeItOff.every(w => w.tags.includes('song') && /[\u0590-\u05ff]/.test(w.he)));
+  for (const word of shakeItOff) union.add(word.id);
+  assert.equal(songs.length, 166);
   assert.deepEqual(new Set(songs.map(w => w.id)), union);
   for (const word of songs) assert.equal(word, all.find(w => w.id === word.id));
   assert.equal(songs.filter(w => w.id === 'love').length, 1);
@@ -63,7 +66,7 @@ test('Aeroplane adds the curated vocabulary and Song is the deduplicated union o
   assert.equal(aeroplane.find(w => w.id === 'turning').he, 'פונה');
   for (const excluded of ['mazzy', 'must', 'fuck', "motherfucker's", 'jane', 'lord', 'i', 'and', 'my', 'the', "it's", 'just', 'one']) assert(!aeroplane.some(w => w.id === excluded));
   for (const row of lists.flat()) {
-    if (row.tags?.some(tag => ['aeroplane', 'whenever-wherever'].includes(tag))) assert(row.tags.includes('song'));
+    if (row.tags?.some(tag => ['aeroplane', 'whenever-wherever', 'shake-it-off'].includes(tag))) assert(row.tags.includes('song'));
     if (expected.includes(row.en.trim().toLowerCase())) assert(row.tags.includes('aeroplane'));
     if (row.tags) assert.equal(row.tags.length, new Set(row.tags).size);
   }
