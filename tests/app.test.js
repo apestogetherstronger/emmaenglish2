@@ -12,7 +12,7 @@ import { createAnswerSounds } from '../dist/sounds.js';
 // Exercise the actual application handlers with inert document/audio adapters.
 // This is a state/markup smoke test, not browser or visual testing.
 const source = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
-const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}`, tags: i < 15 ? ['whenever-wherever'] : [] }));
+const fixture = Array.from({ length: 40 }, (_, i) => ({ en: `word ${i}`, he: `מילה ${i}`, tags: [...(i < 15 ? ['whenever-wherever'] : []), ...(i >= 10 && i < 25 ? ['aeroplane'] : []), ...(i < 25 ? ['song'] : [])] }));
 async function boot(saved = new Map(), speechHost = {}, soundFactory = createAnswerSounds) {
   const elements = new Map(), listeners = new Map();
   const element = selector => {
@@ -70,6 +70,35 @@ test('the song collection filters practice, persists in both interfaces, and def
   assert.equal(JSON.parse(app.saved.get(core.STORAGE_KEY)).settings.pack, 'all');
   select('everyday'); app = await boot(app.saved);
   assert.equal(app.api.state.settings.pack, 'everyday');
+});
+
+test('Aeroplane and all-song filters work in lessons, words, settings, and both interfaces without resetting history', async () => {
+  let app = await boot();
+  const select = value => app.listeners.get('change')({ target: { dataset: { change: 'pack' }, value } });
+  assert.match(app.elements.get('#main').innerHTML, /value="aeroplane"[^>]*>Aeroplane/);
+  assert.match(app.elements.get('#main').innerHTML, /value="song"[^>]*>Song/);
+  select('aeroplane'); app.api.startLesson();
+  assert.equal(app.api.session.pool.length, 15);
+  assert(app.api.session.queue.every(word => word.tags.includes('aeroplane')));
+  const question = app.api.session.current;
+  app.api.answer(question.options.indexOf(question.word.he));
+  const answerId = app.api.state.answers[0].wordId;
+  app = await boot(app.saved);
+  assert.equal(app.api.state.settings.pack, 'aeroplane');
+  app.api.actions['toggle-language']();
+  assert.match(app.elements.get('#main').innerHTML, /Aeroplane — השיר/);
+  app.api.showSettings();
+  assert.match(app.elements.get('#settings-dialog').innerHTML, /value="song"[^>]*>שירים/);
+  select('song'); app.api.startLesson();
+  assert.equal(app.api.session.pool.length, 25, 'Shared song words must not be duplicated');
+  assert(app.api.session.queue.every(word => word.tags.includes('song')));
+  assert.equal(app.api.state.answers.length, 1);
+  assert.equal(app.api.state.answers[0].wordId, answerId);
+  app = await boot(app.saved);
+  assert.equal(app.api.state.settings.pack, 'song');
+  app.api.actions.words();
+  assert.match(app.elements.get('#word-results').innerHTML, /word-tag/);
+  assert.match(app.elements.get('#word-results').innerHTML, /שירים/);
 });
 
 test('version 1 saves and backups migrate without losing rewards, and future formats remain protected', async () => {

@@ -202,6 +202,8 @@ export const hebrew = {
   'Story words': 'מילים מסיפורים',
   'All words': 'כל המילים',
   'Whenever, Wherever': 'Whenever, Wherever — השיר',
+  'Aeroplane': 'Aeroplane — השיר',
+  'Song': 'שירים',
   'Word collection': 'אוסף מילים',
   'DAILY PRACTICE': 'תרגול יומי',
   'Let’s keep learning': 'ממשיכים ללמוד',
