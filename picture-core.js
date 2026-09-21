@@ -1,4 +1,5 @@
 import { localDay, shuffled, selectLesson, summarizeWords } from './core.js?v=2.5.0';
+import { createGame, normalizeGame, mergeGames, initializeRewards, creditPractice, earnDailyChest, earnBonusChests, bonusXP } from './game.js?v=2.4.0';
 
 // This mode never reads or writes the English–Hebrew app's storage key.
 export const PICTURE_STORAGE_KEY = 'emmaenglish2:pictures:v1';
@@ -20,14 +21,14 @@ const wordIds = new Set(PICTURE_WORDS.map(w => w.id));
 export const PICTURE_MODES = Object.freeze({ mixed: 'Pictures + words', listen: 'Listen + pictures', read: 'Words + pictures' });
 export const PICTURE_GOALS = Object.freeze([5, 10, 15, 20, 30]);
 export function newPictureState() {
-  // Keep the storage key stable. Version 2 stops older, 48-word tabs from
-  // discarding answers for the newly added words when they next save.
-  return { version: 2, settings: { category: 'all', mode: 'mixed', goal: 30, effects: true, voice: true }, answers: [] };
+  // Keep the storage key stable. Version 3 stops older tabs from discarding
+  // the avatar and rewards; formats 1 and 2 still migrate without losing answers.
+  return { version: 3, settings: { category: 'all', mode: 'mixed', goal: 30, effects: true, voice: true }, answers: [], game: createGame() };
 }
 export function parsePictureState(raw) {
   if (raw === null) return newPictureState();
   const data = JSON.parse(raw);
-  if (!data || ![1, 2].includes(data.version) || !Array.isArray(data.answers) || data.answers.length > 100000) throw new Error('Unsupported picture progress.');
+  if (!data || ![1, 2, 3].includes(data.version) || !Array.isArray(data.answers) || data.answers.length > 100000) throw new Error('Unsupported picture progress.');
   const settings = data.settings || {};
   const state = newPictureState();
   for (const [key, options] of [['category', PICTURE_CATEGORIES], ['mode', PICTURE_MODES]]) if (Object.hasOwn(options, settings[key])) state.settings[key] = settings[key];
@@ -37,6 +38,7 @@ export function parsePictureState(raw) {
     typeof a.correct === 'boolean' && Number.isFinite(Date.parse(a.ts)) && (a.chosen === null || wordIds.has(a.chosen)))
     .map(a => ({ id: a.id, wordId: a.wordId, chosen: a.chosen, correct: a.correct && a.chosen === a.wordId, ts: new Date(a.ts).toISOString() }));
   state.answers = mergePictureAnswers([], state.answers);
+  state.game = normalizeGame(data.game);
   return state;
 }
 function mergePictureAnswers(a, b) {
@@ -46,18 +48,25 @@ export function createPictureStore(storage) {
   let state = newPictureState(), protectedSave = false, message = '';
   try { state = parsePictureState(storage.getItem(PICTURE_STORAGE_KEY)); }
   catch { protectedSave = true; message = 'Your saved picture progress could not be read. You can practise, but saving is paused to protect it.'; }
+  function readLatest() {
+    if (protectedSave) return;
+    try {
+      const raw = storage.getItem(PICTURE_STORAGE_KEY);
+      if (raw === null) return;
+      const latest = parsePictureState(raw);
+      latest.answers = mergePictureAnswers(state.answers, latest.answers);
+      latest.game = mergeGames(state.game, latest.game);
+      state = latest;
+    } catch { protectedSave = true; message = 'Saving is paused to protect your picture progress. Refresh this page before continuing.'; }
+  }
   return {
     get state() { return state; },
     get message() { return message; },
+    get canSave() { return !protectedSave; },
+    refresh() { readLatest(); state = refreshPictureRewards(state); return state; },
     update(change) {
-      if (!protectedSave) {
-        try {
-          const latest = parsePictureState(storage.getItem(PICTURE_STORAGE_KEY));
-          latest.answers = mergePictureAnswers(state.answers, latest.answers);
-          state = latest;
-        } catch { protectedSave = true; message = 'Saving is paused to protect your picture progress. Refresh this page before continuing.'; }
-      }
-      state = change(state);
+      readLatest();
+      state = refreshPictureRewards(change(state));
       if (!protectedSave) {
         try { storage.setItem(PICTURE_STORAGE_KEY, JSON.stringify(state)); message = ''; }
         catch { message = 'Progress is only saved for this visit. Your browser could not save it on this device.'; }
@@ -65,6 +74,18 @@ export function createPictureStore(storage) {
       return state;
     },
   };
+}
+export function refreshPictureRewards(state, now = Date.now()) {
+  const today = localDay(now), count = state.answers.filter(a => localDay(a.ts) === today).length;
+  let game = initializeRewards(state.game, now);
+  game = earnDailyChest(game, today, count, state.settings.goal, now);
+  game = earnBonusChests(game, today, now);
+  return game === state.game ? state : { ...state, game };
+}
+export function recordPictureAnswer(state, record) {
+  if (state.answers.some(answer => answer.id === record.id)) return state;
+  const game = record.correct ? creditPractice(state.game, `q:${record.id}`, 10, localDay(record.ts), Date.parse(record.ts)) : state.game;
+  return { ...state, answers: [...state.answers, record], game };
 }
 export const picturePool = category => PICTURE_WORDS.filter(w => category === 'all' || w.category === category);
 export function pictureLesson(state, { reviewOnly = false, random = Math.random, now = Date.now() } = {}) {
@@ -86,7 +107,7 @@ export function pictureChoices(word, random = Math.random) {
 export function pictureTotals(state, now = new Date()) {
   const stats = summarizeWords(state.answers), today = localDay(now);
   return {
-    xp: state.answers.filter(a => a.correct).length * 10,
+    xp: state.answers.filter(a => a.correct).length * 10 + bonusXP(state.game),
     today: state.answers.filter(a => localDay(a.ts) === today).length,
     confident: [...stats.values()].filter(s => s.streak >= 3).length,
     seen: stats.size,
