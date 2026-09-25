@@ -26,11 +26,15 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 
 ## Picture mode
 
-Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The collection contains **96 concrete beginner words**, with familiar subjects for a five-year-old, illustrated with six original locally bundled image atlases. The original animals, food, and everyday objects remain. Three more 16-word collections are included in **All pictures** by default and can also be selected separately:
+Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The collection contains **144 concrete beginner words**, with familiar subjects for a five-year-old. The original 96 words remain illustrated with six locally bundled image atlases, and every collection now includes eight additional large visual emoji cards. That gives each collection 24 words while keeping the existing progress format and atlas assets compatible.
 
-- **At home:** door, window, lamp, sofa, pillow, blanket, towel, toothbrush, soap, bath, toilet, mirror, plate, fork, bowl, bottle.
-- **Outside:** sun, moon, star, cloud, rain, snow, rainbow, tree, flower, leaf, grass, rock, beach, mountain, river, sea.
-- **Toys & transport:** car, bus, train, truck, plane, boat, bike, helicopter, teddy bear, doll, kite, balloon, robot, puzzle, drum, crayon.
+The expanded collections add:
+- **Animals:** mouse, sheep, pig, chicken, duck, bear, giraffe, zebra.
+- **Food:** pear, peach, lemon, corn, cucumber, cookie, sandwich, rice.
+- **Everyday things:** phone, camera, umbrella, glasses, brush, scissors, ruler, box.
+- **At home:** fridge, oven, shower, sink, stairs, garden, kitchen, bedroom.
+- **Outside:** forest, desert, island, lake, fire, wind, earth, sky.
+- **Toys & transport:** scooter, skateboard, soccer ball, blocks, guitar, yo-yo, swing, slide.
 
 These are introductory word choices, not an assessed age or proficiency standard. Abstract words from the bilingual dictionary are not automatically mapped to pictures. Quiz distractors exclude overlapping meanings such as bird/penguin, cloud/rain, and beach/sea so a valid interpretation is not marked wrong.
 
