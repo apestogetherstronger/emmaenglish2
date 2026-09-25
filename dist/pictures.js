@@ -1,4 +1,4 @@
-import { PICTURE_STORAGE_KEY, PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_ATLASES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, recordPictureAnswer, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.11.0';
+import { PICTURE_STORAGE_KEY, PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_ATLASES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, recordPictureAnswer, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.12.0';
 import { summarizeWords, wordStatus, localDay } from './core.js?v=2.5.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
 import { inventory, bonusProgress, pendingChests, chooseChestStyle, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.4.0';
