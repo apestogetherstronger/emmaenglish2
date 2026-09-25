@@ -1,4 +1,4 @@
-import { PICTURE_STORAGE_KEY, PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_ATLASES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, recordPictureAnswer, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.10.0';
+import { PICTURE_STORAGE_KEY, PICTURE_WORDS, PICTURE_CATEGORIES, PICTURE_ATLASES, PICTURE_MODES, PICTURE_GOALS, createPictureStore, recordPictureAnswer, picturePool, pictureLesson, pictureChoices, pictureTotals } from './picture-core.js?v=2.12.0';
 import { summarizeWords, wordStatus, localDay } from './core.js?v=2.5.0';
 import { createAnswerSounds } from './sounds.js?v=2.2.1';
 import { inventory, bonusProgress, pendingChests, chooseChestStyle, tapChest, equipItem, normalizeProfile, AVATAR_GROUPS, AVATAR_COLORS, REWARD_ITEMS, profileChoices } from './game.js?v=2.4.0';
@@ -15,6 +15,7 @@ const offeredChests = new Set(), avatarImages = new Map();
 const escape = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
 const wordById = id => PICTURE_WORDS.find(w => w.id === id);
 function sprite(word, label = word.en) {
+  if (word.emoji) return `<span class="picture-sprite picture-emoji" data-category="${word.category}" role="img" aria-label="${escape(label)}">${escape(word.emoji)}</span>`;
   const x = (word.cell % 4) * 100 / 3, y = Math.floor(word.cell / 4) * 100 / 3;
   const crop = word.crop;
   const style = crop ? `background-size:${1254 / crop[2] * 100}% ${1254 / crop[2] * 100}%;background-position:${crop[0] / (1254 - crop[2]) * 100}% ${crop[1] / (1254 - crop[2]) * 100}%` : `background-position:${x}% ${y}%`;

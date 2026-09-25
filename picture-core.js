@@ -12,11 +12,40 @@ const groups = {
   nature: ['sun', 'moon', 'star', 'cloud', 'rain', 'snow', 'rainbow', 'tree', 'flower', 'leaf', 'grass', 'rock', 'beach', 'mountain', 'river', 'sea'],
   play: ['car', 'bus', 'train', 'truck', 'plane', 'boat', 'bike', 'helicopter', 'teddy bear', 'doll', 'kite', 'balloon', 'robot', 'puzzle', 'drum', 'crayon'],
 };
+const extraWords = {
+  animals: [
+    ['mouse', '🐭'], ['sheep', '🐑'], ['pig', '🐷'], ['chicken', '🐔'], ['duck', '🦆'], ['bear', '🐻'], ['giraffe', '🦒'], ['zebra', '🦓'],
+    ['fox', '🦊'], ['wolf', '🐺'], ['deer', '🦌'], ['camel', '🐫'], ['goat', '🐐'], ['owl', '🦉'], ['crab', '🦀'], ['octopus', '🐙'],
+  ],
+  food: [
+    ['pear', '🍐'], ['peach', '🍑'], ['lemon', '🍋'], ['corn', '🌽'], ['cucumber', '🥒'], ['cookie', '🍪'], ['sandwich', '🥪'], ['rice', '🍚'],
+    ['cherry', '🍒'], ['pineapple', '🍍'], ['avocado', '🥑'], ['mushroom', '🍄'], ['fries', '🍟'], ['hamburger', '🍔'], ['donut', '🍩'], ['chocolate', '🍫'],
+  ],
+  objects: [
+    ['phone', '📱'], ['camera', '📷'], ['umbrella', '☂️'], ['glasses', '👓'], ['brush', '🪥'], ['scissors', '✂️'], ['ruler', '📏'], ['box', '📦'],
+    ['flashlight', '🔦'], ['watch', '⌚'], ['notebook', '📓'], ['bell', '🔔'], ['gift', '🎁'], ['candle', '🕯️'], ['paintbrush', '🖌️'], ['magnifying glass', '🔍'],
+  ],
+  home: [
+    ['fridge', '🧊'], ['oven', '♨️'], ['shower', '🚿'], ['sink', '🚰'], ['stairs', '🪜'], ['garden', '🪴'], ['kitchen', '🍳'], ['bedroom', '🛏️'],
+    ['house', '🏠'], ['television', '📺'], ['computer', '🖥️'], ['broom', '🧹'], ['laundry', '🧺'], ['mailbox', '📫'], ['trash can', '🗑️'], ['radio', '📻'],
+  ],
+  nature: [
+    ['forest', '🌲'], ['desert', '🏜️'], ['island', '🏝️'], ['lake', '🏞️'], ['fire', '🔥'], ['wind', '💨'], ['earth', '🌍'], ['sky', '🌌'],
+    ['volcano', '🌋'], ['cactus', '🌵'], ['palm tree', '🌴'], ['sunflower', '🌻'], ['shell', '🐚'], ['lightning', '⚡'], ['snowman', '☃️'], ['storm', '⛈️'],
+  ],
+  play: [
+    ['scooter', '🛴'], ['skateboard', '🛹'], ['soccer ball', '⚽'], ['blocks', '🧱'], ['guitar', '🎸'], ['yo-yo', '🪀'], ['swing', '🎠'], ['slide', '🛝'],
+    ['baseball', '⚾'], ['basketball', '🏀'], ['football', '🏈'], ['tennis', '🎾'], ['video game', '🎮'], ['dice', '🎲'], ['chess', '♟️'], ['rocket', '🚀'],
+  ],
+};
 export const PICTURE_ATLASES = Object.freeze(Object.keys(groups));
 // Four home cards need slightly shifted square crops: the fork and bottle
 // extend above the nominal row boundary in the 1254px illustration.
 const crops = { bath: [324, 627, 292], mirror: [951, 627, 292], fork: [314, 921, 313], bottle: [941, 921, 313] };
-export const PICTURE_WORDS = Object.freeze(Object.entries(groups).flatMap(([category, words]) => words.map((en, cell) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, cell, ...(crops[en] ? { crop: Object.freeze(crops[en]) } : {}) }))));
+export const PICTURE_WORDS = Object.freeze(Object.entries(groups).flatMap(([category, words]) => [
+  ...words.map((en, cell) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, cell, ...(crops[en] ? { crop: Object.freeze(crops[en]) } : {}) })),
+  ...extraWords[category].map(([en, emoji]) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, emoji })),
+]));
 const wordIds = new Set(PICTURE_WORDS.map(w => w.id));
 export const PICTURE_MODES = Object.freeze({ mixed: 'Pictures + words', listen: 'Listen + pictures', read: 'Words + pictures' });
 export const PICTURE_GOALS = Object.freeze([5, 10, 15, 20, 30]);
@@ -95,9 +124,9 @@ export function pictureLesson(state, { reviewOnly = false, random = Math.random,
 // For example, a penguin is a bird, and the rain picture also contains a cloud.
 const overlappingPictures = [
   ['bird', 'penguin'], ['blanket', 'towel'], ['plate', 'bowl'], ['sofa', 'pillow'],
-  ['cloud', 'rain'], ['cloud', 'snow'], ['snow', 'mountain'],
-  ['tree', 'leaf'], ['tree', 'grass'], ['flower', 'leaf'], ['flower', 'grass'],
-  ['beach', 'river', 'sea'], ['mountain', 'rock'],
+  ['cloud', 'rain', 'storm'], ['cloud', 'snow', 'storm'], ['snow', 'snowman', 'mountain'],
+  ['tree', 'leaf', 'palm-tree'], ['tree', 'grass'], ['flower', 'leaf', 'sunflower'], ['flower', 'grass'],
+  ['beach', 'river', 'sea'], ['mountain', 'rock'], ['lightning', 'storm'],
 ];
 export function pictureChoices(word, random = Math.random) {
   const excluded = new Set(overlappingPictures.filter(group => group.includes(word.id)).flat());
