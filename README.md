@@ -26,15 +26,15 @@ A playful English–Hebrew learning app based on [Emma English](https://github.c
 
 ## Picture mode
 
-Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The collection contains **144 concrete beginner words**, with familiar subjects for a five-year-old. The original 96 words remain illustrated with six locally bundled image atlases, and every collection now includes eight additional large visual emoji cards. That gives each collection 24 words while keeping the existing progress format and atlas assets compatible.
+Open [`pictures.html`](https://apestogetherstronger.github.io/emmaenglish2/pictures.html), or choose **Picture mode** on the main learning page. It is an English-only practice space for someone who does not know Hebrew. The collection contains **192 concrete beginner words**, with familiar subjects for a five-year-old. The original 96 words remain illustrated with six locally bundled image atlases, and every collection now includes sixteen additional large visual emoji cards. That gives each collection 32 words while keeping the existing progress format and atlas assets compatible.
 
 The expanded collections add:
-- **Animals:** mouse, sheep, pig, chicken, duck, bear, giraffe, zebra.
-- **Food:** pear, peach, lemon, corn, cucumber, cookie, sandwich, rice.
-- **Everyday things:** phone, camera, umbrella, glasses, brush, scissors, ruler, box.
-- **At home:** fridge, oven, shower, sink, stairs, garden, kitchen, bedroom.
-- **Outside:** forest, desert, island, lake, fire, wind, earth, sky.
-- **Toys & transport:** scooter, skateboard, soccer ball, blocks, guitar, yo-yo, swing, slide.
+- **Animals:** mouse, sheep, pig, chicken, duck, bear, giraffe, zebra, fox, wolf, deer, camel, goat, owl, crab, octopus.
+- **Food:** pear, peach, lemon, corn, cucumber, cookie, sandwich, rice, cherry, pineapple, avocado, mushroom, fries, hamburger, donut, chocolate.
+- **Everyday things:** phone, camera, umbrella, glasses, brush, scissors, ruler, box, flashlight, watch, notebook, bell, gift, candle, paintbrush, magnifying glass.
+- **At home:** fridge, oven, shower, sink, stairs, garden, kitchen, bedroom, house, television, computer, broom, laundry, mailbox, trash can, radio.
+- **Outside:** forest, desert, island, lake, fire, wind, earth, sky, volcano, cactus, palm tree, sunflower, shell, lightning, snowman, storm.
+- **Toys & transport:** scooter, skateboard, soccer ball, blocks, guitar, yo-yo, swing, slide, baseball, basketball, football, tennis, video game, dice, chess, rocket.
 
 These are introductory word choices, not an assessed age or proficiency standard. Abstract words from the bilingual dictionary are not automatically mapped to pictures. Quiz distractors exclude overlapping meanings such as bird/penguin, cloud/rain, and beach/sea so a valid interpretation is not marked wrong.
 
