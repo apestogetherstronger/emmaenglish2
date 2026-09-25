@@ -108,7 +108,7 @@ test('picture page scores one answer once, reaches 30, restores progress, and re
   assert.equal(reloaded.api.state.answers.length, 30);
   assert.match(reloaded.elements.get('#picture-main').innerHTML, /Daily goal complete!/);
   reloaded.api.actions.words();
-  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 144);
+  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 192);
   assert.equal(app.saved.get(STORAGE_KEY), original);
 });
 
@@ -150,9 +150,9 @@ test('new beginner collections retain earlier progress and work in lessons, list
     app.listeners.get('change')({ target: { dataset: { setting: 'category' }, value: category } });
     app.api.actions.words();
     const markup = app.elements.get('#picture-main').innerHTML;
-    assert.equal((markup.match(/class="picture-word-card"/g) || []).length, 24);
-    assert.equal((markup.match(new RegExp(`data-category="${category}"`, 'g')) || []).length, 24);
-    assert.equal((markup.match(/picture-emoji/g) || []).length, 8);
+    assert.equal((markup.match(/class="picture-word-card"/g) || []).length, 32);
+    assert.equal((markup.match(new RegExp(`data-category="${category}"`, 'g')) || []).length, 32);
+    assert.equal((markup.match(/picture-emoji/g) || []).length, 16);
     app.api.startLesson();
     assert.equal(app.api.session.queue.length, 10);
     assert(app.api.session.queue.every(w => w.category === category));
@@ -170,7 +170,7 @@ test('new beginner collections retain earlier progress and work in lessons, list
 });
 
 test('pictures with overlapping meanings do not compete as quiz answers', () => {
-  const pairs = [['cloud', 'rain'], ['cloud', 'snow'], ['snow', 'mountain'], ['beach', 'sea'], ['beach', 'river'], ['river', 'sea'], ['blanket', 'towel'], ['plate', 'bowl'], ['sofa', 'pillow'], ['tree', 'leaf'], ['flower', 'leaf']];
+  const pairs = [['cloud', 'rain'], ['cloud', 'snow'], ['cloud', 'storm'], ['rain', 'storm'], ['snow', 'storm'], ['snow', 'snowman'], ['snow', 'mountain'], ['beach', 'sea'], ['beach', 'river'], ['river', 'sea'], ['blanket', 'towel'], ['plate', 'bowl'], ['sofa', 'pillow'], ['tree', 'leaf'], ['tree', 'palm-tree'], ['flower', 'leaf'], ['flower', 'sunflower'], ['lightning', 'storm']];
   for (const [first, second] of pairs) for (const [id, other] of [[first, second], [second, first]]) {
     const word = pictures.PICTURE_WORDS.find(w => w.id === id);
     assert(word, `Missing beginner word: ${id}`);
