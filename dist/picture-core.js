@@ -12,11 +12,22 @@ const groups = {
   nature: ['sun', 'moon', 'star', 'cloud', 'rain', 'snow', 'rainbow', 'tree', 'flower', 'leaf', 'grass', 'rock', 'beach', 'mountain', 'river', 'sea'],
   play: ['car', 'bus', 'train', 'truck', 'plane', 'boat', 'bike', 'helicopter', 'teddy bear', 'doll', 'kite', 'balloon', 'robot', 'puzzle', 'drum', 'crayon'],
 };
+const extraWords = {
+  animals: [['mouse', '🐭'], ['sheep', '🐑'], ['pig', '🐷'], ['chicken', '🐔'], ['duck', '🦆'], ['bear', '🐻'], ['giraffe', '🦒'], ['zebra', '🦓']],
+  food: [['pear', '🍐'], ['peach', '🍑'], ['lemon', '🍋'], ['corn', '🌽'], ['cucumber', '🥒'], ['cookie', '🍪'], ['sandwich', '🥪'], ['rice', '🍚']],
+  objects: [['phone', '📱'], ['camera', '📷'], ['umbrella', '☂️'], ['glasses', '👓'], ['brush', '🪥'], ['scissors', '✂️'], ['ruler', '📏'], ['box', '📦']],
+  home: [['fridge', '🧊'], ['oven', '♨️'], ['shower', '🚿'], ['sink', '🚰'], ['stairs', '🪜'], ['garden', '🪴'], ['kitchen', '🍳'], ['bedroom', '🛏️']],
+  nature: [['forest', '🌲'], ['desert', '🏜️'], ['island', '🏝️'], ['lake', '🏞️'], ['fire', '🔥'], ['wind', '💨'], ['earth', '🌍'], ['sky', '🌌']],
+  play: [['scooter', '🛴'], ['skateboard', '🛹'], ['soccer ball', '⚽'], ['blocks', '🧱'], ['guitar', '🎸'], ['yo-yo', '🪀'], ['swing', '🎠'], ['slide', '🛝']],
+};
 export const PICTURE_ATLASES = Object.freeze(Object.keys(groups));
 // Four home cards need slightly shifted square crops: the fork and bottle
 // extend above the nominal row boundary in the 1254px illustration.
 const crops = { bath: [324, 627, 292], mirror: [951, 627, 292], fork: [314, 921, 313], bottle: [941, 921, 313] };
-export const PICTURE_WORDS = Object.freeze(Object.entries(groups).flatMap(([category, words]) => words.map((en, cell) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, cell, ...(crops[en] ? { crop: Object.freeze(crops[en]) } : {}) }))));
+export const PICTURE_WORDS = Object.freeze(Object.entries(groups).flatMap(([category, words]) => [
+  ...words.map((en, cell) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, cell, ...(crops[en] ? { crop: Object.freeze(crops[en]) } : {}) })),
+  ...extraWords[category].map(([en, emoji]) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, emoji })),
+]));
 const wordIds = new Set(PICTURE_WORDS.map(w => w.id));
 export const PICTURE_MODES = Object.freeze({ mixed: 'Pictures + words', listen: 'Listen + pictures', read: 'Words + pictures' });
 export const PICTURE_GOALS = Object.freeze([5, 10, 15, 20, 30]);
