@@ -108,7 +108,7 @@ test('picture page scores one answer once, reaches 30, restores progress, and re
   assert.equal(reloaded.api.state.answers.length, 30);
   assert.match(reloaded.elements.get('#picture-main').innerHTML, /Daily goal complete!/);
   reloaded.api.actions.words();
-  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 96);
+  assert.equal((reloaded.elements.get('#picture-main').innerHTML.match(/class="picture-word-card"/g) || []).length, 144);
   assert.equal(app.saved.get(STORAGE_KEY), original);
 });
 
@@ -150,8 +150,9 @@ test('new beginner collections retain earlier progress and work in lessons, list
     app.listeners.get('change')({ target: { dataset: { setting: 'category' }, value: category } });
     app.api.actions.words();
     const markup = app.elements.get('#picture-main').innerHTML;
-    assert.equal((markup.match(/class="picture-word-card"/g) || []).length, 16);
-    assert.equal((markup.match(new RegExp(`data-category="${category}"`, 'g')) || []).length, 16);
+    assert.equal((markup.match(/class="picture-word-card"/g) || []).length, 24);
+    assert.equal((markup.match(new RegExp(`data-category="${category}"`, 'g')) || []).length, 24);
+    assert.equal((markup.match(/picture-emoji/g) || []).length, 8);
     app.api.startLesson();
     assert.equal(app.api.session.queue.length, 10);
     assert(app.api.session.queue.every(w => w.category === category));
