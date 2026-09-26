@@ -22,19 +22,19 @@ const extraWords = {
     ['cherry', '🍒'], ['pineapple', '🍍'], ['avocado', '🥑'], ['mushroom', '🍄'], ['fries', '🍟'], ['hamburger', '🍔'], ['donut', '🍩'], ['chocolate', '🍫'],
   ],
   objects: [
-    ['phone', '📱'], ['camera', '📷'], ['umbrella', '☂️'], ['glasses', '👓'], ['brush', '🪥'], ['scissors', '✂️'], ['ruler', '📏'], ['box', '📦'],
+    ['phone', '📱'], ['camera', '📷'], ['umbrella', '☂️'], ['glasses', '👓'], ['brush', null, 'brush'], ['scissors', '✂️'], ['ruler', '📏'], ['box', '📦'],
     ['flashlight', '🔦'], ['watch', '⌚'], ['notebook', '📓'], ['bell', '🔔'], ['gift', '🎁'], ['candle', '🕯️'], ['paintbrush', '🖌️'], ['magnifying glass', '🔍'],
   ],
   home: [
-    ['fridge', '🧊'], ['oven', '♨️'], ['shower', '🚿'], ['sink', '🚰'], ['stairs', '🪜'], ['garden', '🪴'], ['kitchen', '🍳'], ['bedroom', '🛏️'],
+    ['fridge', null, 'fridge'], ['oven', null, 'oven'], ['shower', '🚿'], ['sink', '🚰'], ['stairs', null, 'stairs'], ['garden', null, 'garden'], ['kitchen', null, 'kitchen'], ['bedroom', null, 'bedroom'],
     ['house', '🏠'], ['television', '📺'], ['computer', '🖥️'], ['broom', '🧹'], ['laundry', '🧺'], ['mailbox', '📫'], ['trash can', '🗑️'], ['radio', '📻'],
   ],
   nature: [
-    ['forest', '🌲'], ['desert', '🏜️'], ['island', '🏝️'], ['lake', '🏞️'], ['fire', '🔥'], ['wind', '💨'], ['earth', '🌍'], ['sky', '🌌'],
+    ['forest', null, 'forest'], ['desert', '🏜️'], ['island', '🏝️'], ['lake', '🏞️'], ['fire', '🔥'], ['wind', '💨'], ['earth', '🌍'], ['sky', null, 'sky'],
     ['volcano', '🌋'], ['cactus', '🌵'], ['palm tree', '🌴'], ['sunflower', '🌻'], ['shell', '🐚'], ['lightning', '⚡'], ['snowman', '☃️'], ['storm', '⛈️'],
   ],
   play: [
-    ['scooter', '🛴'], ['skateboard', '🛹'], ['soccer ball', '⚽'], ['blocks', '🧱'], ['guitar', '🎸'], ['yo-yo', '🪀'], ['swing', '🎠'], ['slide', '🛝'],
+    ['scooter', '🛴'], ['skateboard', '🛹'], ['soccer ball', '⚽'], ['blocks', null, 'blocks'], ['guitar', '🎸'], ['yo-yo', '🪀'], ['swing', null, 'swing'], ['slide', '🛝'],
     ['baseball', '⚾'], ['basketball', '🏀'], ['football', '🏈'], ['tennis', '🎾'], ['video game', '🎮'], ['dice', '🎲'], ['chess', '♟️'], ['rocket', '🚀'],
   ],
 };
@@ -44,7 +44,7 @@ export const PICTURE_ATLASES = Object.freeze(Object.keys(groups));
 const crops = { bath: [324, 627, 292], mirror: [951, 627, 292], fork: [314, 921, 313], bottle: [941, 921, 313] };
 export const PICTURE_WORDS = Object.freeze(Object.entries(groups).flatMap(([category, words]) => [
   ...words.map((en, cell) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, cell, ...(crops[en] ? { crop: Object.freeze(crops[en]) } : {}) })),
-  ...extraWords[category].map(([en, emoji]) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, emoji })),
+  ...extraWords[category].map(([en, emoji, art]) => Object.freeze({ id: en.replaceAll(' ', '-'), en, category, ...(emoji ? { emoji } : {}), ...(art ? { art } : {}) })),
 ]));
 const wordIds = new Set(PICTURE_WORDS.map(w => w.id));
 export const PICTURE_MODES = Object.freeze({ mixed: 'Pictures + words', listen: 'Listen + pictures', read: 'Words + pictures' });
