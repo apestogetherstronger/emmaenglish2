@@ -31,6 +31,14 @@
 .picture-sprite[data-category=home] { background-image: url('./assets/picture-home.webp?v=2.7.0'); }
 .picture-sprite[data-category=nature] { background-image: url('./assets/picture-nature.webp?v=2.7.0'); }
 .picture-sprite[data-category=play] { background-image: url('./assets/picture-play.webp?v=2.7.0'); }
+.picture-sprite.picture-vector {
+  display: grid;
+  place-items: center;
+  background-image: none;
+  background-color: #fff9ed;
+  overflow: hidden;
+}
+.picture-sprite.picture-vector svg { width: 92%; height: 92%; display: block; }
 .picture-sprite.picture-emoji {
   display: grid;
   place-items: center;
